@@ -47,6 +47,7 @@ perform a thorough check next time it boots.
 .BR ntfsresize (8)
 \- Resize NTFS without losing data.
 .PP
+<<<<<<< HEAD
 .BR ntfstruncate (8)
 \- Truncate a file on an NTFS volume.
 .PP
@@ -55,6 +56,10 @@ perform a thorough check next time it boots.
 .PP
 .BR ntfswipe (8)
 \- Overwrite unused space on an NTFS volume.
+=======
+.BR ntfsundelete (8)
+\- Recover deleted files from NTFS.
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 .SH AUTHORS
 .PP
 The tools were written by Anton Altaparmakov, Carmelo Kintana, Cristian Klein,

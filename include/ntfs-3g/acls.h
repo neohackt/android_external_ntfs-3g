@@ -24,8 +24,11 @@
 #ifndef ACLS_H
 #define ACLS_H
 
+<<<<<<< HEAD
 #include "endians.h"
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /*
  *	JPA configuration modes for security.c / acls.c
  *	should be moved to some config file
@@ -38,6 +41,21 @@
 #define CACHE_PERMISSIONS_SIZE 262144 /* max cacheable permissions */
 
 /*
+<<<<<<< HEAD
+=======
+ *	JPA The following must be in some library...
+ *	but did not found out where
+ */
+
+#define endian_rev16(x) (((x >> 8) & 255) | ((x & 255) << 8))
+#define endian_rev32(x) (((x >> 24) & 255) | ((x >> 8) & 0xff00) \
+		| ((x & 0xff00) << 8) | ((x & 255) << 24))
+
+#define cpu_to_be16(x) endian_rev16(cpu_to_le16(x))
+#define cpu_to_be32(x) endian_rev32(cpu_to_le32(x))
+
+/*
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *		Macro definitions needed to share code with secaudit
  */
 
@@ -160,9 +178,12 @@ int ntfs_merge_mode_posix(struct POSIX_SECURITY *pxdesc, mode_t mode);
 struct POSIX_SECURITY *ntfs_build_inherited_posix(
 		const struct POSIX_SECURITY *pxdesc, mode_t mode,
 		mode_t umask, BOOL isdir);
+<<<<<<< HEAD
 struct POSIX_SECURITY *ntfs_build_basic_posix(
 		const struct POSIX_SECURITY *pxdesc, mode_t mode,
 		mode_t umask, BOOL isdir);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 struct POSIX_SECURITY *ntfs_replace_acl(const struct POSIX_SECURITY *oldpxdesc,
 		const struct POSIX_ACL *newacl, int count, BOOL deflt);
 struct POSIX_SECURITY *ntfs_build_permissions_posix(

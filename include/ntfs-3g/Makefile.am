@@ -15,12 +15,18 @@ headers = \
 	device.h	\
 	device_io.h	\
 	dir.h		\
+<<<<<<< HEAD
 	ea.h		\
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	efs.h		\
 	endians.h	\
 	index.h		\
 	inode.h		\
+<<<<<<< HEAD
 	ioctl.h		\
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	layout.h	\
 	lcnalloc.h	\
 	logfile.h	\

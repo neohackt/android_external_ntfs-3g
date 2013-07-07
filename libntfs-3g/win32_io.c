@@ -6,7 +6,10 @@
  * Copyright (c) 2003-2004 Lode Leroy
  * Copyright (c) 2003-2006 Anton Altaparmakov
  * Copyright (c) 2004-2005 Yuval Fledel
+<<<<<<< HEAD
  * Copyright (c) 2012-2014 Jean-Pierre Andre
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *
  * This program/include file is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as published
@@ -27,6 +30,7 @@
 #include "config.h"
 
 #ifdef HAVE_WINDOWS_H
+<<<<<<< HEAD
 #define BOOL WINBOOL /* avoid conflicting definitions of BOOL */
 #include <windows.h>
 #undef BOOL
@@ -54,6 +58,10 @@ typedef struct {
                            final 12 hexadecimal digits. */
 } GUID;
 
+=======
+#include <windows.h>
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 #include <winioctl.h>
 
 #ifdef HAVE_STDIO_H
@@ -68,11 +76,14 @@ typedef struct {
 #ifdef HAVE_FCNTL_H
 #include <fcntl.h>
 #endif
+<<<<<<< HEAD
 #ifdef HAVE_SYS_STAT_H
 #include <sys/stat.h>
 #define stat stat64
 #define st_blocks  st_rdev /* emulate st_blocks, missing in Windows */
 #endif
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 /* Prevent volume.h from being be loaded, as it conflicts with winnt.h. */
 #define _NTFS_VOLUME_H
@@ -82,10 +93,13 @@ typedef struct ntfs_volume ntfs_volume;
 #include "debug.h"
 #include "types.h"
 #include "device.h"
+<<<<<<< HEAD
 #include "misc.h"
 
 #define cpu_to_le16(x) (x)
 #define const_cpu_to_le16(x) (x)
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 #ifndef MAX_PATH
 #define MAX_PATH 1024
@@ -96,14 +110,18 @@ typedef struct ntfs_volume ntfs_volume;
 #define NTFS_BLOCK_SIZE_BITS	9
 #endif
 
+<<<<<<< HEAD
 #ifndef INVALID_SET_FILE_POINTER
 #define INVALID_SET_FILE_POINTER ((DWORD)-1)
 #endif
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 #ifndef IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS
 #define IOCTL_VOLUME_GET_VOLUME_DISK_EXTENTS 5636096
 #endif
 
+<<<<<<< HEAD
 #ifndef IOCTL_DISK_GET_DRIVE_GEOMETRY
 #define IOCTL_DISK_GET_DRIVE_GEOMETRY 0x70000
 #endif
@@ -116,6 +134,8 @@ typedef struct ntfs_volume ntfs_volume;
 #define FSCTL_ALLOW_EXTENDED_DASD_IO 0x90083
 #endif
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /* Windows 2k+ imports. */
 typedef HANDLE (WINAPI *LPFN_FINDFIRSTVOLUME)(LPTSTR, DWORD);
 typedef BOOL (WINAPI *LPFN_FINDNEXTVOLUME)(HANDLE, LPTSTR, DWORD);
@@ -134,6 +154,7 @@ static LPFN_SETFILEPOINTEREX fnSetFilePointerEx = NULL;
 #define FNPOSTFIX "A"
 #endif
 
+<<<<<<< HEAD
 enum { /* see http://msdn.microsoft.com/en-us/library/cc704588(v=prot.10).aspx */
    STATUS_UNKNOWN = -1,
    STATUS_SUCCESS =              0x00000000,
@@ -274,6 +295,8 @@ extern NTSTATUS	WINAPI NtFsControlFile(
 	ULONG OutputBufferLength
 );
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /**
  * struct win32_fd -
  */
@@ -284,11 +307,16 @@ typedef struct {
 	s64 part_length;
 	int part_hidden_sectors;
 	s64 geo_size, geo_cylinders;
+<<<<<<< HEAD
 	s32 geo_sector_size;
 	s64 volume_size;
 	DWORD geo_sectors, geo_heads;
 	HANDLE vol_handle;
 	BOOL ntdll;
+=======
+	DWORD geo_sectors, geo_heads;
+	HANDLE vol_handle;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 } win32_fd;
 
 /**
@@ -340,6 +368,7 @@ static int ntfs_w32error_to_errno(unsigned int w32error)
 	}
 }
 
+<<<<<<< HEAD
 static int ntfs_ntstatus_to_errno(NTSTATUS status)
 {
 	ntfs_log_trace("Converting w32error 0x%x.\n",w32error);
@@ -360,6 +389,8 @@ static int ntfs_ntstatus_to_errno(NTSTATUS status)
 	}
 }
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /**
  * libntfs_SetFilePointerEx - emulation for SetFilePointerEx()
  *
@@ -370,11 +401,18 @@ static BOOL WINAPI libntfs_SetFilePointerEx(HANDLE hFile,
 		LARGE_INTEGER liDistanceToMove,
 		PLARGE_INTEGER lpNewFilePointer, DWORD dwMoveMethod)
 {
+<<<<<<< HEAD
 	liDistanceToMove.u.LowPart = SetFilePointer(hFile,
 			liDistanceToMove.u.LowPart,
 			&liDistanceToMove.u.HighPart, dwMoveMethod);
 	SetLastError(NO_ERROR);
 	if (liDistanceToMove.u.LowPart == INVALID_SET_FILE_POINTER &&
+=======
+	liDistanceToMove.LowPart = SetFilePointer(hFile,
+			liDistanceToMove.LowPart, &liDistanceToMove.HighPart,
+			dwMoveMethod);
+	if (liDistanceToMove.LowPart == INVALID_SET_FILE_POINTER &&
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			GetLastError() != NO_ERROR) {
 		if (lpNewFilePointer)
 			lpNewFilePointer->QuadPart = -1;
@@ -414,7 +452,11 @@ static void ntfs_device_win32_init_imports(void)
 		 * SetFilePointerEx().
 		 */
 		if (!fnSetFilePointerEx) {
+<<<<<<< HEAD
 			ntfs_log_debug("SetFilePointerEx() not found in "
+=======
+			ntfs_log_debug("SetFilePonterEx() not found in "
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					"kernel32.dll: Enabling emulation.\n");
 			fnSetFilePointerEx = libntfs_SetFilePointerEx;
 		}
@@ -447,6 +489,7 @@ static __inline__ int ntfs_device_unix_status_flags_to_win32(int flags)
 
 	switch (flags & O_ACCMODE) {
 	case O_RDONLY:
+<<<<<<< HEAD
 		win_mode = GENERIC_READ;
 		break;
 	case O_WRONLY:
@@ -454,6 +497,15 @@ static __inline__ int ntfs_device_unix_status_flags_to_win32(int flags)
 		break;
 	case O_RDWR:
 		win_mode = GENERIC_READ | GENERIC_WRITE;
+=======
+		win_mode = FILE_READ_DATA;
+		break;
+	case O_WRONLY:
+		win_mode = FILE_WRITE_DATA;
+		break;
+	case O_RDWR:
+		win_mode = FILE_READ_DATA | FILE_WRITE_DATA;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		break;
 	default:
 		/* error */
@@ -482,8 +534,12 @@ static int ntfs_device_win32_simple_open_file(const char *filename,
 	*handle = CreateFile(filename,
 			ntfs_device_unix_status_flags_to_win32(flags),
 			locking ? 0 : (FILE_SHARE_WRITE | FILE_SHARE_READ),
+<<<<<<< HEAD
 			NULL, (flags & O_CREAT ? OPEN_ALWAYS : OPEN_EXISTING),
 			0, NULL);
+=======
+			NULL, OPEN_EXISTING, 0, NULL);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (*handle == INVALID_HANDLE_VALUE) {
 		errno = ntfs_w32error_to_errno(GetLastError());
 		ntfs_log_trace("CreateFile(%s) failed.\n", filename);
@@ -537,6 +593,7 @@ static int ntfs_device_win32_unlock(HANDLE handle)
 	return 0;
 }
 
+<<<<<<< HEAD
 static int ntfs_device_win32_setlock(HANDLE handle, ULONG code)
 {
 	IO_STATUS_BLOCK io_status;
@@ -553,6 +610,8 @@ static int ntfs_device_win32_setlock(HANDLE handle, ULONG code)
 	return (res == STATUS_SUCCESS ? 0 : -1);
 }
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /**
  * ntfs_device_win32_dismount - dismount a volume
  * @handle:	a win32 HANDLE for a volume to dismount
@@ -591,6 +650,7 @@ static int ntfs_device_win32_dismount(HANDLE handle)
  */
 static s64 ntfs_device_win32_getsize(HANDLE handle)
 {
+<<<<<<< HEAD
 	LONG loword, hiword;
 
 	SetLastError(NO_ERROR);
@@ -598,11 +658,21 @@ static s64 ntfs_device_win32_getsize(HANDLE handle)
 	loword = SetFilePointer(handle, 0, &hiword, 2);
 	if ((loword == INVALID_SET_FILE_POINTER)
 	    && (GetLastError() != NO_ERROR)) {
+=======
+	DWORD loword, hiword;
+
+	loword = GetFileSize(handle, &hiword);
+	if (loword == INVALID_FILE_SIZE) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		errno = ntfs_w32error_to_errno(GetLastError());
 		ntfs_log_trace("Couldn't get file size.\n");
 		return -1;
 	}
+<<<<<<< HEAD
 	return ((s64)hiword << 32) + (ULONG)loword;
+=======
+	return ((s64)hiword << 32) + loword;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -702,7 +772,10 @@ static int ntfs_device_win32_getgeo(HANDLE handle, win32_fd *fd)
 		fd->geo_cylinders = ((DISK_GEOMETRY*)&b)->Cylinders.QuadPart;
 		fd->geo_sectors = ((DISK_GEOMETRY*)&b)->SectorsPerTrack;
 		fd->geo_size = ((DISK_GEOMETRY_EX*)&b)->DiskSize.QuadPart;
+<<<<<<< HEAD
 		fd->geo_sector_size = NTFS_BLOCK_SIZE;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		switch (ddi->DetectionType) {
 		case DetectInt13:
 			fd->geo_cylinders = ddi->Int13.MaxCylinders;
@@ -729,7 +802,10 @@ static int ntfs_device_win32_getgeo(HANDLE handle, win32_fd *fd)
 		fd->geo_size = fd->geo_cylinders * fd->geo_sectors *
 				((DISK_GEOMETRY*)&b)->TracksPerCylinder *
 				((DISK_GEOMETRY*)&b)->BytesPerSector;
+<<<<<<< HEAD
 		fd->geo_sector_size = ((DISK_GEOMETRY*)&b)->BytesPerSector;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		return 0;
 	}
 	errno = ntfs_w32error_to_errno(GetLastError());
@@ -737,6 +813,7 @@ static int ntfs_device_win32_getgeo(HANDLE handle, win32_fd *fd)
 	fd->geo_cylinders = -1;
 	fd->geo_sectors = -1;
 	fd->geo_size = -1;
+<<<<<<< HEAD
 	fd->geo_sector_size = NTFS_BLOCK_SIZE;
 	return -1;
 }
@@ -782,6 +859,11 @@ static int ntfs_device_win32_getntgeo(HANDLE handle, win32_fd *fd)
 	return (res);
 }
 
+=======
+	return -1;
+}
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /**
  * ntfs_device_win32_open_file - open a file via win32 API
  * @filename:	name of the file to open
@@ -795,13 +877,17 @@ static __inline__ int ntfs_device_win32_open_file(char *filename, win32_fd *fd,
 		int flags)
 {
 	HANDLE handle;
+<<<<<<< HEAD
 	int mode;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (ntfs_device_win32_simple_open_file(filename, &handle, flags,
 			FALSE)) {
 		/* open error */
 		return -1;
 	}
+<<<<<<< HEAD
 	mode = flags & O_ACCMODE;
 	if ((mode == O_RDWR) || (mode == O_WRONLY)) {
 		DWORD bytes;
@@ -811,6 +897,8 @@ static __inline__ int ntfs_device_win32_open_file(char *filename, win32_fd *fd,
 				(void*)NULL, 0, (void*)NULL, 0,
 				&bytes, (LPOVERLAPPED)NULL);
 	}
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	/* fill fd */
 	fd->handle = handle;
 	fd->part_start = 0;
@@ -819,8 +907,11 @@ static __inline__ int ntfs_device_win32_open_file(char *filename, win32_fd *fd,
 	fd->part_hidden_sectors = -1;
 	fd->geo_size = -1;	/* used as a marker that this is a file */
 	fd->vol_handle = INVALID_HANDLE_VALUE;
+<<<<<<< HEAD
 	fd->geo_sector_size = 512;  /* will be adjusted from the boot sector */
 	fd->ntdll = FALSE;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	return 0;
 }
 
@@ -852,6 +943,7 @@ static __inline__ int ntfs_device_win32_open_drive(int drive_id, win32_fd *fd,
 	if (fd->geo_size == -1)
 		fd->geo_size = ntfs_device_win32_getdisklength(handle);
 	/* fill fd */
+<<<<<<< HEAD
 	fd->ntdll = FALSE;
 	fd->handle = handle;
 	fd->part_start = 0;
@@ -936,6 +1028,8 @@ static __inline__ int ntfs_device_win32_open_lowlevel(int drive_id,
 		return (-1);
 	}
 	/* fill fd */
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	fd->handle = handle;
 	fd->part_start = 0;
 	fd->part_length = fd->geo_size;
@@ -1069,7 +1163,11 @@ static BOOL ntfs_device_win32_find_partition(HANDLE handle, DWORD partition_id,
 	do {
 		buf_size = sizeof(DRIVE_LAYOUT_INFORMATION) +
 				part_count * sizeof(PARTITION_INFORMATION);
+<<<<<<< HEAD
 		drive_layout = (DRIVE_LAYOUT_INFORMATION*)ntfs_malloc(buf_size);
+=======
+		drive_layout = malloc(buf_size);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (!drive_layout) {
 			errno = ENOMEM;
 			return FALSE;
@@ -1150,8 +1248,11 @@ static int ntfs_device_win32_open_partition(int drive_id,
 		fd->part_start = part_start;
 		fd->part_length = part_length;
 		fd->part_hidden_sectors = hidden_sectors;
+<<<<<<< HEAD
 		fd->geo_sector_size = 512;
 		fd->ntdll = FALSE;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		tmp = ntfs_device_win32_getntfssize(vol_handle);
 		if (tmp > 0)
 			fd->geo_size = tmp;
@@ -1214,6 +1315,7 @@ static int ntfs_device_win32_open(struct ntfs_device *dev, int flags)
 	}
 	ntfs_device_win32_init_imports();
 	numparams = sscanf(dev->d_name, "/dev/hd%c%u", &drive_char, &part);
+<<<<<<< HEAD
 	if (!numparams
 	    && (dev->d_name[1] == ':')
 	    && (dev->d_name[2] == '\0')) {
@@ -1221,6 +1323,9 @@ static int ntfs_device_win32_open(struct ntfs_device *dev, int flags)
 		numparams = 3;
 		drive_id = toupper(drive_char) - 'A';
 	}
+=======
+	drive_id = toupper(drive_char) - 'A';
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	switch (numparams) {
 	case 0:
 		ntfs_log_debug("win32_open(%s) -> file.\n", dev->d_name);
@@ -1237,12 +1342,15 @@ static int ntfs_device_win32_open(struct ntfs_device *dev, int flags)
 		err = ntfs_device_win32_open_partition(drive_id, part, &fd,
 				flags);
 		break;
+<<<<<<< HEAD
 	case 3:
 		ntfs_log_debug("win32_open(%s) -> drive %c:\n",
 				dev->d_name, drive_char);
 		err = ntfs_device_win32_open_lowlevel(drive_id, &fd,
 				flags);
 		break;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	default:
 		ntfs_log_debug("win32_open(%s) -> unknwon file format.\n",
 				dev->d_name);
@@ -1255,7 +1363,11 @@ static int ntfs_device_win32_open(struct ntfs_device *dev, int flags)
 	/* Setup our read-only flag. */
 	if ((flags & O_RDWR) != O_RDWR)
 		NDevSetReadOnly(dev);
+<<<<<<< HEAD
 	dev->d_private = (win32_fd*)ntfs_malloc(sizeof(win32_fd));
+=======
+	dev->d_private = malloc(sizeof(win32_fd));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	memcpy(dev->d_private, &fd, sizeof(win32_fd));
 	NDevSetOpen(dev);
 	NDevClearDirty(dev);
@@ -1305,8 +1417,12 @@ static s64 ntfs_device_win32_seek(struct ntfs_device *dev, s64 offset,
 		errno = EINVAL;
 		return -1;
 	}
+<<<<<<< HEAD
 	if ((abs_ofs < 0)
 	    || (fd->ntdll && (abs_ofs > fd->part_length))) {
+=======
+	if (abs_ofs < 0 || abs_ofs > fd->part_length) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		ntfs_log_trace("Seeking outsize seekable area.\n");
 		errno = EINVAL;
 		return -1;
@@ -1327,19 +1443,30 @@ static s64 ntfs_device_win32_seek(struct ntfs_device *dev, s64 offset,
  * error returns -1 and errno set.  Transfer starts from position @pos on @fd.
  *
  * Notes:
+<<<<<<< HEAD
  *	- @pos, @buf, and @count must be aligned to geo_sector_size
+=======
+ *	- @pos, @buf, and @count must be aligned to NTFS_BLOCK_SIZE.
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *	- When dealing with volumes, a single call must not span both volume
  *	  and disk extents.
  *	- Does not use/set @fd->pos.
  */
 static s64 ntfs_device_win32_pio(win32_fd *fd, const s64 pos,
+<<<<<<< HEAD
 		const s64 count, void *rbuf, const void *wbuf)
+=======
+		const s64 count, void *b, const BOOL write)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 {
 	LARGE_INTEGER li;
 	HANDLE handle;
 	DWORD bt;
 	BOOL res;
+<<<<<<< HEAD
 	s64 bytes;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	ntfs_log_trace("pos = 0x%llx, count = 0x%llx, direction = %s.\n",
 			(long long)pos, (long long)count, write ? "write" :
@@ -1353,6 +1480,7 @@ static s64 ntfs_device_win32_pio(win32_fd *fd, const s64 pos,
 		handle = fd->handle;
 		li.QuadPart += fd->part_start;
 	}
+<<<<<<< HEAD
 
 	if (fd->ntdll) {
 		IO_STATUS_BLOCK io_status;
@@ -1404,6 +1532,23 @@ static s64 ntfs_device_win32_pio(win32_fd *fd, const s64 pos,
 		}
 	}
 	return bytes;
+=======
+	if (!fnSetFilePointerEx(handle, li, NULL, FILE_BEGIN)) {
+		errno = ntfs_w32error_to_errno(GetLastError());
+		ntfs_log_trace("SetFilePointer failed.\n");
+		return -1;
+	}
+	if (write)
+		res = WriteFile(handle, b, count, &bt, NULL);
+	else
+		res = ReadFile(handle, b, count, &bt, NULL);
+	if (!res) {
+		errno = ntfs_w32error_to_errno(GetLastError());
+		ntfs_log_trace("%sFile() failed.\n", write ? "Write" : "Read");
+		return -1;
+	}
+	return bt;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -1417,7 +1562,11 @@ static s64 ntfs_device_win32_pio(win32_fd *fd, const s64 pos,
  * returns -1 and errno set.  Read starts from position @pos.
  *
  * Notes:
+<<<<<<< HEAD
  *	- @pos, @buf, and @count must be aligned to geo_sector_size.
+=======
+ *	- @pos, @buf, and @count must be aligned to NTFS_BLOCK_SIZE.
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *	- When dealing with volumes, a single call must not span both volume
  *	  and disk extents.
  *	- Does not use/set @fd->pos.
@@ -1425,7 +1574,11 @@ static s64 ntfs_device_win32_pio(win32_fd *fd, const s64 pos,
 static inline s64 ntfs_device_win32_pread_simple(win32_fd *fd, const s64 pos,
 		const s64 count, void *b)
 {
+<<<<<<< HEAD
 	return ntfs_device_win32_pio(fd, pos, count, b, (void*)NULL);
+=======
+	return ntfs_device_win32_pio(fd, pos, count, b, FALSE);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -1445,9 +1598,15 @@ static s64 ntfs_device_win32_read(struct ntfs_device *dev, void *b, s64 count)
 	int old_ofs, ofs;
 
 	old_pos = fd->pos;
+<<<<<<< HEAD
 	old_ofs = ofs = old_pos & (fd->geo_sector_size - 1);
 	to_read = (ofs + count + fd->geo_sector_size - 1) &
 			~(s64)(fd->geo_sector_size - 1);
+=======
+	old_ofs = ofs = old_pos & (NTFS_BLOCK_SIZE - 1);
+	to_read = (ofs + count + NTFS_BLOCK_SIZE - 1) &
+			~(s64)(NTFS_BLOCK_SIZE - 1);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	/* Impose maximum of 2GB to be on the safe side. */
 	if (to_read > 0x80000000) {
 		int delta = to_read - count;
@@ -1458,8 +1617,13 @@ static s64 ntfs_device_win32_read(struct ntfs_device *dev, void *b, s64 count)
 			"ofs = %i, to_read = 0x%llx.\n", fd, b,
 			(long long)count, (long long)old_pos, ofs,
 			(long long)to_read);
+<<<<<<< HEAD
 	if (!((unsigned long)b & (fd->geo_sector_size - 1)) && !old_ofs &&
 			!(count & (fd->geo_sector_size - 1)))
+=======
+	if (!((unsigned long)b & (NTFS_BLOCK_SIZE - 1)) && !old_ofs &&
+			!(count & (NTFS_BLOCK_SIZE - 1)))
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		alignedbuffer = b;
 	else {
 		alignedbuffer = (BYTE *)VirtualAlloc(NULL, to_read, MEM_COMMIT,
@@ -1474,7 +1638,11 @@ static s64 ntfs_device_win32_read(struct ntfs_device *dev, void *b, s64 count)
 		s64 vol_to_read = fd->geo_size - old_pos;
 		if (count > vol_to_read) {
 			br = ntfs_device_win32_pread_simple(fd,
+<<<<<<< HEAD
 					old_pos & ~(s64)(fd->geo_sector_size - 1),
+=======
+					old_pos & ~(s64)(NTFS_BLOCK_SIZE - 1),
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					ofs + vol_to_read, alignedbuffer);
 			if (br == -1)
 				goto read_error;
@@ -1485,13 +1653,21 @@ static s64 ntfs_device_win32_read(struct ntfs_device *dev, void *b, s64 count)
 			}
 			br -= ofs;
 			fd->pos += br;
+<<<<<<< HEAD
 			ofs = fd->pos & (fd->geo_sector_size - 1);
+=======
+			ofs = fd->pos & (NTFS_BLOCK_SIZE - 1);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (br != vol_to_read)
 				goto read_partial;
 		}
 	}
 	i = ntfs_device_win32_pread_simple(fd,
+<<<<<<< HEAD
 			fd->pos & ~(s64)(fd->geo_sector_size - 1), to_read,
+=======
+			fd->pos & ~(s64)(NTFS_BLOCK_SIZE - 1), to_read,
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			alignedbuffer + br);
 	if (i == -1) {
 		if (br)
@@ -1542,6 +1718,7 @@ static int ntfs_device_win32_close(struct ntfs_device *dev)
 		if (!CloseHandle(fd->vol_handle))
 			ntfs_log_trace("CloseHandle() failed for volume.\n");
 	}
+<<<<<<< HEAD
 	if (fd->ntdll) {
 		ntfs_device_win32_setlock(fd->handle,FSCTL_UNLOCK_VOLUME);
 		rvl = NtClose(fd->handle) == STATUS_SUCCESS;
@@ -1555,6 +1732,13 @@ static int ntfs_device_win32_close(struct ntfs_device *dev)
 			ntfs_log_trace("NtClose() failed.\n");
 		else
 			ntfs_log_trace("CloseHandle() failed.\n");
+=======
+	rvl = CloseHandle(fd->handle);
+	free(fd);
+	if (!rvl) {
+		errno = ntfs_w32error_to_errno(GetLastError());
+		ntfs_log_trace("CloseHandle() failed.\n");
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		return -1;
 	}
 	return 0;
@@ -1609,7 +1793,11 @@ static int ntfs_device_win32_sync(struct ntfs_device *dev)
  * errno set.  Write starts from position @pos.
  *
  * Notes:
+<<<<<<< HEAD
  *	- @pos, @buf, and @count must be aligned to geo_sector_size.
+=======
+ *	- @pos, @buf, and @count must be aligned to NTFS_BLOCK_SIZE.
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *	- When dealing with volumes, a single call must not span both volume
  *	  and disk extents.
  *	- Does not use/set @fd->pos.
@@ -1617,7 +1805,11 @@ static int ntfs_device_win32_sync(struct ntfs_device *dev)
 static inline s64 ntfs_device_win32_pwrite_simple(win32_fd *fd, const s64 pos,
 		const s64 count, const void *b)
 {
+<<<<<<< HEAD
 	return ntfs_device_win32_pio(fd, pos, count, (void*)NULL, b);
+=======
+	return ntfs_device_win32_pio(fd, pos, count, (void *)b, TRUE);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -1634,6 +1826,7 @@ static s64 ntfs_device_win32_write(struct ntfs_device *dev, const void *b,
 {
 	s64 old_pos, to_write, i, bw = 0;
 	win32_fd *fd = (win32_fd *)dev->d_private;
+<<<<<<< HEAD
 	const BYTE *alignedbuffer;
 	BYTE *readbuffer;
 	int old_ofs, ofs;
@@ -1642,6 +1835,15 @@ static s64 ntfs_device_win32_write(struct ntfs_device *dev, const void *b,
 	old_ofs = ofs = old_pos & (fd->geo_sector_size - 1);
 	to_write = (ofs + count + fd->geo_sector_size - 1) &
 			~(s64)(fd->geo_sector_size - 1);
+=======
+	BYTE *alignedbuffer;
+	int old_ofs, ofs;
+
+	old_pos = fd->pos;
+	old_ofs = ofs = old_pos & (NTFS_BLOCK_SIZE - 1);
+	to_write = (ofs + count + NTFS_BLOCK_SIZE - 1) &
+			~(s64)(NTFS_BLOCK_SIZE - 1);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	/* Impose maximum of 2GB to be on the safe side. */
 	if (to_write > 0x80000000) {
 		int delta = to_write - count;
@@ -1660,6 +1862,7 @@ static s64 ntfs_device_win32_write(struct ntfs_device *dev, const void *b,
 	if (!count)
 		return 0;
 	NDevSetDirty(dev);
+<<<<<<< HEAD
 	readbuffer = (BYTE*)NULL;
 	if (!((unsigned long)b & (fd->geo_sector_size - 1)) && !old_ofs &&
 			!(count & (fd->geo_sector_size - 1)))
@@ -1670,6 +1873,17 @@ static s64 ntfs_device_win32_write(struct ntfs_device *dev, const void *b,
 		readbuffer = (BYTE *)VirtualAlloc(NULL, to_write,
 				MEM_COMMIT, PAGE_READWRITE);
 		if (!readbuffer) {
+=======
+	if (!((unsigned long)b & (NTFS_BLOCK_SIZE - 1)) && !old_ofs &&
+			!(count & (NTFS_BLOCK_SIZE - 1)))
+		alignedbuffer = (BYTE *)b;
+	else {
+		s64 end;
+
+		alignedbuffer = (BYTE *)VirtualAlloc(NULL, to_write,
+				MEM_COMMIT, PAGE_READWRITE);
+		if (!alignedbuffer) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			errno = ntfs_w32error_to_errno(GetLastError());
 			ntfs_log_trace("VirtualAlloc failed for write.\n");
 			return -1;
@@ -1677,9 +1891,15 @@ static s64 ntfs_device_win32_write(struct ntfs_device *dev, const void *b,
 		/* Read first sector if start of write not sector aligned. */
 		if (ofs) {
 			i = ntfs_device_win32_pread_simple(fd,
+<<<<<<< HEAD
 					old_pos & ~(s64)(fd->geo_sector_size - 1),
 					fd->geo_sector_size, readbuffer);
 			if (i != fd->geo_sector_size) {
+=======
+					old_pos & ~(s64)(NTFS_BLOCK_SIZE - 1),
+					NTFS_BLOCK_SIZE, alignedbuffer);
+			if (i != NTFS_BLOCK_SIZE) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				if (i >= 0)
 					errno = EIO;
 				goto write_error;
@@ -1692,6 +1912,7 @@ static s64 ntfs_device_win32_write(struct ntfs_device *dev, const void *b,
 		 * yet, i.e. the start of the write is sector aligned.
 		 */
 		end = old_pos + count;
+<<<<<<< HEAD
 		if ((end & (fd->geo_sector_size - 1)) &&
 				((to_write > fd->geo_sector_size) || !ofs)) {
 			i = ntfs_device_win32_pread_simple(fd,
@@ -1699,20 +1920,38 @@ static s64 ntfs_device_win32_write(struct ntfs_device *dev, const void *b,
 					fd->geo_sector_size, readbuffer +
 					to_write - fd->geo_sector_size);
 			if (i != fd->geo_sector_size) {
+=======
+		if ((end & (NTFS_BLOCK_SIZE - 1)) &&
+				((to_write > NTFS_BLOCK_SIZE) || !ofs)) {
+			i = ntfs_device_win32_pread_simple(fd,
+					end & ~(s64)(NTFS_BLOCK_SIZE - 1),
+					NTFS_BLOCK_SIZE, alignedbuffer +
+					to_write - NTFS_BLOCK_SIZE);
+			if (i != NTFS_BLOCK_SIZE) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				if (i >= 0)
 					errno = EIO;
 				goto write_error;
 			}
 		}
+<<<<<<< HEAD
 		/* Copy the data to be written into @readbuffer. */
 		memcpy(readbuffer + ofs, b, count);
 		alignedbuffer = readbuffer;
+=======
+		/* Copy the data to be written into @alignedbuffer. */
+		memcpy(alignedbuffer + ofs, b, count);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 	if (fd->vol_handle != INVALID_HANDLE_VALUE && old_pos < fd->geo_size) {
 		s64 vol_to_write = fd->geo_size - old_pos;
 		if (count > vol_to_write) {
 			bw = ntfs_device_win32_pwrite_simple(fd,
+<<<<<<< HEAD
 					old_pos & ~(s64)(fd->geo_sector_size - 1),
+=======
+					old_pos & ~(s64)(NTFS_BLOCK_SIZE - 1),
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					ofs + vol_to_write, alignedbuffer);
 			if (bw == -1)
 				goto write_error;
@@ -1723,13 +1962,21 @@ static s64 ntfs_device_win32_write(struct ntfs_device *dev, const void *b,
 			}
 			bw -= ofs;
 			fd->pos += bw;
+<<<<<<< HEAD
 			ofs = fd->pos & (fd->geo_sector_size - 1);
+=======
+			ofs = fd->pos & (NTFS_BLOCK_SIZE - 1);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (bw != vol_to_write)
 				goto write_partial;
 		}
 	}
 	i = ntfs_device_win32_pwrite_simple(fd,
+<<<<<<< HEAD
 			fd->pos & ~(s64)(fd->geo_sector_size - 1), to_write,
+=======
+			fd->pos & ~(s64)(NTFS_BLOCK_SIZE - 1), to_write,
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			alignedbuffer + bw);
 	if (i == -1) {
 		if (bw)
@@ -1744,8 +1991,13 @@ static s64 ntfs_device_win32_write(struct ntfs_device *dev, const void *b,
 		bw = count;
 	fd->pos = old_pos + bw;
 write_partial:
+<<<<<<< HEAD
 	if (readbuffer)
 		VirtualFree(readbuffer, 0, MEM_RELEASE);
+=======
+	if (alignedbuffer != b)
+		VirtualFree(alignedbuffer, 0, MEM_RELEASE);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	return bw;
 write_error:
 	bw = -1;
@@ -1767,6 +2019,7 @@ static int ntfs_device_win32_stat(struct ntfs_device *dev, struct stat *buf)
 	win32_fd *fd = (win32_fd *)dev->d_private;
 	mode_t st_mode;
 
+<<<<<<< HEAD
 	if ((dev->d_name[1] == ':') && (dev->d_name[2] == '\0'))
 		st_mode = S_IFBLK;
 	else
@@ -1783,6 +2036,21 @@ static int ntfs_device_win32_stat(struct ntfs_device *dev, struct stat *buf)
 		default:
 			st_mode = 0;
 		}
+=======
+	switch (GetFileType(fd->handle)) {
+	case FILE_TYPE_CHAR:
+		st_mode = S_IFCHR;
+		break;
+	case FILE_TYPE_DISK:
+		st_mode = S_IFBLK;
+		break;
+	case FILE_TYPE_PIPE:
+		st_mode = S_IFIFO;
+		break;
+	default:
+		st_mode = 0;
+	}
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	memset(buf, 0, sizeof(struct stat));
 	buf->st_mode = st_mode;
 	buf->st_size = fd->part_length;
@@ -1793,7 +2061,10 @@ static int ntfs_device_win32_stat(struct ntfs_device *dev, struct stat *buf)
 	return 0;
 }
 
+<<<<<<< HEAD
 #ifdef HDIO_GETGEO
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /**
  * ntfs_win32_hdio_getgeo - get drive geometry
  * @dev:	ntfs device obtained via ->open
@@ -1815,7 +2086,10 @@ static __inline__ int ntfs_win32_hdio_getgeo(struct ntfs_device *dev,
 	argp->start = fd->part_hidden_sectors;
 	return 0;
 }
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 /**
  * ntfs_win32_blksszget - get block device sector size
@@ -1847,9 +2121,13 @@ static __inline__ int ntfs_win32_blksszget(struct ntfs_device *dev,int *argp)
 static int ntfs_device_win32_ioctl(struct ntfs_device *dev, int request,
 		void *argp)
 {
+<<<<<<< HEAD
 #if defined(BLKGETSIZE) | defined(BLKGETSIZE64)
 	win32_fd *fd = (win32_fd *)dev->d_private;
 #endif
+=======
+	win32_fd *fd = (win32_fd *)dev->d_private;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	ntfs_log_trace("win32_ioctl(%d) called.\n", request);
 	switch (request) {
@@ -1881,11 +2159,15 @@ static int ntfs_device_win32_ioctl(struct ntfs_device *dev, int request,
 #ifdef BLKSSZGET
 	case BLKSSZGET:
 		ntfs_log_debug("BLKSSZGET detected.\n");
+<<<<<<< HEAD
 		if (fd && !fd->ntdll) {
 			*(int*)argp = fd->geo_sector_size;
 			return (0);
 		} else
 			return ntfs_win32_blksszget(dev, (int *)argp);
+=======
+		return ntfs_win32_blksszget(dev, (int *)argp);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 #endif
 #ifdef BLKBSZSET
 	case BLKBSZSET:
@@ -1903,6 +2185,7 @@ static int ntfs_device_win32_ioctl(struct ntfs_device *dev, int request,
 static s64 ntfs_device_win32_pread(struct ntfs_device *dev, void *b,
 		s64 count, s64 offset)
 {
+<<<<<<< HEAD
 	s64 got;
 	win32_fd *fd;
 
@@ -1918,11 +2201,15 @@ static s64 ntfs_device_win32_pread(struct ntfs_device *dev, void *b,
 	}
 
 	return (got);
+=======
+	return ntfs_pread(dev, offset, count, b);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 static s64 ntfs_device_win32_pwrite(struct ntfs_device *dev, const void *b,
 		s64 count, s64 offset)
 {
+<<<<<<< HEAD
 	s64 put;
 	win32_fd *fd;
 
@@ -1937,6 +2224,9 @@ static s64 ntfs_device_win32_pwrite(struct ntfs_device *dev, const void *b,
 			put = ntfs_device_win32_write(dev, b, count);
 	}
 	return (put);
+=======
+	return ntfs_pwrite(dev, offset, count, b);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 struct ntfs_device_operations ntfs_device_win32_io_ops = {
@@ -1951,6 +2241,7 @@ struct ntfs_device_operations ntfs_device_win32_io_ops = {
 	.stat		= ntfs_device_win32_stat,
 	.ioctl		= ntfs_device_win32_ioctl
 };
+<<<<<<< HEAD
 
 /*
  *			Mark an open file as sparse
@@ -2035,3 +2326,5 @@ int ntfs_win32_ftruncate(int fd, s64 size)
 	ret = win32_ftruncate(handle, size);
 	return (ret);
 }
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13

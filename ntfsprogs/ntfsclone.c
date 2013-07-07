@@ -3,7 +3,11 @@
  *
  * Copyright (c) 2003-2006 Szabolcs Szakacsits
  * Copyright (c) 2004-2006 Anton Altaparmakov
+<<<<<<< HEAD
  * Copyright (c) 2010-2015 Jean-Pierre Andre
+=======
+ * Copyright (c) 2010-2012 Jean-Pierre Andre
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  * Special image format support copyright (c) 2004 Per Olofsson
  *
  * Clone NTFS data and/or metadata to a sparse file, image, device or stdout.
@@ -61,9 +65,12 @@
 #ifdef HAVE_UNISTD_H
 #include <unistd.h>
 #endif
+<<<<<<< HEAD
 #ifdef HAVE_SYS_MOUNT_H
 #include <sys/mount.h>
 #endif
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 /*
  * FIXME: ntfsclone do bad things about endians handling. Fix it and remove
@@ -98,6 +105,7 @@
 #define BLKGETSIZE64	_IOR(0x12,114,size_t)	/* Get device size in bytes. */
 #endif
 
+<<<<<<< HEAD
 #if defined(linux) || defined(__uClinux__) || defined(__sun) \
 		|| defined(__APPLE__) || defined(__DARWIN__)
   /* Make sure the presence of <windows.h> means compiling for Windows */
@@ -129,6 +137,12 @@ int setmode(int, int); /* from msvcrt.dll */
 #define O_BINARY 0
 #endif
 
+=======
+#ifdef __sun
+#define NO_STATFS 1	/* statfs(2) and f_type are not universal */
+#endif
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 static const char *EXEC_NAME = "ntfsclone";
 
 static const char *bad_sectors_warning_msg =
@@ -153,7 +167,10 @@ static struct {
 	int std_out;
 	int blkdev_out;		/* output file is block device */
 	int metadata;		/* metadata only cloning */
+<<<<<<< HEAD
 	int no_action;		/* do not really restore */
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	int ignore_fs_check;
 	int rescue;
 	int save_image;
@@ -184,7 +201,10 @@ typedef struct {
 	ntfs_inode *ni;			/* inode being processed */
 	ntfs_attr_search_ctx *ctx;	/* inode attribute being processed */
 	s64 inuse;			/* number of clusters in use */
+<<<<<<< HEAD
 	int more_use;			/* possibly allocated clusters */
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	LCN current_lcn;
 } ntfs_walk_clusters_ctx;
 
@@ -202,7 +222,10 @@ static struct bitmap lcn_bitmap;
 static int fd_in;
 static int fd_out;
 static FILE *stream_out = (FILE*)NULL;
+<<<<<<< HEAD
 struct ntfs_device *dev_out = (struct ntfs_device*)NULL;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 static FILE *msg_out = NULL;
 
 static int wipe = 0;
@@ -241,8 +264,11 @@ static BOOL image_is_host_endian = FALSE;
 #define NTFSCLONE_IMG_VER_MAJOR	10
 #define NTFSCLONE_IMG_VER_MINOR	1
 
+<<<<<<< HEAD
 enum { CMD_GAP, CMD_NEXT } ;
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /* All values are in little endian. */
 static struct image_hdr {
 	char magic[IMAGE_MAGIC_SIZE];
@@ -256,8 +282,11 @@ static struct image_hdr {
 	le32 offset_to_image_data;	/* From start of image_hdr. */
 } __attribute__((__packed__)) image_hdr;
 
+<<<<<<< HEAD
 static int compare_bitmaps(struct bitmap *a, BOOL copy);
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 #define NTFSCLONE_IMG_HEADER_SIZE_OLD	\
 		(offsetof(struct image_hdr, offset_to_image_data))
 
@@ -350,7 +379,11 @@ static void perr_exit(const char *fmt, ...)
 
 
 __attribute__((noreturn))
+<<<<<<< HEAD
 static void usage(int ret)
+=======
+static void usage(void)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 {
 	fprintf(stderr, "\nUsage: %s [OPTIONS] SOURCE\n"
 		"    Efficiently clone NTFS to a sparse file, image, device or standard output.\n"
@@ -361,7 +394,10 @@ static void usage(int ret)
 		"    -r, --restore-image    Restore from the special image format\n"
 		"        --rescue           Continue after disk read errors\n"
 		"    -m, --metadata         Clone *only* metadata (for NTFS experts)\n"
+<<<<<<< HEAD
 		"    -n, --no-action        Test restoring, without outputting anything\n"
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		"        --ignore-fs-check  Ignore the filesystem check result\n"
 		"        --new-serial       Set a new serial number\n"
 		"        --new-half-serial  Set a partial new serial number\n"
@@ -372,12 +408,16 @@ static void usage(int ret)
 #ifdef DEBUG
 		"    -d, --debug            Show debug information\n"
 #endif
+<<<<<<< HEAD
 		"    -V, --version           Display version information\n"
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		"\n"
 		"    If FILE is '-' then send the image to the standard output. If SOURCE is '-'\n"
 		"    and --restore-image is used then read the image from the standard input.\n"
 		"\n", EXEC_NAME);
 	fprintf(stderr, "%s%s", ntfs_bugs, ntfs_home);
+<<<<<<< HEAD
 	exit(ret);
 }
 
@@ -394,11 +434,18 @@ static void version(void)
 		   "Copyright (c) 2010-2015 Jean-Pierre Andre\n\n");
 	fprintf(stderr, "%s\n%s%s", ntfs_gpl, ntfs_bugs, ntfs_home);
 	exit(0);
+=======
+	exit(1);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 static void parse_options(int argc, char **argv)
 {
+<<<<<<< HEAD
 	static const char *sopt = "-dfhmno:O:qrstV";
+=======
+	static const char *sopt = "-dfhmo:O:qrst";
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	static const struct option lopt[] = {
 #ifdef DEBUG
 		{ "debug",	      no_argument,	 NULL, 'd' },
@@ -407,7 +454,10 @@ static void parse_options(int argc, char **argv)
 		{ "force",	      no_argument,	 NULL, 'f' },
 		{ "help",	      no_argument,	 NULL, 'h' },
 		{ "metadata",	      no_argument,	 NULL, 'm' },
+<<<<<<< HEAD
 		{ "no-action",	      no_argument,	 NULL, 'n' },
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		{ "output",	      required_argument, NULL, 'o' },
 		{ "overwrite",	      required_argument, NULL, 'O' },
 		{ "restore-image",    no_argument,	 NULL, 'r' },
@@ -417,7 +467,10 @@ static void parse_options(int argc, char **argv)
 		{ "new-half-serial",  no_argument,	 NULL, 'i' },
 		{ "save-image",	      no_argument,	 NULL, 's' },
 		{ "preserve-timestamps",   no_argument,  NULL, 't' },
+<<<<<<< HEAD
 		{ "version",	      no_argument,	 NULL, 'V' },
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		{ NULL, 0, NULL, 0 }
 	};
 
@@ -429,7 +482,11 @@ static void parse_options(int argc, char **argv)
 		switch (c) {
 		case 1:	/* A non-option argument */
 			if (opt.volume)
+<<<<<<< HEAD
 				usage(1);
+=======
+				usage();
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			opt.volume = argv[optind-1];
 			break;
 		case 'd':
@@ -442,9 +499,14 @@ static void parse_options(int argc, char **argv)
 			opt.force++;
 			break;
 		case 'h':
+<<<<<<< HEAD
 			usage(0);
 		case '?':
 			usage(1);
+=======
+		case '?':
+			usage();
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		case 'i':	/* not proposed as a short option */
 			opt.new_serial |= 1;
 			break;
@@ -454,14 +516,21 @@ static void parse_options(int argc, char **argv)
 		case 'm':
 			opt.metadata++;
 			break;
+<<<<<<< HEAD
 		case 'n':
 			opt.no_action++;
 			break;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		case 'O':
 			opt.overwrite++;
 		case 'o':
 			if (opt.output)
+<<<<<<< HEAD
 				usage(1);
+=======
+				usage();
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			opt.output = optarg;
 			break;
 		case 'r':
@@ -479,6 +548,7 @@ static void parse_options(int argc, char **argv)
 		case 't':
 			opt.preserve_timestamps++;
 			break;
+<<<<<<< HEAD
 		case 'V':
 			version();
 			break;
@@ -494,16 +564,34 @@ static void parse_options(int argc, char **argv)
 	}
 
 	if (!opt.no_action && (strcmp(opt.output, "-") == 0))
+=======
+		default:
+			err_printf("Unknown option '%s'.\n", argv[optind-1]);
+			usage();
+		}
+	}
+
+	if (opt.output == NULL) {
+		err_printf("You must specify an output file.\n");
+		usage();
+	}
+
+	if (strcmp(opt.output, "-") == 0)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		opt.std_out++;
 
 	if (opt.volume == NULL) {
 		err_printf("You must specify a device file.\n");
+<<<<<<< HEAD
 		usage(1);
 	}
 
 	if (!opt.restore_image && !strcmp(opt.volume, "-")) {
 		err_printf("Only special images can be read from standard input\n");
 		usage(1);
+=======
+		usage();
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 
 	if (opt.metadata && opt.save_image) {
@@ -518,14 +606,21 @@ static void parse_options(int argc, char **argv)
 	if (opt.metadata && !opt.metadata_image && opt.std_out)
 		err_exit("Cloning only metadata to stdout isn't supported!\n");
 
+<<<<<<< HEAD
 	if (opt.ignore_fs_check && !opt.metadata && !opt.rescue)
 		err_exit("Filesystem check can be ignored only for metadata "
 			 "cloning or rescue situations!\n");
+=======
+	if (opt.ignore_fs_check && !opt.metadata)
+		err_exit("Filesystem check can be ignored only for metadata "
+			 "cloning!\n");
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (opt.save_image && opt.restore_image)
 		err_exit("Saving and restoring an image at the same time "
 			 "is not supported!\n");
 
+<<<<<<< HEAD
 	if (opt.no_action && !opt.restore_image)
 		err_exit("A restoring test requires the restore option!\n");
 
@@ -542,6 +637,12 @@ static void parse_options(int argc, char **argv)
 #else
 		if (stat(opt.output, &st) == -1) {
 #endif
+=======
+	if (!opt.std_out) {
+		struct stat st;
+
+		if (stat(opt.output, &st) == -1) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (errno != ENOENT)
 				perr_exit("Couldn't access '%s'", opt.output);
 		} else {
@@ -550,11 +651,15 @@ static void parse_options(int argc, char **argv)
 					 "Use option --overwrite if you want to"
 					 " replace its content.\n", opt.output);
 
+<<<<<<< HEAD
 #ifdef HAVE_WINDOWS_H
 			if (blkdev) {
 #else
 			if (S_ISBLK(st.st_mode)) {
 #endif
+=======
+			if (S_ISBLK(st.st_mode)) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				opt.blkdev_out = 1;
 				if (opt.metadata && !opt.force)
 					err_exit("Cloning only metadata to a "
@@ -571,6 +676,7 @@ static void parse_options(int argc, char **argv)
 		}
 	}
 
+<<<<<<< HEAD
 	/*
 	 * Send messages, debug information and library messages to stdout,
 	 * but, if outputing to stdout send them to stderr
@@ -581,6 +687,28 @@ static void parse_options(int argc, char **argv)
 	} else {
 		msg_out = stdout;
 		ntfs_log_set_handler(ntfs_log_handler_outerr);
+=======
+	msg_out = stdout;
+
+	/* FIXME: this is a workaround for losing debug info if stdout != stderr
+	   and for the uncontrollable verbose messages in libntfs. Ughhh. */
+	if (opt.std_out)
+		msg_out = stderr;
+	else if (opt.debug) {
+		/* Redirect stderr to stdout, note fflush()es are essential! */
+		fflush(stdout);
+		fflush(stderr);
+		if (dup2(STDOUT_FILENO, STDERR_FILENO) == -1) {
+			perror("Failed to redirect stderr to stdout");
+			exit(1);
+		}
+		fflush(stdout);
+		fflush(stderr);
+	} else {
+		fflush(stderr);
+		if (!freopen("/dev/null", "w", stderr))
+			perr_exit("Failed to redirect stderr to /dev/null");
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 }
 
@@ -656,10 +784,13 @@ static s64 is_critical_metadata(ntfs_walk_clusters_ctx *image, runlist *rl)
 	return 0;
 }
 
+<<<<<<< HEAD
 static off_t tellin(int in)
 {
 	return (lseek(in, 0, SEEK_CUR));
 }
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 static int io_all(void *fd, void *buf, int count, int do_write)
 {
@@ -668,6 +799,7 @@ static int io_all(void *fd, void *buf, int count, int do_write)
 
 	while (count > 0) {
 		if (do_write) {
+<<<<<<< HEAD
 			if (opt.no_action) {
 				i = count;
 			} else {
@@ -681,6 +813,12 @@ static int io_all(void *fd, void *buf, int count, int do_write)
 				else
 					i = write(*(int *)fd, buf, count);
 			}
+=======
+			if (opt.save_image || opt.metadata_image)
+				i = fwrite(buf, 1, count, stream_out);
+			else
+				i = write(*(int *)fd, buf, count);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		} else if (opt.restore_image)
 			i = read(*(int *)fd, buf, count);
 		else
@@ -699,6 +837,7 @@ static int io_all(void *fd, void *buf, int count, int do_write)
 }
 
 
+<<<<<<< HEAD
 static void rescue_sector(void *fd, u32 bytes_per_sector, off_t pos, void *buff)
 {
 	const char badsector_magic[] = "BadSectoR";
@@ -707,16 +846,32 @@ static void rescue_sector(void *fd, u32 bytes_per_sector, off_t pos, void *buff)
 	if (opt.restore_image) {
 		if (!opt.no_action
 		    && (lseek(*(int *)fd, pos, SEEK_SET) == (off_t)-1))
+=======
+static void rescue_sector(void *fd, off_t pos, void *buff)
+{
+	const char *badsector_magic = "BadSectoR\0";
+	struct ntfs_device *dev = fd;
+
+	if (opt.restore_image) {
+		if (lseek(*(int *)fd, pos, SEEK_SET) == (off_t)-1)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			perr_exit("lseek");
 	} else {
 		if (vol->dev->d_ops->seek(dev, pos, SEEK_SET) == (off_t)-1)
 			perr_exit("seek input");
 	}
 
+<<<<<<< HEAD
 	if (read_all(fd, buff, bytes_per_sector) == -1) {
 		Printf("WARNING: Can't read sector at %llu, lost data.\n",
 			(unsigned long long)pos);
 		memset(buff, '?', bytes_per_sector);
+=======
+	if (read_all(fd, buff, NTFS_SECTOR_SIZE) == -1) {
+		Printf("WARNING: Can't read sector at %llu, lost data.\n",
+			(unsigned long long)pos);
+		memset(buff, '?', NTFS_SECTOR_SIZE);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		memmove(buff, badsector_magic, sizeof(badsector_magic));
 	}
 }
@@ -725,8 +880,12 @@ static void rescue_sector(void *fd, u32 bytes_per_sector, off_t pos, void *buff)
  *		Read a cluster, try to rescue if cannot read
  */
 
+<<<<<<< HEAD
 static void read_rescue(void *fd, char *buff, u32 csize, u32 bytes_per_sector,
 				u64 rescue_lcn)
+=======
+static void read_rescue(void *fd, char *buff, u32 csize, u64 rescue_lcn)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 {
 	off_t rescue_pos;
 
@@ -738,9 +897,14 @@ static void read_rescue(void *fd, char *buff, u32 csize, u32 bytes_per_sector,
 			u32 i;
 
 			rescue_pos = (off_t)(rescue_lcn * csize);
+<<<<<<< HEAD
 			for (i = 0; i < csize; i += bytes_per_sector)
 				rescue_sector(fd, bytes_per_sector,
 						rescue_pos + i, buff + i);
+=======
+			for (i = 0; i < csize; i += NTFS_SECTOR_SIZE)
+				rescue_sector(fd, rescue_pos + i, buff + i);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		} else {
 			Printf("%s", bad_sectors_warning_msg);
 			err_exit("Disk is faulty, can't make full backup!");
@@ -758,11 +922,18 @@ static void copy_cluster(int rescue, u64 rescue_lcn, u64 lcn)
 	off_t rescue_pos;
 	NTFS_BOOT_SECTOR *bs;
 	le64 mask;
+<<<<<<< HEAD
 	static u16 bytes_per_sector = NTFS_SECTOR_SIZE;
 
 	if (!opt.restore_image) {
 		csize = vol->cluster_size;
 		bytes_per_sector = vol->sector_size;
+=======
+	static u16 bytes_per_sector;
+
+	if (!opt.restore_image) {
+		csize = vol->cluster_size;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		fd = vol->dev;
 	}
 
@@ -780,6 +951,7 @@ static void copy_cluster(int rescue, u64 rescue_lcn, u64 lcn)
 // need reading when not about to write ?
 	if (read_all(fd, buff, csize) == -1) {
 
+<<<<<<< HEAD
 		if (errno != EIO) {
 			if (!errno && opt.restore_image)
 				err_exit("Short image file...\n");
@@ -791,6 +963,14 @@ static void copy_cluster(int rescue, u64 rescue_lcn, u64 lcn)
 			for (i = 0; i < csize; i += bytes_per_sector)
 				rescue_sector(fd, bytes_per_sector,
 						rescue_pos + i, buff + i);
+=======
+		if (errno != EIO)
+			perr_exit("read_all");
+		else if (rescue){
+			s32 i;
+			for (i = 0; i < csize; i += NTFS_SECTOR_SIZE)
+				rescue_sector(fd, rescue_pos + i, buff + i);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		} else {
 			Printf("%s", bad_sectors_warning_msg);
 			err_exit("Disk is faulty, can't make full backup!");
@@ -832,7 +1012,11 @@ static void copy_cluster(int rescue, u64 rescue_lcn, u64 lcn)
 	}
 
 	if (opt.save_image || (opt.metadata_image && wipe)) {
+<<<<<<< HEAD
 		char cmd = CMD_NEXT;
+=======
+		char cmd = 1;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (write_all(&fd_out, &cmd, sizeof(cmd)) == -1)
 			perr_exit("write_all");
 	}
@@ -854,6 +1038,7 @@ static void copy_cluster(int rescue, u64 rescue_lcn, u64 lcn)
 	}
 }
 
+<<<<<<< HEAD
 static s64 lseek_out(int fd, s64 pos, int mode)
 {
 	s64 ret;
@@ -865,6 +1050,8 @@ static s64 lseek_out(int fd, s64 pos, int mode)
 	return (ret);
 }
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 static void lseek_to_cluster(s64 lcn)
 {
 	off_t pos;
@@ -877,8 +1064,13 @@ static void lseek_to_cluster(s64 lcn)
 	if (opt.std_out || opt.save_image || opt.metadata_image)
 		return;
 
+<<<<<<< HEAD
 	if (lseek_out(fd_out, pos, SEEK_SET) == (off_t)-1)
 			perr_exit("lseek output");
+=======
+	if (lseek(fd_out, pos, SEEK_SET) == (off_t)-1)
+		perr_exit("lseek output");
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 static void gap_to_cluster(s64 gap)
@@ -888,7 +1080,11 @@ static void gap_to_cluster(s64 gap)
 
 	if (gap) {
 		count = cpu_to_sle64(gap);
+<<<<<<< HEAD
 		buf[0] = CMD_GAP;
+=======
+		buf[0] = 0;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		memcpy(&buf[1], &count, sizeof(count));
 		if (write_all(&fd_out, buf, sizeof(buf)) == -1)
 			perr_exit("write_all");
@@ -898,10 +1094,17 @@ static void gap_to_cluster(s64 gap)
 static void image_skip_clusters(s64 count)
 {
 	if (opt.save_image && count > 0) {
+<<<<<<< HEAD
 		sle64 count_buf;
 		char buff[1 + sizeof(count)];
 
 		buff[0] = CMD_GAP;
+=======
+		s64 count_buf;
+		char buff[1 + sizeof(count)];
+
+		buff[0] = 0;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		count_buf = cpu_to_sle64(count);
 		memcpy(buff + 1, &count_buf, sizeof(count_buf));
 
@@ -925,7 +1128,11 @@ static void write_image_hdr(void)
 	}
 }
 
+<<<<<<< HEAD
 static void clone_ntfs(u64 nr_clusters, int more_use)
+=======
+static void clone_ntfs(u64 nr_clusters)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 {
 	u64 cl, last_cl;  /* current and last used cluster */
 	void *buf;
@@ -958,10 +1165,13 @@ static void clone_ntfs(u64 nr_clusters, int more_use)
 			perr_exit("write_all");
 	}
 
+<<<<<<< HEAD
 		/* save suspicious clusters if required */
 	if (more_use && opt.ignore_fs_check) {
 		compare_bitmaps(&lcn_bitmap, TRUE);
 	}
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		/* Examine up to the alternate boot sector */
 	for (last_cl = cl = 0; cl <= (u64)vol->nr_clusters; cl++) {
 
@@ -1011,8 +1221,13 @@ static void restore_image(void)
 	Printf("Restoring NTFS from image ...\n");
 
 	progress_init(&progress, p_counter, opt.std_out ?
+<<<<<<< HEAD
 		      (u64)sle64_to_cpu(image_hdr.nr_clusters) + 1 :
 		      le64_to_cpu(image_hdr.inuse) + 1,
+=======
+		      sle64_to_cpu(image_hdr.nr_clusters) + 1 :
+		      sle64_to_cpu(image_hdr.inuse) + 1,
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		      100);
 
 	if (opt.new_serial)
@@ -1030,9 +1245,15 @@ static void restore_image(void)
 				perr_exit("read_all");
 		}
 
+<<<<<<< HEAD
 		if (cmd == CMD_GAP) {
 			if (!image_is_host_endian) {
 				sle64 lecount;
+=======
+		if (cmd == 0) {
+			if (!image_is_host_endian) {
+				le64 lecount;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 				/* little endian image, on any computer */
 				if (read_all(&fd_in, &lecount,
@@ -1045,9 +1266,12 @@ static void restore_image(void)
 						sizeof(count)) == -1)
 					perr_exit("read_all");
 			}
+<<<<<<< HEAD
 			if (!count)
 				err_exit("Bad offset at input location 0x%llx\n",
 					(long long)tellin(fd_in) - 9);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (opt.std_out) {
 				if ((!p_counter && count) || (count < 0))
 					err_exit("Cannot restore a metadata"
@@ -1059,6 +1283,7 @@ static void restore_image(void)
 				if (((pos + count) < 0)
 				   || ((pos + count)
 					> sle64_to_cpu(image_hdr.nr_clusters)))
+<<<<<<< HEAD
 					err_exit("restore_image: corrupt image "
 						"at input offset %lld\n",
 						(long long)tellin(fd_in) - 9);
@@ -1071,19 +1296,37 @@ static void restore_image(void)
 			}
 			pos += count;
 		} else if (cmd == CMD_NEXT) {
+=======
+					err_exit("restore_image: corrupt image\n");
+				else
+					if (lseek(fd_out, count * csize,
+							SEEK_CUR) == (off_t)-1)
+						perr_exit("restore_image: lseek");
+			}
+			pos += count;
+		} else if (cmd == 1) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			copy_cluster(0, 0, pos);
 			pos++;
 			progress_update(&progress, ++p_counter);
 		} else
+<<<<<<< HEAD
 			err_exit("Invalid command code %d at input offset 0x%llx\n",
 					cmd, (long long)tellin(fd_in) - 1);
+=======
+			err_exit("Invalid command code in image\n");
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 }
 
 static void wipe_index_entry_timestams(INDEX_ENTRY *e)
 {
 	static const struct timespec zero_time = { .tv_sec = 0, .tv_nsec = 0 };
+<<<<<<< HEAD
 	sle64 timestamp = timespec2ntfs(zero_time);
+=======
+	le64 timestamp = timespec2ntfs(zero_time);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	/* FIXME: can fall into infinite loop if corrupted */
 	while (!(e->ie_flags & INDEX_ENTRY_END)) {
@@ -1193,7 +1436,11 @@ out_indexr:
 	free(indexr);
 }
 
+<<<<<<< HEAD
 static void wipe_index_root_timestamps(ATTR_RECORD *attr, sle64 timestamp)
+=======
+static void wipe_index_root_timestamps(ATTR_RECORD *attr, le64 timestamp)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 {
 	INDEX_ENTRY *entry;
 	INDEX_ROOT *iroot;
@@ -1256,7 +1503,11 @@ static void wipe_timestamps(ntfs_walk_clusters_ctx *image)
 {
 	static const struct timespec zero_time = { .tv_sec = 0, .tv_nsec = 0 };
 	ATTR_RECORD *a = image->ctx->attr;
+<<<<<<< HEAD
 	sle64 timestamp = timespec2ntfs(zero_time);
+=======
+	le64 timestamp = timespec2ntfs(zero_time);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (a->type == AT_FILE_NAME)
 		WIPE_TIMESTAMPS(FILE_NAME_ATTR, a, timestamp);
@@ -1348,6 +1599,7 @@ static void clone_logfile_parts(ntfs_walk_clusters_ctx *image, runlist *rl)
 
 		lseek_to_cluster(lcn);
 
+<<<<<<< HEAD
 		if ((lcn + 1) != image->current_lcn) {
 			/* do not duplicate a cluster */
 			if (opt.metadata_image && wipe)
@@ -1355,6 +1607,12 @@ static void clone_logfile_parts(ntfs_walk_clusters_ctx *image, runlist *rl)
 
 			copy_cluster(opt.rescue, lcn, lcn);
 		}
+=======
+		if (opt.metadata_image && wipe)
+			gap_to_cluster(lcn - image->current_lcn);
+
+		copy_cluster(opt.rescue, lcn, lcn);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		image->current_lcn = lcn + 1;
 		if (opt.metadata_image && !wipe)
 			image->inuse++;
@@ -1458,7 +1716,11 @@ static void write_set(char *buff, u32 csize, s64 *current_lcn,
 {
 	u32 k;
 	s64 target_lcn;
+<<<<<<< HEAD
 	char cmd = CMD_NEXT;
+=======
+	char cmd = 1;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	for (k=0; k<cnt; k++) {
 		target_lcn = rl[wi].lcn + wj;
@@ -1491,7 +1753,10 @@ static void copy_wipe_mft(ntfs_walk_clusters_ctx *image, runlist *rl)
 	s64 mft_no;
 	u32 mft_record_size;
 	u32 csize;
+<<<<<<< HEAD
 	u32 bytes_per_sector;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	u32 records_per_set;
 	u32 clusters_per_set;
 	u32 wi,wj; /* indexes for reading */
@@ -1503,7 +1768,10 @@ static void copy_wipe_mft(ntfs_walk_clusters_ctx *image, runlist *rl)
 	current_lcn = image->current_lcn;
 	mft_record_size = image->ni->vol->mft_record_size;
 	csize = image->ni->vol->cluster_size;
+<<<<<<< HEAD
 	bytes_per_sector = image->ni->vol->sector_size;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	fd = image->ni->vol->dev;
 		/*
 		 * Depending on the sizes, there may be several records
@@ -1519,12 +1787,19 @@ static void copy_wipe_mft(ntfs_walk_clusters_ctx *image, runlist *rl)
 	mft_no = 0;
 	ri = rj = 0;
 	wi = wj = 0;
+<<<<<<< HEAD
 	if (rl[ri].length)
 		lseek_to_cluster(rl[ri].lcn);
 	while (rl[ri].length) {
 		for (k=0; (k<clusters_per_set) && rl[ri].length; k++) {
 			read_rescue(fd, &buff[k*csize], csize, bytes_per_sector,
 							rl[ri].lcn + rj);
+=======
+	lseek_to_cluster(rl[ri].lcn);
+	while (rl[ri].length) {
+		for (k=0; (k<clusters_per_set) && rl[ri].length; k++) {
+			read_rescue(fd, &buff[k*csize], csize, rl[ri].lcn + rj);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (++rj >= rl[ri].length) {
 				rj = 0;
 				if (rl[++ri].length)
@@ -1564,7 +1839,10 @@ static void copy_wipe_i30(ntfs_walk_clusters_ctx *image, runlist *rl)
 	void *fd;
 	u32 indx_record_size;
 	u32 csize;
+<<<<<<< HEAD
 	u32 bytes_per_sector;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	u32 records_per_set;
 	u32 clusters_per_set;
 	u32 wi,wj; /* indexes for reading */
@@ -1575,7 +1853,10 @@ static void copy_wipe_i30(ntfs_walk_clusters_ctx *image, runlist *rl)
 
 	current_lcn = image->current_lcn;
 	csize = image->ni->vol->cluster_size;
+<<<<<<< HEAD
 	bytes_per_sector = image->ni->vol->sector_size;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	fd = image->ni->vol->dev;
 		/*
 		 * Depending on the sizes, there may be several records
@@ -1591,12 +1872,19 @@ static void copy_wipe_i30(ntfs_walk_clusters_ctx *image, runlist *rl)
 	}
 	ri = rj = 0;
 	wi = wj = 0;
+<<<<<<< HEAD
 	if (rl[ri].length)
 		lseek_to_cluster(rl[ri].lcn);
 	while (rl[ri].length) {
 		for (k=0; (k<clusters_per_set) && rl[ri].length; k++) {
 			read_rescue(fd, &buff[k*csize], csize, bytes_per_sector,
 							rl[ri].lcn + rj);
+=======
+	lseek_to_cluster(rl[ri].lcn);
+	while (rl[ri].length) {
+		for (k=0; (k<clusters_per_set) && rl[ri].length; k++) {
+			read_rescue(fd, &buff[k*csize], csize, rl[ri].lcn + rj);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (++rj >= rl[ri].length) {
 				rj = 0;
 				if (rl[++ri].length)
@@ -1636,6 +1924,7 @@ static void dump_clusters(ntfs_walk_clusters_ctx *image, runlist *rl)
 		return;
 
 	lseek_to_cluster(rl->lcn);
+<<<<<<< HEAD
 	if (opt.metadata_image ? wipe : !wipe) {
 		if (opt.metadata_image)
 			gap_to_cluster(rl->lcn - image->current_lcn);
@@ -1644,6 +1933,15 @@ static void dump_clusters(ntfs_walk_clusters_ctx *image, runlist *rl)
 			copy_cluster(opt.rescue, rl->lcn + i, rl->lcn + i);
 		if (opt.metadata_image)
 			image->current_lcn = rl->lcn + len;
+=======
+	if (opt.metadata_image && wipe)
+		gap_to_cluster(rl->lcn - image->current_lcn);
+	if (opt.metadata_image ? wipe : !wipe) {
+		/* FIXME: this could give pretty suboptimal performance */
+		for (i = 0; i < len; i++)
+			copy_cluster(opt.rescue, rl->lcn + i, rl->lcn + i);
+		image->current_lcn = rl->lcn + len;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 }
 
@@ -1733,6 +2031,7 @@ static void walk_runs(struct ntfs_walk_cluster *walk)
 		}
 	}
 	if (wipe && opt.metadata_image) {
+<<<<<<< HEAD
 		ntfs_attr *na;
 		/*
 		 * Non-resident metadata has to be wiped globally,
@@ -1771,6 +2070,12 @@ static void walk_runs(struct ntfs_walk_cluster *walk)
 				perr_exit("Failed to open index of inode %lld",
 					(long long)walk->image->ni->mft_no);
 		}
+=======
+		if (mft_data)
+			copy_wipe_mft(walk->image,rl);
+		if (index_i30)
+			copy_wipe_i30(walk->image,rl);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 	if (opt.metadata
 	    && (opt.metadata_image || !wipe)
@@ -1800,6 +2105,7 @@ static void walk_attributes(struct ntfs_walk_cluster *walk)
 	ntfs_attr_put_search_ctx(ctx);
 }
 
+<<<<<<< HEAD
 /*
  *		Compare the actual bitmap to the list of clusters
  *	allocated to identified files.
@@ -1814,12 +2120,23 @@ static int compare_bitmaps(struct bitmap *a, BOOL copy)
 	int mismatch = 0;
 	int more_use = 0;
 	s64 new_cl;
+=======
+
+
+static void compare_bitmaps(struct bitmap *a)
+{
+	s64 i, pos, count;
+	int mismatch = 0;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	u8 bm[NTFS_BUF_SIZE];
 
 	Printf("Accounting clusters ...\n");
 
 	pos = 0;
+<<<<<<< HEAD
 	new_cl = 0;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	while (1) {
 		count = ntfs_attr_pread(vol->lcnbmp_na, pos, NTFS_BUF_SIZE, bm);
 		if (count == -1)
@@ -1850,6 +2167,7 @@ static int compare_bitmaps(struct bitmap *a, BOOL copy)
 				if (bit == ntfs_bit_get(bm, i * 8 + cl % 8))
 					continue;
 
+<<<<<<< HEAD
 				if (!bit)
 					more_use++;
 				if (opt.ignore_fs_check && !bit && copy) {
@@ -1860,6 +2178,10 @@ static int compare_bitmaps(struct bitmap *a, BOOL copy)
 						gap_to_cluster(cl - new_cl);
 						new_cl = cl + 1;
 					}
+=======
+				if (opt.ignore_fs_check) {
+					lseek_to_cluster(cl);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					copy_cluster(opt.rescue, cl, cl);
 				}
 
@@ -1879,16 +2201,23 @@ done:
 		if (opt.ignore_fs_check) {
 			Printf("WARNING: The NTFS inconsistency was overruled "
 			       "by the --ignore-fs-check option.\n");
+<<<<<<< HEAD
 			if (new_cl) {
 				gap_to_cluster(-new_cl);
 			}
 			return (more_use);
+=======
+			return;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		}
 		err_exit("Filesystem check failed! Windows wasn't shutdown "
 			 "properly or inconsistent\nfilesystem. Please run "
 			 "chkdsk /f on Windows then reboot it TWICE.\n");
 	}
+<<<<<<< HEAD
 	return (more_use);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 
@@ -2006,6 +2335,7 @@ out:
 				(long long)inode);
 	}
 	if (opt.metadata) {
+<<<<<<< HEAD
 		if (opt.metadata_image && wipe && opt.ignore_fs_check) {
 			gap_to_cluster(-walk->image->current_lcn);
 			compare_bitmaps(&lcn_bitmap, TRUE);
@@ -2021,6 +2351,16 @@ out:
 			copy_cluster(opt.rescue, nr_clusters, nr_clusters);
 			walk->image->current_lcn = nr_clusters;
 		}
+=======
+				/* also get the backup bootsector */
+		nr_clusters = vol->nr_clusters;
+		lseek_to_cluster(nr_clusters);
+		if (opt.metadata_image && wipe)
+			gap_to_cluster(nr_clusters - walk->image->current_lcn);
+		if (opt.metadata_image ? wipe : !wipe)
+			copy_cluster(opt.rescue, nr_clusters, nr_clusters);
+		walk->image->current_lcn = nr_clusters;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			/* Not counted, for compatibility with older versions */
 		if (!opt.metadata_image)
 			walk->image->inuse++;
@@ -2097,10 +2437,17 @@ static void print_image_info(void)
 			sle64_to_cpu(image_hdr.nr_clusters) *
 			le32_to_cpu(image_hdr.cluster_size));
 	Printf("Image device size      : %lld bytes\n",
+<<<<<<< HEAD
 			(long long)le64_to_cpu(image_hdr.device_size));
 	print_disk_usage("    ", le32_to_cpu(image_hdr.cluster_size),
 			sle64_to_cpu(image_hdr.nr_clusters),
 			le64_to_cpu(image_hdr.inuse));
+=======
+			(long long)sle64_to_cpu(image_hdr.device_size));
+	print_disk_usage("    ", le32_to_cpu(image_hdr.cluster_size),
+			sle64_to_cpu(image_hdr.nr_clusters),
+			sle64_to_cpu(image_hdr.inuse));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	Printf("Offset to image data   : %u (0x%x) bytes\n",
 			(unsigned)le32_to_cpu(image_hdr.offset_to_image_data),
 			(unsigned)le32_to_cpu(image_hdr.offset_to_image_data));
@@ -2145,6 +2492,7 @@ static void mount_volume(unsigned long new_mntflag)
 			       "disk instead of a partition (e.g. /dev/hda, "
 			       "not /dev/hda1)?\n", opt.volume);
 		}
+<<<<<<< HEAD
 		/*
 		 * Retry with recovering the log file enabled.
 		 * Normally avoided in order to get the original log file
@@ -2159,6 +2507,9 @@ static void mount_volume(unsigned long new_mntflag)
 		}
 		if (!vol)
 			exit(1);
+=======
+		exit(1);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 
 	if (vol->flags & VOLUME_IS_DIRTY)
@@ -2275,7 +2626,11 @@ static void set_filesize(s64 filesize)
 		       "operation will be very inefficient and may fail!\n");
 #endif
 
+<<<<<<< HEAD
 	if (!opt.no_action && (ftruncate(fd_out, filesize) == -1)) {
+=======
+	if (ftruncate(fd_out, filesize) == -1) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		int err = errno;
 		perr_printf("ftruncate failed for file '%s'", opt.output);
 #ifndef NO_STATFS
@@ -2303,6 +2658,7 @@ static void set_filesize(s64 filesize)
 		}
 		exit(1);
 	}
+<<<<<<< HEAD
 		/*
 		 * If truncate just created a sparse file, the ability
 		 * to generically store big files has been checked, but no
@@ -2324,12 +2680,15 @@ static void set_filesize(s64 filesize)
 #endif
 			/* Proceed even if ftruncate failed */
 	}
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 static s64 open_image(void)
 {
 	if (strcmp(opt.volume, "-") == 0) {
 		if ((fd_in = fileno(stdin)) == -1)
+<<<<<<< HEAD
 			perr_exit("fileno for stdin failed");
 #ifdef HAVE_WINDOWS_H
 		if (setmode(fd_in,O_BINARY) == -1)
@@ -2337,6 +2696,11 @@ static s64 open_image(void)
 #endif
 	} else {
 		if ((fd_in = open(opt.volume, O_RDONLY | O_BINARY)) == -1)
+=======
+			perr_exit("fileno for stdout failed");
+	} else {
+		if ((fd_in = open(opt.volume, O_RDONLY)) == -1)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			perr_exit("failed to open image");
 	}
 	if (read_all(&fd_in, &image_hdr, NTFSCLONE_IMG_HEADER_SIZE_OLD) == -1)
@@ -2402,7 +2766,11 @@ static s64 open_image(void)
 			free(dummy_buf);
 		}
 	}
+<<<<<<< HEAD
 	return le64_to_cpu(image_hdr.device_size);
+=======
+	return sle64_to_cpu(image_hdr.device_size);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 static s64 open_volume(void)
@@ -2432,9 +2800,15 @@ static void initialise_image_hdr(s64 device_size, s64 inuse)
 	image_hdr.major_ver = NTFSCLONE_IMG_VER_MAJOR;
 	image_hdr.minor_ver = NTFSCLONE_IMG_VER_MINOR;
 	image_hdr.cluster_size = cpu_to_le32(vol->cluster_size);
+<<<<<<< HEAD
 	image_hdr.device_size = cpu_to_le64(device_size);
 	image_hdr.nr_clusters = cpu_to_sle64(vol->nr_clusters);
 	image_hdr.inuse = cpu_to_le64(inuse);
+=======
+	image_hdr.device_size = cpu_to_sle64(device_size);
+	image_hdr.nr_clusters = cpu_to_sle64(vol->nr_clusters);
+	image_hdr.inuse = cpu_to_sle64(inuse);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	image_hdr.offset_to_image_data = cpu_to_le32((sizeof(image_hdr)
 			 + IMAGE_HDR_ALIGN - 1) & -IMAGE_HDR_ALIGN);
 }
@@ -2442,12 +2816,16 @@ static void initialise_image_hdr(s64 device_size, s64 inuse)
 static void check_output_device(s64 input_size)
 {
 	if (opt.blkdev_out) {
+<<<<<<< HEAD
 		s64 dest_size;
 
 		if (dev_out)
 			dest_size = ntfs_device_size_get(dev_out, 1);
 		else
 			dest_size = device_size_get(fd_out);
+=======
+		s64 dest_size = device_size_get(fd_out);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (dest_size < input_size)
 			err_exit("Output device is too small (%lld) to fit the "
 				 "NTFS image (%lld).\n",
@@ -2458,6 +2836,7 @@ static void check_output_device(s64 input_size)
 		set_filesize(input_size);
 }
 
+<<<<<<< HEAD
 static void ignore_bad_clusters(ntfs_walk_clusters_ctx *image)
 {
 	ntfs_inode *ni;
@@ -2468,10 +2847,60 @@ static void ignore_bad_clusters(ntfs_walk_clusters_ctx *image)
 		const_cpu_to_le16('$'), const_cpu_to_le16('B'),
 		const_cpu_to_le16('a'), const_cpu_to_le16('d')
 	} ;
+=======
+static ntfs_attr_search_ctx *attr_get_search_ctx(ntfs_inode *ni)
+{
+	ntfs_attr_search_ctx *ret;
+
+	if ((ret = ntfs_attr_get_search_ctx(ni, NULL)) == NULL)
+		perr_printf("ntfs_attr_get_search_ctx");
+
+	return ret;
+}
+
+/**
+ * lookup_data_attr
+ *
+ * Find the $DATA attribute (with or without a name) for the given ntfs inode.
+ */
+static ntfs_attr_search_ctx *lookup_data_attr(ntfs_inode *ni, const char *aname)
+{
+	ntfs_attr_search_ctx *ctx;
+	ntfschar *ustr;
+	int len = 0;
+
+	if ((ctx = attr_get_search_ctx(ni)) == NULL)
+		return NULL;
+
+	if ((ustr = ntfs_str2ucs(aname, &len)) == NULL) {
+		perr_printf("Couldn't convert '%s' to Unicode", aname);
+		goto error_out;
+	}
+
+	if (ntfs_attr_lookup(AT_DATA, ustr, len, CASE_SENSITIVE,
+				0, NULL, 0, ctx)) {
+		perr_printf("ntfs_attr_lookup");
+		goto error_out;
+	}
+	ntfs_ucsfree(ustr);
+	return ctx;
+error_out:
+	ntfs_attr_put_search_ctx(ctx);
+	return NULL;
+}
+
+static void ignore_bad_clusters(ntfs_walk_clusters_ctx *image)
+{
+	ntfs_inode *ni;
+	ntfs_attr_search_ctx *ctx = NULL;
+	runlist *rl, *rl_bad;
+	s64 nr_bad_clusters = 0;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (!(ni = ntfs_inode_open(vol, FILE_BadClus)))
 		perr_exit("ntfs_open_inode");
 
+<<<<<<< HEAD
 	na = ntfs_attr_open(ni, AT_DATA, Bad, 4);
 	if (!na)
 		perr_exit("ntfs_attr_open");
@@ -2479,6 +2908,15 @@ static void ignore_bad_clusters(ntfs_walk_clusters_ctx *image)
 		perr_exit("ntfs_attr_map_whole_runlist");
 
 	for (rl = na->rl; rl->length; rl++) {
+=======
+	if ((ctx = lookup_data_attr(ni, "$Bad")) == NULL)
+		exit(1);
+
+	if (!(rl_bad = ntfs_mapping_pairs_decompress(vol, ctx->attr, NULL)))
+		perr_exit("ntfs_mapping_pairs_decompress");
+
+	for (rl = rl_bad; rl->length; rl++) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		s64 lcn = rl->lcn;
 
 		if (lcn == LCN_HOLE || lcn < 0)
@@ -2492,14 +2930,23 @@ static void ignore_bad_clusters(ntfs_walk_clusters_ctx *image)
 	if (nr_bad_clusters)
 		Printf("WARNING: The disk has %lld or more bad sectors"
 		       " (hardware faults).\n", (long long)nr_bad_clusters);
+<<<<<<< HEAD
 	ntfs_attr_close(na);
+=======
+	free(rl_bad);
+
+	ntfs_attr_put_search_ctx(ctx);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (ntfs_inode_close(ni))
 		perr_exit("ntfs_inode_close failed for $BadClus");
 }
 
 static void check_dest_free_space(u64 src_bytes)
 {
+<<<<<<< HEAD
 #ifndef HAVE_WINDOWS_H
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	u64 dest_bytes;
 	struct statvfs stvfs;
 	struct stat st;
@@ -2532,7 +2979,10 @@ static void check_dest_free_space(u64 src_bytes)
 			 "%llu MB < %llu MB\n",
 			 (unsigned long long)rounded_up_division(dest_bytes, NTFS_MBYTE),
 			 (unsigned long long)rounded_up_division(src_bytes,  NTFS_MBYTE));
+<<<<<<< HEAD
 #endif
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 int main(int argc, char **argv)
@@ -2573,6 +3023,7 @@ int main(int argc, char **argv)
 		if ((fd_out = fileno(stdout)) == -1)
 			perr_exit("fileno for stdout failed");
 		stream_out = stdout;
+<<<<<<< HEAD
 #ifdef HAVE_WINDOWS_H
 		if (setmode(fileno(stdout),O_BINARY) == -1)
 			perr_exit("setting binary stdout failed");
@@ -2582,6 +3033,12 @@ int main(int argc, char **argv)
 		int flags = O_RDWR | O_BINARY;
 
 		fd_out = 0;
+=======
+	} else {
+		/* device_size_get() might need to read() */
+		int flags = O_RDWR;
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (!opt.blkdev_out) {
 			flags |= O_CREAT | O_TRUNC;
 			if (!opt.overwrite)
@@ -2589,11 +3046,16 @@ int main(int argc, char **argv)
 		}
 
 		if (opt.save_image || opt.metadata_image) {
+<<<<<<< HEAD
 			stream_out = fopen(opt.output,BINWMODE);
+=======
+			stream_out = fopen(opt.output,"w");
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (!stream_out)
 				perr_exit("Opening file '%s' failed",
 						opt.output);
 			fd_out = fileno(stream_out);
+<<<<<<< HEAD
 		} else {
 #ifdef HAVE_WINDOWS_H
 			if (!opt.no_action) {
@@ -2614,14 +3076,27 @@ int main(int argc, char **argv)
 		}
 
 		if (!opt.save_image && !opt.metadata_image && !opt.no_action)
+=======
+		} else
+			if ((fd_out = open(opt.output, flags,
+						S_IRUSR | S_IWUSR)) == -1)
+				perr_exit("Opening file '%s' failed",
+						opt.output);
+
+		if (!opt.save_image && !opt.metadata_image)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			check_output_device(ntfs_size);
 	}
 
 	if (opt.restore_image) {
 		print_image_info();
 		restore_image();
+<<<<<<< HEAD
 		if (!opt.no_action)
 			fsync_clone(fd_out);
+=======
+		fsync_clone(fd_out);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		exit(0);
 	}
 
@@ -2630,8 +3105,12 @@ int main(int argc, char **argv)
 	backup_clusters.image = &image;
 
 	walk_clusters(vol, &backup_clusters);
+<<<<<<< HEAD
 	image.more_use = compare_bitmaps(&lcn_bitmap,
 				opt.metadata && !opt.metadata_image);
+=======
+	compare_bitmaps(&lcn_bitmap);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	print_disk_usage("", vol->cluster_size, vol->nr_clusters, image.inuse);
 
 	check_dest_free_space(vol->cluster_size * image.inuse);
@@ -2647,7 +3126,11 @@ int main(int argc, char **argv)
 			nr_clusters_to_save = vol->nr_clusters;
 		nr_clusters_to_save++; /* account for the backup boot sector */
 
+<<<<<<< HEAD
 		clone_ntfs(nr_clusters_to_save, image.more_use);
+=======
+		clone_ntfs(nr_clusters_to_save);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		fsync_clone(fd_out);
 		if (opt.save_image)
 			fclose(stream_out);
@@ -2661,11 +3144,15 @@ int main(int argc, char **argv)
 		initialise_image_hdr(device_size, image.inuse);
 		write_image_hdr();
 	} else {
+<<<<<<< HEAD
 		if (dev_out) {
 			(dev_out->d_ops->close)(dev_out);
 			dev_out = NULL;
 		} else
 			fsync_clone(fd_out); /* sync copy before mounting */
+=======
+		fsync_clone(fd_out); /* sync copy before mounting */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		opt.volume = opt.output;
 	/* 'force' again mount for dirty volumes (e.g. after resize).
 	   FIXME: use mount flags to avoid potential side-effects in future */

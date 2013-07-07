@@ -394,7 +394,11 @@ static void print_inode_ni(ntfs_inode *ni)
 
 static void print_attribute_type(ATTR_TYPES atype)
 {
+<<<<<<< HEAD
 	printf("attribute 0x%x", le32_to_cpu(atype));
+=======
+	printf("attribute 0x%x", atype);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 static void print_attribute_name(char *name)
@@ -704,7 +708,11 @@ static void cmp_attribute(ntfs_attr_search_ctx *ctx1,
 		 * If difference exists then it's already reported at the
 		 * attribute header since the mapping pairs must differ.
 		 */
+<<<<<<< HEAD
 		goto close_attribs;
+=======
+		return;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 
 	if (na1->type == AT_INDEX_ALLOCATION)
@@ -722,7 +730,11 @@ static void vprint_attribute(ATTR_TYPES atype, char  *name)
 	if (!opt.verbose)
 		return;
 
+<<<<<<< HEAD
 	printf("0x%x", le32_to_cpu(atype));
+=======
+	printf("0x%x", atype);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (name)
 		printf(":%s", name);
 	printf(" ");
@@ -781,7 +793,11 @@ static int new_attribute(ntfs_attr_search_ctx *ctx,
 		print_attribute_ctx(ctx);
 		printf("record %llu lowest_vcn %lld:    SKIPPED\n",
 			(unsigned long long)ctx->ntfs_ino->mft_no,
+<<<<<<< HEAD
 			(long long)sle64_to_cpu(ctx->attr->lowest_vcn));
+=======
+			(long long)ctx->attr->lowest_vcn);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 
 	return 0;
@@ -830,7 +846,11 @@ static int cmp_attributes(ntfs_inode *ni1, ntfs_inode *ni2)
 	int old_ret1, ret1 = 0, ret2 = 0;
 	int errno1 = 0, errno2 = 0;
 	char  *prev_name = NULL, *name1 = NULL, *name2 = NULL;
+<<<<<<< HEAD
 	ATTR_TYPES old_atype1, prev_atype = const_cpu_to_le32(0), atype1, atype2;
+=======
+	ATTR_TYPES old_atype1, prev_atype = 0, atype1, atype2;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ntfs_attr_search_ctx *ctx1, *ctx2;
 
 	if (!(ctx1 = attr_get_search_ctx(ni1)))

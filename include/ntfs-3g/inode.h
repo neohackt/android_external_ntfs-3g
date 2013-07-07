@@ -197,7 +197,11 @@ extern int ntfs_inode_nidata_hash(const struct CACHED_GENERIC *item);
 
 
 extern ntfs_inode *ntfs_extent_inode_open(ntfs_inode *base_ni,
+<<<<<<< HEAD
 		const leMFT_REF mref);
+=======
+		const MFT_REF mref);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 extern int ntfs_inode_attach_all_extents(ntfs_inode *ni);
 

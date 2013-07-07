@@ -4,7 +4,11 @@
  * Copyright (c) 2004 Anton Altaparmakov
  * Copyright (c) 2005-2006 Szabolcs Szakacsits
  * Copyright (c) 2006 Yura Pakhuchiy
+<<<<<<< HEAD
  * Copyright (c) 2007-2015 Jean-Pierre Andre
+=======
+ * Copyright (c) 2007-2012 Jean-Pierre Andre
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *
  * This program/include file is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as published
@@ -224,7 +228,11 @@ int ntfs_sid_to_mbs_size(const SID *sid)
 {
 	int size, i;
 
+<<<<<<< HEAD
 	if (!ntfs_valid_sid(sid)) {
+=======
+	if (!ntfs_sid_is_valid(sid)) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		errno = EINVAL;
 		return -1;
 	}
@@ -298,7 +306,11 @@ char *ntfs_sid_to_mbs(const SID *sid, char *sid_str, size_t sid_str_size)
 	 * No need to check @sid if !@sid_str since ntfs_sid_to_mbs_size() will
 	 * check @sid, too.  8 is the minimum SID string size.
 	 */
+<<<<<<< HEAD
 	if (sid_str && (sid_str_size < 8 || !ntfs_valid_sid(sid))) {
+=======
+	if (sid_str && (sid_str_size < 8 || !ntfs_sid_is_valid(sid))) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		errno = EINVAL;
 		return NULL;
 	}
@@ -367,8 +379,11 @@ void ntfs_generate_guid(GUID *guid)
 	unsigned int i;
 	u8 *p = (u8 *)guid;
 
+<<<<<<< HEAD
 	/* this is called at most once from mkntfs */
 	srandom(time((time_t*)NULL) ^ (getpid() << 16));
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	for (i = 0; i < sizeof(GUID); i++) {
 		p[i] = (u8)(random() & 0xFF);
 		if (i == 7)
@@ -514,6 +529,7 @@ static int entersecurity_data(ntfs_volume *vol,
 			STREAM_SDS, 4, fullattr, fullsz,
 			offs - gap + ALIGN_SDS_BLOCK);
 		if ((written1 == fullsz)
+<<<<<<< HEAD
 		     && (written2 == written1)) {
 			/*
 			 * Make sure the data size for $SDS marks the end
@@ -526,6 +542,10 @@ static int entersecurity_data(ntfs_volume *vol,
 			res = ntfs_attr_shrink_size(vol->secure_ni,STREAM_SDS,
 				4, offs - gap + ALIGN_SDS_BLOCK + fullsz);
 		}
+=======
+		     && (written2 == written1))
+			res = 0;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		else
 			errno = ENOSPC;
 		free(fullattr);
@@ -717,11 +737,15 @@ static le32 entersecurityattr(ntfs_volume *vol,
 					       sizeof(SII_INDEX_KEY), xsii);
 				if (!found && (errno != ENOENT)) {
 					ntfs_log_perror("Index $SII is broken");
+<<<<<<< HEAD
 					psii = (struct SII*)NULL;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				} else {
 						/* restore errno */
 					errno = olderrno;
 					entry = xsii->entry;
+<<<<<<< HEAD
 					psii = (struct SII*)entry;
 				}
 				if (psii
@@ -735,6 +759,8 @@ static le32 entersecurityattr(ntfs_volume *vol,
 							 = psii->dataoffsl;
 					offs = le64_to_cpu(realign.all);
 					size = le32_to_cpu(psii->datasize);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				}
 				retries++;
 			}
@@ -749,8 +775,12 @@ static le32 entersecurityattr(ntfs_volume *vol,
 		securid = const_cpu_to_le32(0);
 		na = ntfs_attr_open(vol->secure_ni,AT_INDEX_ROOT,sii_stream,4);
 		if (na) {
+<<<<<<< HEAD
 			if ((size_t)na->data_size < (sizeof(struct SII)
 					+ sizeof(INDEX_ENTRY_HEADER))) {
+=======
+			if ((size_t)na->data_size < sizeof(struct SII)) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				ntfs_log_error("Creating the first security_id\n");
 				securid = const_cpu_to_le32(FIRST_SECURITY_ID);
 			}
@@ -1340,6 +1370,7 @@ static BOOL groupmember(struct SECURITY_CONTEXT *scx, uid_t uid, gid_t gid)
 
 #endif /* defined(__sun) && defined (__SVR4) */
 
+<<<<<<< HEAD
 #if POSIXACLS
 
 /*
@@ -1382,6 +1413,8 @@ static int ntfs_basic_perms(const struct SECURITY_CONTEXT *scx,
 
 #endif /* POSIXACLS */
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /*
  *	Cacheing is done two-way :
  *	- from uid, gid and perm to securid (CACHED_SECURID)
@@ -1882,7 +1915,11 @@ static char *getsecurityattr(ntfs_volume *vol, ntfs_inode *ni)
 		 * attribute
 		 */
 	if (test_nino_flag(ni, v3_Extensions)
+<<<<<<< HEAD
 	    && vol->secure_ni && ni->security_id) {
+=======
+			&& vol->secure_ni && ni->security_id) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			/* get v3.x descriptor in $Secure */
 		securid.security_id = ni->security_id;
 		securattr = retrievesecurityattr(vol,securid);
@@ -1923,9 +1960,13 @@ static char *getsecurityattr(ntfs_volume *vol, ntfs_inode *ni)
  *		Determine which access types to a file are allowed
  *	according to the relation of current process to the file
  *
+<<<<<<< HEAD
  *	When Posix ACLs are compiled in but not enabled in the mount
  *	options POSIX_ACL_USER, POSIX_ACL_GROUP and POSIX_ACL_MASK
  *	are ignored.
+=======
+ *	Do not call if default_permissions is set
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  */
 
 static int access_check_posix(struct SECURITY_CONTEXT *scx,
@@ -1938,6 +1979,7 @@ static int access_check_posix(struct SECURITY_CONTEXT *scx,
 	int mask;
 	BOOL somegroup;
 	BOOL needgroups;
+<<<<<<< HEAD
 	BOOL noacl;
 	mode_t perms;
 	int i;
@@ -1947,6 +1989,12 @@ static int access_check_posix(struct SECURITY_CONTEXT *scx,
 		perms = ntfs_basic_perms(scx, pxdesc);
 	else
 		perms = pxdesc->mode;
+=======
+	mode_t perms;
+	int i;
+
+	perms = pxdesc->mode;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					/* owner and root access */
 	if (!scx->uid || (uid == scx->uid)) {
 		if (!scx->uid) {
@@ -1962,6 +2010,7 @@ static int access_check_posix(struct SECURITY_CONTEXT *scx,
 					switch (pxace->tag) {
 					case POSIX_ACL_USER_OBJ :
 					case POSIX_ACL_GROUP_OBJ :
+<<<<<<< HEAD
 						groupperms |= pxace->perms;
 						break;
 					case POSIX_ACL_GROUP :
@@ -1972,6 +2021,13 @@ static int access_check_posix(struct SECURITY_CONTEXT *scx,
 					case POSIX_ACL_MASK :
 						if (!noacl)
 							mask = pxace->perms & 7;
+=======
+					case POSIX_ACL_GROUP :
+						groupperms |= pxace->perms;
+						break;
+					case POSIX_ACL_MASK :
+						mask = pxace->perms & 7;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 						break;
 					default :
 						break;
@@ -1998,6 +2054,7 @@ static int access_check_posix(struct SECURITY_CONTEXT *scx,
 			pxace = &pxdesc->acl.ace[i];
 			switch (pxace->tag) {
 			case POSIX_ACL_USER :
+<<<<<<< HEAD
 				if (!noacl
 				    && ((uid_t)pxace->id == scx->uid))
 					userperms = pxace->perms;
@@ -2007,16 +2064,29 @@ static int access_check_posix(struct SECURITY_CONTEXT *scx,
 					mask = pxace->perms & 7;
 				break;
 			case POSIX_ACL_GROUP_OBJ :
+=======
+				if ((uid_t)pxace->id == scx->uid)
+					userperms = pxace->perms;
+				break;
+			case POSIX_ACL_MASK :
+				mask = pxace->perms & 7;
+				break;
+			case POSIX_ACL_GROUP_OBJ :
+			case POSIX_ACL_GROUP :
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				if (((pxace->perms & mask) ^ perms)
 				    & (request >> 6) & 7)
 					needgroups = TRUE;
 				break;
+<<<<<<< HEAD
 			case POSIX_ACL_GROUP :
 				if (!noacl
 				    && (((pxace->perms & mask) ^ perms)
 					    & (request >> 6) & 7))
 					needgroups = TRUE;
 				break;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			default :
 				break;
 			}
@@ -2032,14 +2102,22 @@ static int access_check_posix(struct SECURITY_CONTEXT *scx,
 			    && ((gid == scx->gid)
 				|| groupmember(scx, scx->uid, gid)))
 				perms &= 07070;
+<<<<<<< HEAD
 			else if (!noacl) {
+=======
+			else {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					/* other groups */
 				groupperms = -1;
 				somegroup = FALSE;
 				for (i=pxdesc->acccnt-1; i>=0 ; i--) {
 					pxace = &pxdesc->acl.ace[i];
 					if ((pxace->tag == POSIX_ACL_GROUP)
+<<<<<<< HEAD
 					    && groupmember(scx, scx->uid, pxace->id)) {
+=======
+					    && groupmember(scx, uid, pxace->id)) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 						if (!(~pxace->perms & request & mask))
 							groupperms = pxace->perms;
 						somegroup = TRUE;
@@ -2052,8 +2130,12 @@ static int access_check_posix(struct SECURITY_CONTEXT *scx,
 						perms = 0;
 					else
 						perms &= 07007;
+<<<<<<< HEAD
 			} else
 				perms &= 07007;
+=======
+			}
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		}
 	}
 	return (perms);
@@ -2458,6 +2540,7 @@ int ntfs_get_owner_mode(struct SECURITY_CONTEXT *scx,
 			/* check whether available in cache */
 		cached = fetch_cache(scx,ni);
 		if (cached) {
+<<<<<<< HEAD
 #if POSIXACLS
 			if (!(scx->vol->secure_flags & (1 << SECURITY_ACL))
 			    && cached->pxdesc)
@@ -2465,6 +2548,9 @@ int ntfs_get_owner_mode(struct SECURITY_CONTEXT *scx,
 			else
 #endif
 				perm = cached->mode;
+=======
+			perm = cached->mode;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			stbuf->st_uid = cached->uid;
 			stbuf->st_gid = cached->gid;
 			stbuf->st_mode = (stbuf->st_mode & ~07777) + perm;
@@ -2486,6 +2572,7 @@ int ntfs_get_owner_mode(struct SECURITY_CONTEXT *scx,
 					  securattr[le32_to_cpu(phead->owner)];
 #endif
 #if POSIXACLS
+<<<<<<< HEAD
 				pxdesc = ntfs_build_permissions_posix(
 						scx->mapping, securattr,
 					usid, gsid, isdir);
@@ -2497,6 +2584,13 @@ int ntfs_get_owner_mode(struct SECURITY_CONTEXT *scx,
 					else
 						perm = pxdesc->mode & 07777;
 				} else
+=======
+				pxdesc = ntfs_build_permissions_posix(scx->mapping, securattr,
+					  usid, gsid, isdir);
+				if (pxdesc)
+					perm = pxdesc->mode & 07777;
+				else
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					perm = -1;
 #else
 				perm = ntfs_build_permissions(securattr,
@@ -2575,12 +2669,17 @@ static struct POSIX_SECURITY *inherit_posix(struct SECURITY_CONTEXT *scx,
 		gid = cached->gid;
 		pxdesc = cached->pxdesc;
 		if (pxdesc) {
+<<<<<<< HEAD
 			if (scx->vol->secure_flags & (1 << SECURITY_ACL))
 				pydesc = ntfs_build_inherited_posix(pxdesc,
 					mode, scx->umask, isdir);
 			else
 				pydesc = ntfs_build_basic_posix(pxdesc,
 					mode, scx->umask, isdir);
+=======
+			pydesc = ntfs_build_inherited_posix(pxdesc,mode,
+					scx->umask,isdir);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		}
 	} else {
 		securattr = getsecurityattr(scx->vol, dir_ni);
@@ -2624,6 +2723,7 @@ static struct POSIX_SECURITY *inherit_posix(struct SECURITY_CONTEXT *scx,
 					enter_cache(scx, dir_ni, uid,
 							gid, pxdesc);
 				}
+<<<<<<< HEAD
 				if (scx->vol->secure_flags
 							& (1 << SECURITY_ACL))
 					pydesc = ntfs_build_inherited_posix(
@@ -2633,6 +2733,10 @@ static struct POSIX_SECURITY *inherit_posix(struct SECURITY_CONTEXT *scx,
 					pydesc = ntfs_build_basic_posix(
 						pxdesc, mode,
 						scx->umask, isdir);
+=======
+				pydesc = ntfs_build_inherited_posix(pxdesc,
+					mode, scx->umask, isdir);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				free(pxdesc);
 			}
 			free(securattr);
@@ -2916,6 +3020,7 @@ int ntfs_set_owner_mode(struct SECURITY_CONTEXT *scx, ntfs_inode *ni,
 		if (cached) {
 			ni->security_id = cached->securid;
 			NInoSetDirty(ni);
+<<<<<<< HEAD
 				/* adjust Windows read-only flag */
 			if (!isdir) {
 				if (mode & S_IWUSR)
@@ -2924,6 +3029,8 @@ int ntfs_set_owner_mode(struct SECURITY_CONTEXT *scx, ntfs_inode *ni,
 					ni->flags |= FILE_ATTR_READONLY;
 				NInoFileNameSetDirty(ni);
 			}
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		}
 	} else cached = (struct CACHED_SECURID*)NULL;
 
@@ -3878,6 +3985,10 @@ static le32 build_inherited_id(struct SECURITY_CONTEXT *scx,
 	BIGSID defusid;
 	BIGSID defgsid;
 	int offpacl;
+<<<<<<< HEAD
+=======
+	int offowner;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	int offgroup;
 	SECURITY_DESCRIPTOR_RELATIVE *pnhead;
 	ACL *pnacl;
@@ -3895,6 +4006,7 @@ static le32 build_inherited_id(struct SECURITY_CONTEXT *scx,
 	if (scx->mapping[MAPUSERS]) {
 		usid = ntfs_find_usid(scx->mapping[MAPUSERS], scx->uid, (SID*)&defusid);
 		gsid = ntfs_find_gsid(scx->mapping[MAPGROUPS], scx->gid, (SID*)&defgsid);
+<<<<<<< HEAD
 #if OWNERFROMACL
 			/* Get approximation of parent owner when cannot map */
 		if (!gsid)
@@ -3906,10 +4018,13 @@ static le32 build_inherited_id(struct SECURITY_CONTEXT *scx,
 		}
 #else
 			/* Define owner as root when cannot map */
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (!usid)
 			usid = adminsid;
 		if (!gsid)
 			gsid = adminsid;
+<<<<<<< HEAD
 #endif
 	} else {
 		/*
@@ -3937,6 +4052,19 @@ static le32 build_inherited_id(struct SECURITY_CONTEXT *scx,
 			offgroup = le32_to_cpu(pphead->group);
 			gsid = (const SID*)&parentattr[offgroup];
 		}
+=======
+	} else {
+		/*
+		 * If there is no user mapping, we have to copy owner
+		 * and group from parent directory.
+		 * Windows never has to do that, because it can always
+		 * rely on a user mapping
+		 */
+		offowner = le32_to_cpu(pphead->owner);
+		usid = (const SID*)&parentattr[offowner];
+		offgroup = le32_to_cpu(pphead->group);
+		gsid = (const SID*)&parentattr[offgroup];
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 		/*
 		 * new attribute is smaller than parent's
@@ -4041,14 +4169,22 @@ le32 ntfs_inherited_id(struct SECURITY_CONTEXT *scx,
 	securid = const_cpu_to_le32(0);
 	cached = (struct CACHED_PERMISSIONS*)NULL;
 		/*
+<<<<<<< HEAD
 		 * Try to get inherited id from cache, possible when
 		 * the current process owns the parent directory
+=======
+		 * Try to get inherited id from cache
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		 */
 	if (test_nino_flag(dir_ni, v3_Extensions)
 			&& dir_ni->security_id) {
 		cached = fetch_cache(scx, dir_ni);
+<<<<<<< HEAD
 		if (cached
 		    && (cached->uid == scx->uid) && (cached->gid == scx->gid))
+=======
+		if (cached)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			securid = (fordir ? cached->inh_dirid
 					: cached->inh_fileid);
 	}
@@ -4064,6 +4200,7 @@ le32 ntfs_inherited_id(struct SECURITY_CONTEXT *scx,
 			free(parentattr);
 			/*
 			 * Store the result into cache for further use
+<<<<<<< HEAD
 			 * if the current process owns the parent directory
 			 */
 			if (securid) {
@@ -4071,6 +4208,12 @@ le32 ntfs_inherited_id(struct SECURITY_CONTEXT *scx,
 				if (cached
 				    && (cached->uid == scx->uid)
 				    && (cached->gid == scx->gid)) {
+=======
+			 */
+			if (securid) {
+				cached = fetch_cache(scx, dir_ni);
+				if (cached) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					if (fordir)
 						cached->inh_dirid = securid;
 					else

@@ -102,7 +102,11 @@ static __inline__ ntfs_time timespec2ntfs(struct timespec spec)
 
 	units = (s64)spec.tv_sec * 10000000
 				+ NTFS_TIME_OFFSET + spec.tv_nsec/100;
+<<<<<<< HEAD
 	return (cpu_to_sle64(units));
+=======
+	return (cpu_to_le64(units));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /*

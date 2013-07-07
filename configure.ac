@@ -2,7 +2,11 @@
 # configure.ac - Source file to generate "./configure" to prepare package for
 #		 compilation.
 #
+<<<<<<< HEAD
 # Copyright (c) 2000-2013 Anton Altaparmakov
+=======
+# Copyright (c) 2000-2006 Anton Altaparmakov
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 # Copyright (c) 2003 Jan Kratochvil
 # Copyright (c) 2005-2009 Szabolcs Szakacsits
 # Copyright (C) 2007-2008 Alon Bar-Lev
@@ -24,8 +28,13 @@
 
 # Autoconf
 AC_PREREQ(2.59)
+<<<<<<< HEAD
 AC_INIT([ntfs-3g],[2016.2.22],[ntfs-3g-devel@lists.sf.net])
 LIBNTFS_3G_VERSION="87"
+=======
+AC_INIT([ntfs-3g],[2013.1.13],[ntfs-3g-devel@lists.sf.net])
+LIBNTFS_3G_VERSION="84"
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 AC_CONFIG_SRCDIR([src/ntfs-3g.c])
 
 # Environment
@@ -158,6 +167,7 @@ AC_ARG_ENABLE(
 )
 
 AC_ARG_ENABLE(
+<<<<<<< HEAD
 	[quarantined],
 	[AS_HELP_STRING([--enable-quarantined],[enable quarantined ntfsprogs utilities
 		       (default=no)])],
@@ -166,6 +176,8 @@ AC_ARG_ENABLE(
 )
 
 AC_ARG_ENABLE(
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	[nfconv],
 	[AS_HELP_STRING([--disable-nfconv],[disable the 'nfconv' patch, which adds support for Unicode normalization form conversion when built on Mac OS X @<:@default=enabled for Mac OS X@:>@])],
 	[enable_nfconv="no"],
@@ -425,6 +437,7 @@ if test "x$extrapath" != "x"; then
 	fi
 fi
 
+<<<<<<< HEAD
 # Specify support for obtaining the correct BIOS legacy geometry needed for
 # Windows to boot in CHS mode.  We check if hd.h header is present and the hd
 # library is present that goes with it and then check if the hd_list() function
@@ -463,16 +476,25 @@ if test "x$extrapath2" != "x"; then
 	)
 fi
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 # Checks for header files.
 AC_HEADER_STDC
 AC_CHECK_HEADERS([ctype.h fcntl.h libgen.h libintl.h limits.h locale.h \
 	mntent.h stddef.h stdint.h stdlib.h stdio.h stdarg.h string.h \
 	strings.h errno.h time.h unistd.h utime.h wchar.h getopt.h features.h \
+<<<<<<< HEAD
 	regex.h endian.h byteswap.h sys/byteorder.h sys/disk.h sys/endian.h \
 	sys/param.h sys/ioctl.h sys/mkdev.h sys/mount.h sys/stat.h sys/types.h \
 	sys/vfs.h sys/statvfs.h sys/sysmacros.h linux/major.h linux/fd.h \
 	linux/fs.h inttypes.h linux/hdreg.h \
 	machine/endian.h windows.h syslog.h pwd.h malloc.h])
+=======
+	endian.h byteswap.h sys/byteorder.h sys/disk.h sys/endian.h \
+	sys/param.h sys/ioctl.h sys/mkdev.h sys/mount.h sys/stat.h sys/types.h \
+	sys/vfs.h sys/statvfs.h sys/sysmacros.h linux/major.h linux/fd.h \
+	linux/hdreg.h machine/endian.h windows.h syslog.h pwd.h malloc.h])
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 # Checks for typedefs, structures, and compiler characteristics.
 AC_HEADER_STDBOOL
@@ -601,9 +623,12 @@ AC_SUBST([LIBFUSE_LITE_CFLAGS])
 AC_SUBST([LIBFUSE_LITE_LIBS])
 AC_SUBST([MKNTFS_CPPFLAGS])
 AC_SUBST([MKNTFS_LIBS])
+<<<<<<< HEAD
 AC_SUBST([LIBNTFS_CPPFLAGS])
 AC_SUBST([LIBNTFS_LIBS])
 AC_SUBST([NTFSPROGS_STATIC_LIBS])
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 AC_SUBST([OUTPUT_FORMAT])
 AM_CONDITIONAL([FUSE_INTERNAL], [test "${with_fuse}" = "internal"])
 AM_CONDITIONAL([GENERATE_LDSCRIPT], [test "${enable_ldscript}" = "yes"])
@@ -616,7 +641,10 @@ AM_CONDITIONAL([ENABLE_MOUNT_HELPER], [test "${enable_mount_helper}" = "yes"])
 AM_CONDITIONAL([ENABLE_NTFS_3G], [test "${enable_ntfs_3g}" = "yes"])
 AM_CONDITIONAL([ENABLE_NTFSPROGS], [test "${enable_ntfsprogs}" = "yes"])
 AM_CONDITIONAL([ENABLE_EXTRAS], [test "${enable_extras}" = "yes"])
+<<<<<<< HEAD
 AM_CONDITIONAL([ENABLE_QUARANTINED], [test "${enable_quarantined}" = "yes"])
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 # workaround for <autoconf-2.60
 if test -z "${docdir}"; then
@@ -653,11 +681,14 @@ AC_CONFIG_FILES([
 	ntfsprogs/ntfsprogs.8
 	ntfsprogs/ntfsresize.8
 	ntfsprogs/ntfsundelete.8
+<<<<<<< HEAD
 	ntfsprogs/ntfsdecrypt.8
 	ntfsprogs/ntfswipe.8
 	ntfsprogs/ntfstruncate.8
 	ntfsprogs/ntfsfallocate.8
 	ntfsprogs/ntfsrecover.8
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	src/Makefile
 	src/ntfs-3g.8
 	src/ntfs-3g.probe.8

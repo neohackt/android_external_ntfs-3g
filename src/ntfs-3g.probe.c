@@ -159,8 +159,12 @@ int main(int argc, char *argv[])
 	err = ntfs_open(opts.device);
 
 	free(opts.device);
+<<<<<<< HEAD
 	if (err)
 		exit(err);
 	return (0);
+=======
+	exit(err);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 

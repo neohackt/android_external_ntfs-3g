@@ -5,8 +5,12 @@
  * Copyright (c) 2004-2005 Anton Altaparmakov
  * Copyright (c) 2004-2006 Szabolcs Szakacsits
  * Copyright (c)      2005 Yura Pakhuchiy
+<<<<<<< HEAD
  * Copyright (c) 2009-2014 Jean-Pierre Andre
  * Copyright (c)      2014 Eric Biggers
+=======
+ * Copyright (c) 2009-2011 Jean-Pierre Andre
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *
  * This program/include file is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as published
@@ -22,6 +26,20 @@
  * along with this program (in the main directory of the NTFS-3G
  * distribution in the file COPYING); if not, write to the Free Software
  * Foundation,Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
+<<<<<<< HEAD
+=======
+ *
+ * A part of the compression algorithm is based on lzhuf.c whose header
+ * describes the roles of the original authors (with no apparent copyright
+ * notice, and according to http://home.earthlink.net/~neilbawd/pall.html
+ * this was put into public domain in 1988 by Haruhiko OKUMURA).
+ *
+ * LZHUF.C English version 1.0
+ * Based on Japanese version 29-NOV-1988   
+ * LZSS coded by Haruhiko OKUMURA
+ * Adaptive Huffman Coding coded by Haruyasu YOSHIZAKI
+ * Edited and translated to English by Kenji RIKITAKE
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  */
 
 #ifdef HAVE_CONFIG_H
@@ -71,6 +89,7 @@ typedef enum {
 	NTFS_SB_IS_COMPRESSED	=	0x8000,
 } ntfs_compression_constants;
 
+<<<<<<< HEAD
 /* Match length at or above which ntfs_best_match() will stop searching for
  * longer matches.  */
 #define NICE_MATCH_LEN 18
@@ -85,12 +104,15 @@ typedef enum {
 /* Constant for the multiplicative hash function.  */
 #define HASH_MULTIPLIER 0x1E35A7BD
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 struct COMPRESS_CONTEXT {
 	const unsigned char *inbuf;
 	int bufsize;
 	int size;
 	int rel;
 	int mxsz;
+<<<<<<< HEAD
 	s16 head[1 << HASH_SHIFT];
 	s16 prev[NTFS_SB_SIZE];
 } ;
@@ -256,6 +278,92 @@ static void ntfs_skip_position(struct COMPRESS_CONTEXT *pctx, const int i)
 	hash = ntfs_hash(pctx->inbuf + i);
 	pctx->prev[i] = pctx->head[hash];
 	pctx->head[hash] = i;
+=======
+	s16 head[256];
+	s16 lson[NTFS_SB_SIZE];
+	s16 rson[NTFS_SB_SIZE];
+} ;
+
+/*
+ *		Search for the longest sequence matching current position
+ *
+ *	A binary tree is maintained to locate all previously met sequences,
+ *	and this function has to be called for all of them.
+ *
+ *	This function is heavily used, it has to be optimized carefully
+ *
+ *	Returns the size of the longest match,
+ *		zero if no match is found.
+ */
+
+static int ntfs_best_match(struct COMPRESS_CONTEXT *pctx, int i)
+{
+	s16 *prev;
+	int node;
+	register long j;
+	long maxpos;
+	long startj;
+	long bestj;
+	int bufsize;
+	int bestnode;
+	register const unsigned char *p1,*p2;
+
+	p1 = pctx->inbuf;
+	node = pctx->head[p1[i] & 255];
+	if (node >= 0) {
+		/* search the best match at current position */
+		bestnode = node;
+		bufsize = pctx->bufsize;
+		/* restrict matches to the longest allowed sequence */
+		maxpos = bufsize;
+		if ((i + pctx->mxsz) < maxpos)
+			maxpos = i + pctx->mxsz;
+		startj = i + 1 - maxpos;
+		bestj = startj;
+		/* make indexes relative to end of allowed position */
+		p1 = &p1[maxpos];
+		if (startj < 0) {
+			do {
+			/* indexes are negative */
+				p2 = &p1[node - i];
+			/* no need to compare the first byte */
+				j = startj;
+			/* the second byte cannot lead to useful compression */
+				if (p1[j] == p2[j]) {
+					j++;
+					if (j < 0) {
+						do {
+						} while ((p1[j] == p2[j])
+								&& (++j < 0));
+					}
+					/* remember the match, if better */
+					if (j > bestj) {
+						bestj = j;
+						bestnode = node;
+					}
+				}
+				/* walk in the tree in the right direction */
+				if ((j < 0) && (p1[j] < p2[j]))
+					prev = &pctx->lson[node];
+				else
+					prev = &pctx->rson[node];
+				node = *prev;
+				/* stop if reaching a leaf or maximum length */
+			} while ((node >= 0) && (j < 0));
+			/* put the node into the tree if we reached a leaf */
+			if (node < 0)
+				*prev = i;
+		}
+			/* done, return the best match */
+		pctx->size = bestj + maxpos - i;
+		pctx->rel = bestnode - i;
+	} else {
+		pctx->head[p1[i] & 255] = i;
+		pctx->size = 0;
+		pctx->rel = 0;
+	}
+	return (pctx->size);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /*
@@ -273,7 +381,11 @@ static void ntfs_skip_position(struct COMPRESS_CONTEXT *pctx, const int i)
  *		0 if an error has been met. 
  */
 
+<<<<<<< HEAD
 static unsigned int ntfs_compress_block(const char *inbuf, const int bufsize,
+=======
+static unsigned int ntfs_compress_block(const char *inbuf, int bufsize,
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				char *outbuf)
 {
 	struct COMPRESS_CONTEXT *pctx;
@@ -281,16 +393,27 @@ static unsigned int ntfs_compress_block(const char *inbuf, const int bufsize,
 	int j; /* end of best match from current position */
 	int k; /* end of best match from next position */
 	int offs; /* offset to best match */
+<<<<<<< HEAD
 	int bp; /* bits to store offset */
 	int bp_cur; /* saved bits to store offset at current position */
 	int mxoff; /* max match offset : 1 << bp */
 	unsigned int xout;
 	unsigned int q; /* aggregated offset and size */
 	int have_match; /* do we have a match at the current position? */
+=======
+	int n;
+	int bp; /* bits to store offset */
+	int mxoff; /* max match offset : 1 << bp */
+	int mxsz2;
+	unsigned int xout;
+	unsigned int q; /* aggregated offset and size */
+	int done;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	char *ptag; /* location reserved for a tag */
 	int tag;    /* current value of tag */
 	int ntag;   /* count of bits still undefined in tag */
 
+<<<<<<< HEAD
 	pctx = ntfs_malloc(sizeof(struct COMPRESS_CONTEXT));
 	if (!pctx) {
 		errno = ENOMEM;
@@ -325,11 +448,34 @@ static unsigned int ntfs_compress_block(const char *inbuf, const int bufsize,
 			 * first adjust the maximum match length if needed.
 			 * (This loop might need to run more than one time in
 			 * the case that we just output a long match.)  */
+=======
+	pctx = (struct COMPRESS_CONTEXT*)ntfs_malloc(sizeof(struct COMPRESS_CONTEXT));
+	if (pctx) {
+		for (n=0; n<NTFS_SB_SIZE; n++)
+			pctx->lson[n] = pctx->rson[n] = -1;
+		for (n=0; n<256; n++)
+			pctx->head[n] = -1;
+		pctx->inbuf = (const unsigned char*)inbuf;
+		pctx->bufsize = bufsize;
+		xout = 2;
+		n = 0;
+		i = 0;
+		bp = 4;
+		mxoff = 1 << bp;
+		pctx->mxsz = (1 << (16 - bp)) + 2;
+		tag = 0;
+		done = -1;
+		ntag = 8;
+		ptag = &outbuf[xout++];
+		while ((i < bufsize) && (xout < (NTFS_SB_SIZE + 2))) {
+		   /* adjust the longest match we can output */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			while (mxoff < i) {
 				bp++;
 				mxoff <<= 1;
 				pctx->mxsz = (pctx->mxsz + 2) >> 1;
 			}
+<<<<<<< HEAD
 			ntfs_best_match(pctx, i, 2);
 		}
 
@@ -443,6 +589,75 @@ static unsigned int ntfs_compress_block(const char *inbuf, const int bufsize,
 	/* Free the compression context and return the total number of bytes
 	 * written to 'outbuf'.  */
 	free(pctx);
+=======
+		/* search the best match at current position */
+			if (done < i)
+				do {
+					ntfs_best_match(pctx,++done);
+				} while (done < i);
+			j = i + pctx->size;
+			if ((j - i) > pctx->mxsz)
+				j = i + pctx->mxsz;
+
+			if ((j - i) > 2) {
+				offs = pctx->rel;
+		  /* check whether there is a better run at i+1 */
+				ntfs_best_match(pctx,i+1);
+				done = i+1;
+				k = i + 1 + pctx->size;
+				mxsz2 = pctx->mxsz;
+				if (mxoff <= i)
+					mxsz2 = (pctx->mxsz + 2) >> 1;
+				if ((k - i) > mxsz2)
+					k = i + mxsz2;
+				if (k > (j + 1)) {
+					/* issue a single byte */
+					outbuf[xout++] = inbuf[i];
+					i++;
+				} else {
+					q = (~offs << (16 - bp))
+						+ (j - i - 3);
+					outbuf[xout++] = q & 255;
+					outbuf[xout++] = (q >> 8) & 255;
+					tag |= (1 << (8 - ntag));
+					i = j;
+				}
+			} else {
+				outbuf[xout++] = inbuf[i];
+				i++;
+			}
+				/* store the tag if fully used */
+			if (!--ntag) {
+				*ptag = tag;
+				ntag = 8;
+				ptag = &outbuf[xout++];
+				tag = 0;
+			}
+		}
+			/* store the last tag, if partially used */
+		if (ntag == 8)
+			xout--;
+		else
+			*ptag = tag;
+		/* uncompressed must be full size, accept if better */
+		if ((i >= bufsize) && (xout < (NTFS_SB_SIZE + 2))) {
+			outbuf[0] = (xout - 3) & 255;
+			outbuf[1] = 0xb0 + (((xout - 3) >> 8) & 15);
+		} else {
+			memcpy(&outbuf[2],inbuf,bufsize);
+			if (bufsize < NTFS_SB_SIZE)
+				memset(&outbuf[bufsize+2], 0,
+						NTFS_SB_SIZE - bufsize);
+			outbuf[0] = 0xff;
+			outbuf[1] = 0x3f;
+			xout = NTFS_SB_SIZE + 2;
+		}
+		free(pctx);
+	} else {
+		xout = 0;
+		errno = ENOMEM;
+	}
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	return (xout);
 }
 
@@ -719,7 +934,11 @@ s64 ntfs_compressed_attr_pread(ntfs_attr *na, s64 pos, s64 count, void *b)
 	unsigned int nr_cbs, cb_clusters;
 
 	ntfs_log_trace("Entering for inode 0x%llx, attr 0x%x, pos 0x%llx, count 0x%llx.\n",
+<<<<<<< HEAD
 			(unsigned long long)na->ni->mft_no, le32_to_cpu(na->type),
+=======
+			(unsigned long long)na->ni->mft_no, na->type,
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			(long long)pos, (long long)count);
 	data_flags = na->data_flags;
 	compression = na->ni->flags & FILE_ATTR_COMPRESSED;
@@ -878,7 +1097,10 @@ do_next_cb:
 		ofs = 0;
 	} else {
 		s64 tdata_size, tinitialized_size;
+<<<<<<< HEAD
 		u32 decompsz;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 		/*
 		 * Compressed cb, decompress it into the temporary buffer, then
@@ -936,10 +1158,14 @@ do_next_cb:
 		if (cb_pos + 2 <= cb_end)
 			*(u16*)cb_pos = 0;
 		ntfs_log_debug("Successfully read the compression block.\n");
+<<<<<<< HEAD
 		/* Do not decompress beyond the requested block */
 		to_read = min(count, cb_size - ofs);
 		decompsz = ((ofs + to_read - 1) | (NTFS_SB_SIZE - 1)) + 1;
 		if (ntfs_decompress(dest, decompsz, cb, cb_size) < 0) {
+=======
+		if (ntfs_decompress(dest, cb_size, cb, cb_size) < 0) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			err = errno;
 			free(cb);
 			free(dest);
@@ -948,6 +1174,10 @@ do_next_cb:
 			errno = err;
 			return -1;
 		}
+<<<<<<< HEAD
+=======
+		to_read = min(count, cb_size - ofs);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		memcpy(b, dest + ofs, to_read);
 		total += to_read;
 		count -= to_read;
@@ -1131,7 +1361,10 @@ static s32 ntfs_comp_set(ntfs_attr *na, runlist_element *rl,
 			outbuf[compsz++] = 0;
 			/* write a full cluster, to avoid partial reading */
 			rounded = ((compsz - 1) | (clsz - 1)) + 1;
+<<<<<<< HEAD
 			memset(&outbuf[compsz], 0, rounded - compsz);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			written = write_clusters(vol, rl, offs, rounded, outbuf);
 			if (written != rounded) {
 				/*
@@ -1562,7 +1795,10 @@ static int ntfs_compress_free(ntfs_attr *na, runlist_element *rl,
 		ntfs_log_error("No cluster to free after compression\n");
 		errno = EIO;
 	}
+<<<<<<< HEAD
 	NAttrSetRunlistDirty(na);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	return (res);
 }
 

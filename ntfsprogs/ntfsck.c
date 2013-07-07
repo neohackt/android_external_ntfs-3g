@@ -247,7 +247,11 @@ static BOOL verify_boot_sector(struct ntfs_device *dev, ntfs_volume *rawvol)
  *
  * Assumes dev is open.
  */
+<<<<<<< HEAD
 static runlist *load_runlist(ntfs_volume *rawvol, s64 offset_to_file_record, ATTR_TYPES attr_type, u32 size_of_file_record)
+=======
+static runlist *load_runlist(ntfs_volume *rawvol, s64 offset_to_file_record, u32 attr_type, u32 size_of_file_record)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 {
 	u8 *buf;
 	u16 attrs_offset;
@@ -584,7 +588,11 @@ static BOOL check_file_record(u8 *buffer, u16 buflen)
 	ATTR_REC *attr_rec;
 
 	// check record magic
+<<<<<<< HEAD
 	assert_u32_equal(le32_to_cpu(mft_rec->magic), le32_to_cpu(magic_FILE), "FILE record magic");
+=======
+	assert_u32_equal(mft_rec->magic, magic_FILE, "FILE record magic");
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	// todo: records 16-23 must be filled in order.
 	// todo: what to do with magic_BAAD?
 
@@ -608,17 +616,29 @@ static BOOL check_file_record(u8 *buffer, u16 buflen)
 
 
 	// We should know all the flags.
+<<<<<<< HEAD
 	if (le16_to_cpu(mft_rec->flags) > 0xf) {
 		check_failed("Unknown MFT record flags (0x%x).\n",
 			(unsigned int)le16_to_cpu(mft_rec->flags));
+=======
+	if (mft_rec->flags>0xf) {
+		check_failed("Unknown MFT record flags (0x%x).\n",
+			(unsigned int)mft_rec->flags);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 	// todo: flag in_use must be on.
 
 	// Remove update seq & check it.
 	usa = *(u16*)(buffer+usa_ofs); // The value that should be at the end of every sector.
+<<<<<<< HEAD
 	assert_u32_equal(usa_count-1, buflen/NTFS_BLOCK_SIZE, "USA length");
 	for (i=1;i<usa_count;i++) {
 		u16 *fixup = (u16*)(buffer+NTFS_BLOCK_SIZE*i-2); // the value at the end of the sector.
+=======
+	assert_u32_equal(usa_count-1, buflen/bytes_per_sector, "USA length");
+	for (i=1;i<usa_count;i++) {
+		u16 *fixup = (u16*)(buffer+bytes_per_sector*i-2); // the value at the end of the sector.
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		u16 saved_val = *(u16*)(buffer+usa_ofs+2*i); // the actual data value that was saved in the us array.
 
 		assert_u32_equal(*fixup, usa, "fixup");
@@ -789,7 +809,11 @@ static void check_volume(ntfs_volume *vol)
 
 static int reset_dirty(ntfs_volume *vol)
 {
+<<<<<<< HEAD
 	le16 flags;
+=======
+	u16 flags;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (!(vol->flags | VOLUME_IS_DIRTY))
 		return 0;

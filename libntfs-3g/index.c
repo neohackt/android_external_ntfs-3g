@@ -191,9 +191,15 @@ void ntfs_index_ctx_reinit(ntfs_index_context *icx)
 	};
 }
 
+<<<<<<< HEAD
 static leVCN *ntfs_ie_get_vcn_addr(INDEX_ENTRY *ie)
 {
 	return (leVCN *)((u8 *)ie + le16_to_cpu(ie->length) - sizeof(leVCN));
+=======
+static VCN *ntfs_ie_get_vcn_addr(INDEX_ENTRY *ie)
+{
+	return (VCN *)((u8 *)ie + le16_to_cpu(ie->length) - sizeof(VCN));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -338,7 +344,11 @@ static void ntfs_ie_delete(INDEX_HEADER *ih, INDEX_ENTRY *ie)
 
 static void ntfs_ie_set_vcn(INDEX_ENTRY *ie, VCN vcn)
 {
+<<<<<<< HEAD
 	*ntfs_ie_get_vcn_addr(ie) = cpu_to_sle64(vcn);
+=======
+	*ntfs_ie_get_vcn_addr(ie) = cpu_to_le64(vcn);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -811,17 +821,29 @@ static INDEX_BLOCK *ntfs_ib_alloc(VCN ib_vcn, u32 ib_size,
 		return NULL;
 	
 	ib->magic = magic_INDX;
+<<<<<<< HEAD
 	ib->usa_ofs = const_cpu_to_le16(sizeof(INDEX_BLOCK));
 	ib->usa_count = cpu_to_le16(ib_size / NTFS_BLOCK_SIZE + 1);
 	/* Set USN to 1 */
 	*(le16 *)((char *)ib + le16_to_cpu(ib->usa_ofs)) = const_cpu_to_le16(1);
 	ib->lsn = const_cpu_to_sle64(0);
+=======
+	ib->usa_ofs = cpu_to_le16(sizeof(INDEX_BLOCK));
+	ib->usa_count = cpu_to_le16(ib_size / NTFS_BLOCK_SIZE + 1);
+	/* Set USN to 1 */
+	*(u16 *)((char *)ib + le16_to_cpu(ib->usa_ofs)) = cpu_to_le16(1);
+	ib->lsn = cpu_to_le64(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	
 	ib->index_block_vcn = cpu_to_sle64(ib_vcn);
 	
 	ib->index.entries_offset = cpu_to_le32((ih_size +
 			le16_to_cpu(ib->usa_count) * 2 + 7) & ~7);
+<<<<<<< HEAD
 	ib->index.index_length = const_cpu_to_le32(0);
+=======
+	ib->index.index_length = 0;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ib->index.allocated_size = cpu_to_le32(ib_size - 
 					       (sizeof(INDEX_BLOCK) - ih_size));
 	ib->index.ih_flags = node_type;
@@ -1160,7 +1182,11 @@ retry :
 	
 	ie = ntfs_ie_get_first(&ir->index);
 	ie->ie_flags |= INDEX_ENTRY_NODE;
+<<<<<<< HEAD
 	ie->length = const_cpu_to_le16(sizeof(INDEX_ENTRY_HEADER) + sizeof(VCN));
+=======
+	ie->length = cpu_to_le16(sizeof(INDEX_ENTRY_HEADER) + sizeof(VCN));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	
 	ir->index.ih_flags = LARGE_INDEX;
 	ir->index.index_length = cpu_to_le32(le32_to_cpu(ir->index.entries_offset)
@@ -1175,7 +1201,12 @@ retry :
 			 * index, we may have to move the root to an extent
 			 */
 		if ((errno == ENOSPC)
+<<<<<<< HEAD
 		    && (ctx->al_entry || !ntfs_inode_add_attrlist(icx->ni))) {
+=======
+		    && !ctx->al_entry
+		    && !ntfs_inode_add_attrlist(icx->ni)) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			ntfs_attr_put_search_ctx(ctx);
 			ctx = (ntfs_attr_search_ctx*)NULL;
 			ir = ntfs_ir_lookup(icx->ni, icx->name, icx->name_len,
@@ -1841,8 +1872,12 @@ err_out:
 	goto out;
 }
 
+<<<<<<< HEAD
 int ntfs_index_remove(ntfs_inode *dir_ni,
 		ntfs_inode *ni __attribute__((unused)),
+=======
+int ntfs_index_remove(ntfs_inode *dir_ni, ntfs_inode *ni,
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		const void *key, const int keylen)
 {
 	int ret = STATUS_ERROR;
@@ -1857,6 +1892,16 @@ int ntfs_index_remove(ntfs_inode *dir_ni,
 		if (ntfs_index_lookup(key, keylen, icx))
 			goto err_out;
 
+<<<<<<< HEAD
+=======
+		if ((((FILE_NAME_ATTR *)icx->data)->file_attributes &
+				FILE_ATTR_REPARSE_POINT)
+		   && !ntfs_possible_symlink(ni)) {
+			errno = EOPNOTSUPP;
+			goto err_out;
+		}
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		ret = ntfs_index_rm(icx);
 		if (ret == STATUS_ERROR)
 			goto err_out;
@@ -2035,7 +2080,11 @@ static INDEX_ENTRY *ntfs_index_walk_up(INDEX_ENTRY *ie,
 INDEX_ENTRY *ntfs_index_next(INDEX_ENTRY *ie, ntfs_index_context *ictx)
 {
 	INDEX_ENTRY *next;
+<<<<<<< HEAD
 	le16 flags;
+=======
+	int flags;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 			/*
                          * lookup() may have returned an invalid node

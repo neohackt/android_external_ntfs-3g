@@ -48,6 +48,7 @@
 /** Version number of this interface */
 #define FUSE_KERNEL_VERSION 7
 
+<<<<<<< HEAD
 /** Minor version number of this interface
  * We introduce ourself as 7.18 (Posix ACLS : 7.12, IOCTL_DIR : 7.18)
  * and we expect features features defined for 7.18, but not implemented
@@ -62,6 +63,15 @@
 
 #define FUSE_KERNEL_MAJOR_FALLBACK 7
 #define FUSE_KERNEL_MINOR_FALLBACK 12
+=======
+/** Minor version number of this interface */
+#ifdef POSIXACLS
+#define FUSE_KERNEL_MINOR_VERSION 12
+#define FUSE_KERNEL_MINOR_FALLBACK 8
+#else
+#define FUSE_KERNEL_MINOR_VERSION 8
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 /** The node ID of the root inode */
 #define FUSE_ROOT_ID 1
@@ -90,7 +100,13 @@ struct fuse_attr {
 	__u32	uid;
 	__u32	gid;
 	__u32	rdev;
+<<<<<<< HEAD
 	__u64 filling; /* JPA needed for minor >= 12, but meaning unknown */
+=======
+#ifdef POSIXACLS
+	__u64 filling; /* JPA needed for minor >= 12, but meaning unknown */
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 };
 
 struct fuse_kstatfs {
@@ -137,13 +153,19 @@ struct fuse_file_lock {
  * INIT request/reply flags
  * FUSE_BIG_WRITES: allow big writes to be issued to the file system
  * FUSE_DONT_MASK: don't apply umask to file mode on create operations
+<<<<<<< HEAD
  * FUSE_HAS_IOCTL_DIR: kernel supports ioctl on directories
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  */
 #define FUSE_ASYNC_READ		(1 << 0)
 #define FUSE_POSIX_LOCKS	(1 << 1)
 #define FUSE_BIG_WRITES		(1 << 5)
 #define FUSE_DONT_MASK		(1 << 6)
+<<<<<<< HEAD
 #define FUSE_HAS_IOCTL_DIR	(1 << 11)
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 /**
  * Release flags
@@ -187,7 +209,10 @@ enum fuse_opcode {
 	FUSE_INTERRUPT     = 36,
 	FUSE_BMAP          = 37,
 	FUSE_DESTROY       = 38,
+<<<<<<< HEAD
 	FUSE_IOCTL         = 39,
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 };
 
 /* The read buffer is required to be at least 8k, but may be much larger */
@@ -223,8 +248,15 @@ struct fuse_attr_out {
 struct fuse_mknod_in {
 	__u32	mode;
 	__u32	rdev;
+<<<<<<< HEAD
 	__u32	umask;
 	__u32	padding;
+=======
+#ifdef POSIXACLS
+	__u32	umask;
+	__u32	padding;
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 };
 
 struct fuse_mkdir_in {
@@ -261,14 +293,29 @@ struct fuse_setattr_in {
 
 struct fuse_open_in {
 	__u32	flags;
+<<<<<<< HEAD
 	__u32	mode; /* unused for protocol < 7.12 */
+=======
+#ifdef POSIXACLS
+	__u32	unused;
+#else
+	__u32	mode;
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 };
 
 struct fuse_create_in {
 	__u32	flags;
 	__u32	mode;
+<<<<<<< HEAD
 	__u32	umask;
 	__u32	padding;
+=======
+#ifdef POSIXACLS
+	__u32	umask;
+	__u32	padding;
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 };
 
 struct fuse_open_out {
@@ -305,9 +352,17 @@ struct fuse_write_in {
 	__u64	offset;
 	__u32	size;
 	__u32	write_flags;
+<<<<<<< HEAD
 	__u64	lock_owner; /* JPA */
 	__u32	flags; /* JPA */
 	__u32	padding; /* JPA */
+=======
+#ifdef POSIXACLS
+	__u64	lock_owner; /* JPA */
+	__u32	flags; /* JPA */
+	__u32	padding; /* JPA */
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 };
 
 struct fuse_write_out {
@@ -387,6 +442,7 @@ struct fuse_bmap_out {
 	__u64	block;
 };
 
+<<<<<<< HEAD
 struct fuse_ioctl_in {
 	__u64	fh;
 	__u32	flags;
@@ -408,6 +464,8 @@ struct fuse_ioctl_out {
 	__u32	out_iovs;
 };
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 struct fuse_in_header {
 	__u32	len;
 	__u32	opcode;

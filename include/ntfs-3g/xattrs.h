@@ -39,7 +39,10 @@ enum SYSTEMXATTRS {
 	XATTR_NTFS_TIMES_BE,
 	XATTR_NTFS_CRTIME,
 	XATTR_NTFS_CRTIME_BE,
+<<<<<<< HEAD
 	XATTR_NTFS_EA,
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	XATTR_POSIX_ACC, 
 	XATTR_POSIX_DEF
 } ;

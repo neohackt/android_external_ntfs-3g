@@ -1,8 +1,12 @@
 /*
  * device.h - Exports for low level device io. Originated from the Linux-NTFS project.
  *
+<<<<<<< HEAD
  * Copyright (c) 2000-2013 Anton Altaparmakov
  * Copyright (c) 2008-2013 Tuxera Inc.
+=======
+ * Copyright (c) 2000-2006 Anton Altaparmakov
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *
  * This program/include file is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as published
@@ -74,11 +78,14 @@ typedef enum {
  *
  * The ntfs device structure defining all operations needed to access the low
  * level device underlying the ntfs volume.
+<<<<<<< HEAD
  *
  * Note d_heads and d_sectors_per_track are only set as a result of a call to
  * either ntfs_device_heads_get() or ntfs_device_sectors_per_track_get() (both
  * calls will set up both fields or if getting them failed they will be left at
  * -1).
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  */
 struct ntfs_device {
 	struct ntfs_device_operations *d_ops;	/* Device operations. */
@@ -86,10 +93,13 @@ struct ntfs_device {
 	char *d_name;				/* Name of device. */
 	void *d_private;			/* Private data used by the
 						   device operations. */
+<<<<<<< HEAD
 	int d_heads;				/* Disk geometry: number of
 						   heads or -1. */
 	int d_sectors_per_track;		/* Disk geometry: number of
 						   sectors per track or -1. */
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 };
 
 struct stat;

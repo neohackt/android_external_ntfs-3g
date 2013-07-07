@@ -5,7 +5,10 @@
  * Copyright (c) 2004-2005 Holger Ohmacht
  * Copyright (c) 2005      Anton Altaparmakov
  * Copyright (c) 2007      Yura Pakhuchiy
+<<<<<<< HEAD
  * Copyright (c) 2013-2014 Jean-Pierre Andre
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *
  * This utility will recover deleted files from an NTFS volume.
  *
@@ -69,18 +72,25 @@
 #ifdef HAVE_UTIME_H
 #include <utime.h>
 #endif
+<<<<<<< HEAD
 #ifdef HAVE_REGEX_H
 #include <regex.h>
 #endif
+=======
+#include <regex.h>
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 #if !defined(REG_NOERROR) || (REG_NOERROR != 0)
 #define REG_NOERROR 0
 #endif
 
+<<<<<<< HEAD
 #ifndef REG_NOMATCH
 #define REG_NOMATCH 1
 #endif
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 #include "ntfsundelete.h"
 #include "bootsect.h"
 #include "mft.h"
@@ -95,6 +105,7 @@
 #include "logging.h"
 #include "misc.h"
 
+<<<<<<< HEAD
 #ifdef HAVE_WINDOWS_H
 /*
  *		Replacements for functions which do not exist on Windows
@@ -102,6 +113,8 @@
 #define ftruncate(fd, size) ntfs_win32_ftruncate(fd, size)
 #endif
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 static const char *EXEC_NAME = "ntfsundelete";
 static const char *MFTFILE   = "mft";
 static const char *UNNAMED   = "<unnamed>";
@@ -120,6 +133,7 @@ static short	avoid_duplicate_printing;	/* Flag  No duplicate printing of file in
 static range	*ranges;			/* Array containing all Inode-Ranges for undelete */
 static long	nr_entries;			/* Number of range entries */
 
+<<<<<<< HEAD
 #ifdef HAVE_WINDOWS_H
 /*
  *		Replacement for strftime() on Windows
@@ -271,6 +285,8 @@ static void regfree(regex_t *re)
 
 #endif
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /**
  * parse_inode_arg - parses the inode expression
  *
@@ -391,8 +407,12 @@ static void version(void)
 	ntfs_log_info("Copyright (c) 2002-2005 Richard Russon\n"
 			"Copyright (c) 2004-2005 Holger Ohmacht\n"
 			"Copyright (c) 2005      Anton Altaparmakov\n"
+<<<<<<< HEAD
 			"Copyright (c) 2007      Yura Pakhuchiy\n"
 			"Copyright (c) 2013-2014 Jean-Pierre Andre\n");
+=======
+			"Copyright (c) 2007      Yura Pakhuchiy\n");
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ntfs_log_info("\n%s\n%s%s\n", ntfs_gpl, ntfs_bugs, ntfs_home);
 }
 
@@ -458,10 +478,14 @@ static void usage(void)
 static int transform(const char *pattern, char **regex)
 {
 	char *result;
+<<<<<<< HEAD
 	int length, i;
 #ifdef HAVE_REGEX_H
 	int j;
 #endif
+=======
+	int length, i, j;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (!pattern || !regex)
 		return 0;
@@ -483,7 +507,10 @@ static int transform(const char *pattern, char **regex)
 		return 0;
 	}
 
+<<<<<<< HEAD
 #ifdef HAVE_REGEX_H
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	result[0] = '^';
 
 	for (i = 0, j = 1; pattern[i]; i++, j++) {
@@ -506,9 +533,12 @@ static int transform(const char *pattern, char **regex)
 	result[j+1] = 0;
 	ntfs_log_debug("Pattern '%s' replaced with regex '%s'.\n", pattern,
 			result);
+<<<<<<< HEAD
 #else
 	strcpy(result, pattern);
 #endif
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	*regex = result;
 	return 1;
@@ -680,6 +710,7 @@ static int parse_options(int argc, char *argv[])
 			opts.force++;
 			break;
 		case 'h':
+<<<<<<< HEAD
 			help++;
 			break;
 		case '?':
@@ -687,6 +718,12 @@ static int parse_options(int argc, char *argv[])
 				break;
 			ntfs_log_error("Unknown option '%s'.\n", argv[optind-1]);
 			err++;
+=======
+		case '?':
+			if (ntfs_log_parse_option (argv[optind-1]))
+				break;
+			help++;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			break;
 		case 'i':
 			end = NULL;
@@ -881,8 +918,12 @@ static int parse_options(int argc, char *argv[])
 	if (help || err)
 		usage();
 
+<<<<<<< HEAD
 		/* tri-state 0 : done, 1 : error, -1 : proceed */
 	return (err ? 1 : (help || ver ? 0 : -1));
+=======
+	return (!err && !help && !ver);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -1337,7 +1378,10 @@ static struct ufile * read_record(ntfs_volume *vol, long long record)
 	ATTR_RECORD *attr10, *attr20, *attr90;
 	struct ufile *file;
 	ntfs_attr *mft;
+<<<<<<< HEAD
 	u32 log_levels;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (!vol)
 		return NULL;
@@ -1376,8 +1420,11 @@ static struct ufile * read_record(ntfs_volume *vol, long long record)
 	ntfs_attr_close(mft);
 	mft = NULL;
 
+<<<<<<< HEAD
 	/* disable errors logging, while examining suspicious records */
 	log_levels = ntfs_log_clear_levels(NTFS_LOG_LEVEL_PERROR);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	attr10 = find_first_attribute(AT_STANDARD_INFORMATION,	file->mft);
 	attr20 = find_first_attribute(AT_ATTRIBUTE_LIST,	file->mft);
 	attr90 = find_first_attribute(AT_INDEX_ROOT,		file->mft);
@@ -1402,8 +1449,11 @@ static struct ufile * read_record(ntfs_volume *vol, long long record)
 	if (get_data(file, vol) < 0) {
 		ntfs_log_error("ERROR: Couldn't get data streams.\n");
 	}
+<<<<<<< HEAD
 	/* restore errors logging */
 	ntfs_log_set_levels(log_levels);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	return file;
 }
@@ -1662,7 +1712,11 @@ static void dump_record(struct ufile *file)
  *
  * Print a one line description of a file.
  *
+<<<<<<< HEAD
  *   Inode    Flags  %age     Date  Time        Size  Filename
+=======
+ *   Inode    Flags  %age  Date            Size  Filename
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *
  * The output will contain the file's inode number (MFT Record), some flags,
  * the percentage of the file that is recoverable, the last modification date,
@@ -1689,7 +1743,11 @@ static void list_record(struct ufile *file)
 
 	char flagd = '.', flagr = '.', flagc = '.', flagx = '.';
 
+<<<<<<< HEAD
 	strftime(buffer, sizeof(buffer), "%F %R", localtime(&file->date));
+=======
+	strftime(buffer, sizeof(buffer), "%F", localtime(&file->date));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (file->attr_list)
 		flagx = '!';
@@ -1755,11 +1813,15 @@ static int name_match(regex_t *re, struct ufile *file)
 
 		if (!f->name)
 			continue;
+<<<<<<< HEAD
 #ifdef HAVE_REGEX_H
 		result = regexec(re, f->name, 0, NULL, 0);
 #else
 		result = regexec(re, f->uname, f->uname_len, NULL, 0);
 #endif
+=======
+		result = regexec(re, f->name, 0, NULL, 0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (result < 0) {
 			ntfs_log_perror("Couldn't compare filename with regex");
 			return 0;
@@ -1873,9 +1935,12 @@ static int open_file(const char *pathname)
 		flags = O_RDWR | O_CREAT | O_TRUNC;
 	else
 		flags = O_RDWR | O_CREAT | O_EXCL;
+<<<<<<< HEAD
 #ifdef HAVE_WINDOWS_H
 	flags ^= O_BINARY | O_RDWR | O_WRONLY;
 #endif
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	return open(pathname, flags, S_IRUSR | S_IWUSR);
 }
@@ -2184,8 +2249,12 @@ static int scan_disk(ntfs_volume *vol)
 	ntfs_attr *attr;
 	long long size;
 	long long bmpsize;
+<<<<<<< HEAD
 	long long i;
 	int j, k, b;
+=======
+	int i, j, k, b;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	int percent;
 	struct ufile *file;
 	regex_t re;
@@ -2198,7 +2267,10 @@ static int scan_disk(ntfs_volume *vol)
 		ntfs_log_perror("ERROR: Couldn't open $MFT/$BITMAP");
 		return -1;
 	}
+<<<<<<< HEAD
 	NVolSetNoFixupWarn(vol);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	bmpsize = attr->initialized_size;
 
 	buffer = malloc(BUFSIZE);
@@ -2217,17 +2289,25 @@ static int scan_disk(ntfs_volume *vol)
 			ntfs_log_error("ERROR: Couldn't create a regex.\n");
 			goto out;
 		}
+<<<<<<< HEAD
 #ifndef HAVE_REGEX_H
 		re->upcase = vol->upcase;
 		re->upcase_len = vol->upcase_len;
 #endif
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 
 	nr_mft_records = vol->mft_na->initialized_size >>
 			vol->mft_record_size_bits;
 
+<<<<<<< HEAD
 	ntfs_log_quiet("Inode    Flags  %%age     Date    Time       Size  Filename\n");
 	ntfs_log_quiet("-----------------------------------------------------------------------\n");
+=======
+	ntfs_log_quiet("Inode    Flags  %%age  Date           Size  Filename\n");
+	ntfs_log_quiet("---------------------------------------------------------------\n");
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	for (i = 0; i < bmpsize; i += BUFSIZE) {
 		long long read_count = min((bmpsize - i), BUFSIZE);
 		size = ntfs_attr_pread(attr, i, read_count, buffer);
@@ -2243,8 +2323,12 @@ static int scan_disk(ntfs_volume *vol)
 					continue;
 				file = read_record(vol, (i+j)*8+k);
 				if (!file) {
+<<<<<<< HEAD
 					ntfs_log_error("Couldn't read MFT Record %lld.\n",
 							(long long)(i+j)*8+k);
+=======
+					ntfs_log_error("Couldn't read MFT Record %d.\n", (i+j)*8+k);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					continue;
 				}
 
@@ -2290,7 +2374,10 @@ out:
 	if (opts.match)
 		regfree(&re);
 	free(buffer);
+<<<<<<< HEAD
 	NVolClearNoFixupWarn(vol);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (attr)
 		ntfs_attr_close(attr);
 	return results;
@@ -2358,7 +2445,11 @@ static int copy_mft(ntfs_volume *vol, long long mft_begin, long long mft_end)
 	mft_end = min(mft_end, nr_mft_records - 1);
 
 	ntfs_log_debug("MFT records:\n");
+<<<<<<< HEAD
 	ntfs_log_debug("\tTotal: %8lld\n", (long long)nr_mft_records);
+=======
+	ntfs_log_debug("\tTotal: %8lld\n", nr_mft_records);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ntfs_log_debug("\tBegin: %8lld\n", mft_begin);
 	ntfs_log_debug("\tEnd:   %8lld\n", mft_end);
 
@@ -2446,8 +2537,12 @@ int main(int argc, char *argv[])
 	with_regex = 0;
 	avoid_duplicate_printing = 0;
 
+<<<<<<< HEAD
 	result = parse_options(argc, argv);
 	if (result >= 0)
+=======
+	if (!parse_options(argc, argv))
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		goto free;
 
 	utils_set_locale();

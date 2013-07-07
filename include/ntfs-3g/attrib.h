@@ -61,8 +61,12 @@ typedef enum {
 typedef enum {			/* ways of processing holes when expanding */
 	HOLES_NO,
 	HOLES_OK,
+<<<<<<< HEAD
 	HOLES_DELAY,
 	HOLES_NONRES
+=======
+	HOLES_DELAY
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 } hole_type;
 
 /**
@@ -211,7 +215,10 @@ typedef enum {
 	NA_FullyMapped,		/* 1: Attribute has been fully mapped */
 	NA_DataAppending,	/* 1: Attribute is being appended to */
 	NA_ComprClosing,	/* 1: Compressed attribute is being closed */
+<<<<<<< HEAD
 	NA_RunlistDirty,	/* 1: Runlist has been updated */
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 } ntfs_attr_state_bits;
 
 #define  test_nattr_flag(na, flag)	 test_bit(NA_##flag, (na)->state)
@@ -238,10 +245,13 @@ typedef enum {
 #define NAttrSetDataAppending(na)	set_nattr_flag(na, DataAppending)
 #define NAttrClearDataAppending(na)	clear_nattr_flag(na, DataAppending)
 
+<<<<<<< HEAD
 #define NAttrRunlistDirty(na)		test_nattr_flag(na, RunlistDirty)
 #define NAttrSetRunlistDirty(na)	set_nattr_flag(na, RunlistDirty)
 #define NAttrClearRunlistDirty(na)	clear_nattr_flag(na, RunlistDirty)
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 #define NAttrComprClosing(na)		test_nattr_flag(na, ComprClosing)
 #define NAttrSetComprClosing(na)	set_nattr_flag(na, ComprClosing)
 #define NAttrClearComprClosing(na)	clear_nattr_flag(na, ComprClosing)
@@ -396,8 +406,11 @@ extern int ntfs_attr_data_read(ntfs_inode *ni,
 extern int ntfs_attr_data_write(ntfs_inode *ni,
 		ntfschar *stream_name, int stream_name_len,
 		const char *buf, size_t size, off_t offset);
+<<<<<<< HEAD
 extern int ntfs_attr_shrink_size(ntfs_inode *ni, ntfschar *stream_name,
 		int stream_name_len, off_t offset);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 #endif /* defined _NTFS_ATTRIB_H */
 

@@ -38,10 +38,13 @@ Treat
 .I destination
 as inode number.
 .TP
+<<<<<<< HEAD
 \fB\-m\fR, \fB\-\-min-fragments\fR
 Minimize fragmentation when allocating space to the attribute. This is
 mostly useful when creating big files.
 .TP
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 \fB\-N\fR, \fB\-\-attr\-name\fR NAME
 Write to attribute with this name.
 .TP

@@ -2,7 +2,11 @@
  *               Windows to Linux user mapping for ntfs-3g
  *
  * 
+<<<<<<< HEAD
  * Copyright (c) 2007-2014 Jean-Pierre Andre
+=======
+ * Copyright (c) 2007-2008 Jean-Pierre Andre
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *
  *    A quick'n dirty program scanning owners of files in
  *      "c:\Documents and Settings" (and "c:\Users")
@@ -41,6 +45,7 @@
  *     - avoided selecting DOS names on Linux
  *
  *  Nov 2009 Version 1.1.3
+<<<<<<< HEAD
  *     - silenced compiler warnings for unused parameters
  *
  *  Jan 2010 Version 1.1.4
@@ -51,6 +56,12 @@
  *
  *  May 2014 Version 1.1.6
  *     - fixed a wrong function header
+=======
+ *     - shutdown compiler warnings for unused parameters
+ *
+ *  Jan 2010 Version 1.1.4
+ *     - fixed compilation problems for Mac OSX (Erik Larsson)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  */
 
 /*
@@ -89,7 +100,11 @@
 #define INIT_FILE_SECURITY "ntfs_initialize_file_security"
 #define LEAVE_FILE_SECURITY "ntfs_leave_file_security"
 
+<<<<<<< HEAD
 #define VERSION "1.1.6"
+=======
+#define VERSION "1.1.4"
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 #define MAPDIR ".NTFS-3G"
 #define MAPFILE "UserMapping"
 #define MAXATTRSZ 2048
@@ -175,7 +190,11 @@ BOOL ntfs_set_file_security(void *scapi,
 BOOL ntfs_read_directory(void *scapi,
 		const char *path, dircallback callback, void *context);
 void *ntfs_initialize_file_security(const char *device,
+<<<<<<< HEAD
                                 unsigned long flags);
+=======
+                                int flags);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 BOOL ntfs_leave_file_security(void *scapi);
 
 #else
@@ -190,7 +209,11 @@ BOOL (*ntfs_set_file_security)(void *scapi,
 BOOL (*ntfs_read_directory)(void *scapi,
 		const char *path, dircallback callback, void *context);
 void *(*ntfs_initialize_file_security)(const char *device,
+<<<<<<< HEAD
                                 unsigned long flags);
+=======
+                                int flags);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 BOOL (*ntfs_leave_file_security)(void *scapi);
 
 #endif
@@ -478,7 +501,11 @@ STATIC unsigned char *makegroupsid(const unsigned char *sid)
 }
 
 STATIC void domapping(const char *accname, const char *filename,
+<<<<<<< HEAD
 		const char *dir, const unsigned char *sid, int type)
+=======
+		const unsigned char *sid, int type)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 {
 	char buf[81];
 	char *sidstr;
@@ -505,8 +532,11 @@ STATIC void domapping(const char *accname, const char *filename,
 				printf("\n");
 				if (accname)
 					printf("Under Windows login \"%s\"\n", accname);
+<<<<<<< HEAD
 				if (dir)
 					printf("   in directory \"%s\"\n",dir);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				printf("   file \"%s\" has no mapped %s\n",
 					       filename,(type ? "group" : "owner"));
 				printf("By which Linux login should this file be owned ?\n");
@@ -586,8 +616,12 @@ STATIC void listaclusers(const char *accname, const unsigned char *attr, int off
 	cnt = get2l(attr, off + 4);
 	x = 8;
 	for (i = 0; i < cnt; i++) {
+<<<<<<< HEAD
 		domapping(accname, (char *)NULL, (char*)NULL, 
                                        &attr[off + x + 8], 2);
+=======
+		domapping(accname, (char *)NULL, &attr[off + x + 8], 2);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		x += get2l(attr, off + x + 2);
 	}
 }
@@ -611,12 +645,20 @@ STATIC void account(const char *accname, const char *dir, const char *name, int 
 			if (GetFileSecurity
 			    (fullname, OWNER_SECURITY_INFORMATION, attr, MAXATTRSZ,
 			     &attrsz)) {
+<<<<<<< HEAD
 				domapping(accname, name, dir, &attr[20], 0);
+=======
+				domapping(accname, name, &attr[20], 0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				attrsz = 0;
 				if (GetFileSecurity
 				    (fullname, GROUP_SECURITY_INFORMATION, attr,
 				     MAXATTRSZ, &attrsz))
+<<<<<<< HEAD
 					domapping(accname, name, dir, &attr[20], 1);
+=======
+					domapping(accname, name, &attr[20], 1);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				else
 					printf("   No group SID\n");
 				attrsz = 0;
@@ -650,12 +692,20 @@ STATIC void account(const char *accname, const char *dir, const char *name, int 
 		if (ntfs_get_file_security(ntfs_context,
 			fullname, OWNER_SECURITY_INFORMATION,
 			(char*)attr, MAXATTRSZ, &attrsz)) {
+<<<<<<< HEAD
 			domapping(accname, name, dir, &attr[20], 0);
+=======
+			domapping(accname, name, &attr[20], 0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			attrsz = 0;
 			if (ntfs_get_file_security(ntfs_context,
 			     fullname, GROUP_SECURITY_INFORMATION,
 			     (char*)attr, MAXATTRSZ, &attrsz))
+<<<<<<< HEAD
 				domapping(accname, name, dir, &attr[20], 1);
+=======
+				domapping(accname, name, &attr[20], 1);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			else
 				printf("   No group SID\n");
 			attrsz = 0;
@@ -1353,9 +1403,12 @@ int main(int argc, char *argv[])
 			ok = process(argc,argv);
 			if (!close_security_api()) ok = DENIED;
 		}
+<<<<<<< HEAD
 		else {
 			ok = DENIED;
 		}
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 #endif
 	} else
 		ok = DENIED;

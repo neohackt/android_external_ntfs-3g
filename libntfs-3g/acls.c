@@ -4,7 +4,11 @@
  *	This module is part of ntfs-3g library, but may also be
  *	integrated in tools running over Linux or Windows
  *
+<<<<<<< HEAD
  * Copyright (c) 2007-2015 Jean-Pierre Andre
+=======
+ * Copyright (c) 2007-2012 Jean-Pierre Andre
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *
  * This program/include file is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as published
@@ -136,8 +140,11 @@ static const char worldsidbytes[] = {
 		0, 0, 0, 0	/* 1st level */
 } ;
 
+<<<<<<< HEAD
 const SID *worldsid = (const SID*)worldsidbytes;
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /*
  *		SID for authenticated user (S-1-5-11)
  */
@@ -151,6 +158,11 @@ static const char authsidbytes[] = {
 	        
 static const SID *authsid = (const SID*)authsidbytes;
 
+<<<<<<< HEAD
+=======
+const SID *worldsid = (const SID*)worldsidbytes;
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /*
  *		SID for administrator
  */
@@ -230,11 +242,15 @@ BOOL ntfs_same_sid(const SID *first, const SID *second)
 
 /*
  *		Test whether a SID means "world user"
+<<<<<<< HEAD
  *	Local users group recognized as world
  *	Also interactive users so that /Users/Public is world accessible,
  *	but only if Posix ACLs are not enabled (if Posix ACLs are enabled,
  *	access to /Users/Public should be done by defining interactive users
  *	as a mapped group.)
+=======
+ *	Local users group also recognized as world
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  */
 
 static int is_world_sid(const SID * usid)
@@ -258,6 +274,7 @@ static int is_world_sid(const SID * usid)
 	    && (usid->identifier_authority.high_part ==  const_cpu_to_be16(0))
 	    && (usid->identifier_authority.low_part ==  const_cpu_to_be32(5))
 	    && (usid->sub_authority[0] == const_cpu_to_le32(11)))
+<<<<<<< HEAD
 
 #if !POSIXACLS
 	     /* check whether S-1-5-4 : interactive user */
@@ -266,6 +283,8 @@ static int is_world_sid(const SID * usid)
 	    && (usid->identifier_authority.low_part ==  const_cpu_to_be32(5))
 	    && (usid->sub_authority[0] == const_cpu_to_le32(4)))
 #endif /* !POSIXACLS */
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		);
 }
 
@@ -284,6 +303,7 @@ BOOL ntfs_is_user_sid(const SID *usid)
 }
 
 /*
+<<<<<<< HEAD
  *		Test whether a SID means "some special group"
  *	Currently we only check for a few S-1-5-n but we should
  *	probably test for other configurations.
@@ -303,6 +323,8 @@ static BOOL ntfs_known_group_sid(const SID *usid)
 }
 
 /*
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *		Determine the size of a security attribute
  *	whatever the order of fields
  */
@@ -362,6 +384,7 @@ unsigned int ntfs_attr_size(const char *attr)
 	return (attrsz);
 }
 
+<<<<<<< HEAD
 /**
  * ntfs_valid_sid - determine if a SID is valid
  * @sid:	SID for which to determine if it is valid
@@ -374,6 +397,18 @@ BOOL ntfs_valid_sid(const SID *sid)
 {
 	return sid && sid->revision == SID_REVISION &&
 		sid->sub_authority_count <= SID_MAX_SUB_AUTHORITIES;
+=======
+/*
+ *		Do sanity checks on a SID read from storage
+ *	(just check revision and number of authorities)
+ */
+
+BOOL ntfs_valid_sid(const SID *sid)
+{
+	return ((sid->revision == SID_REVISION)
+		&& (sid->sub_authority_count >= 1)
+		&& (sid->sub_authority_count <= 8));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /*
@@ -672,7 +707,11 @@ BOOL ntfs_valid_descr(const char *securattr, unsigned int attrsz)
 		&& ((offgroup + 2) < attrsz)
 		&& (!offdacl
 			|| ((offdacl >= sizeof(SECURITY_DESCRIPTOR_RELATIVE))
+<<<<<<< HEAD
 			    && (offdacl+sizeof(ACL) <= attrsz)))
+=======
+			    && (offdacl+sizeof(ACL) < attrsz)))
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		&& (!offsacl
 			|| ((offsacl >= sizeof(SECURITY_DESCRIPTOR_RELATIVE))
 			    && (offsacl+sizeof(ACL) <= attrsz)))
@@ -731,10 +770,15 @@ int ntfs_inherit_acl(const ACL *oldacl, ACL *newacl,
 	const ACCESS_ALLOWED_ACE *poldace;
 	ACCESS_ALLOWED_ACE *pnewace;
 	ACCESS_ALLOWED_ACE *pauthace;
+<<<<<<< HEAD
 	ACCESS_ALLOWED_ACE *pownerace;
 
 	pauthace = (ACCESS_ALLOWED_ACE*)NULL;
 	pownerace = (ACCESS_ALLOWED_ACE*)NULL;
+=======
+
+	pauthace = (ACCESS_ALLOWED_ACE*)NULL;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	usidsz = ntfs_sid_size(usid);
 	gsidsz = ntfs_sid_size(gsid);
 
@@ -752,6 +796,7 @@ int ntfs_inherit_acl(const ACL *oldacl, ACL *newacl,
 		poldace = (const ACCESS_ALLOWED_ACE*)((const char*)oldacl + src);
 		acesz = le16_to_cpu(poldace->size);
 		src += acesz;
+<<<<<<< HEAD
 		/*
 		 * Extract inheritance for access, including inheritance for
 		 * access from an ACE with is both applied and inheritable.
@@ -770,6 +815,14 @@ int ntfs_inherit_acl(const ACL *oldacl, ACL *newacl,
 			|| (poldace->flags & NO_PROPAGATE_INHERIT_ACE)
 			|| (poldace->mask & (GENERIC_ALL | GENERIC_READ
 					| GENERIC_WRITE | GENERIC_EXECUTE)))
+=======
+			/*
+			 * Inheritance for access, unless this is inheriting
+			 * an inherited ACL to a directory.
+			 */
+		if ((poldace->flags & selection)
+		    && !(fordir && inherited)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		    && !ntfs_same_sid(&poldace->sid, ownersid)
 		    && !ntfs_same_sid(&poldace->sid, groupsid)) {
 			pnewace = (ACCESS_ALLOWED_ACE*)
@@ -792,7 +845,11 @@ int ntfs_inherit_acl(const ACL *oldacl, ACL *newacl,
 							| FILE_READ
 							| FILE_WRITE
 							| FILE_EXEC
+<<<<<<< HEAD
 							| const_cpu_to_le32(0x40);
+=======
+							| cpu_to_le32(0x40);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			}
 				/* reencode GENERIC_READ (+ EXECUTE) */
 			if (pnewace->mask & GENERIC_READ) {
@@ -832,7 +889,12 @@ int ntfs_inherit_acl(const ACL *oldacl, ACL *newacl,
 			 * Group similar ACE for authenticated users
 			 * (should probably be done for other SIDs)
 			 */
+<<<<<<< HEAD
 			if ((poldace->type == ACCESS_ALLOWED_ACE_TYPE)
+=======
+			if (!fordir
+			    && (poldace->type == ACCESS_ALLOWED_ACE_TYPE)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			    && ntfs_same_sid(&poldace->sid, authsid)) {
 				if (pauthace) {
 					pauthace->flags |= pnewace->flags;
@@ -875,6 +937,7 @@ int ntfs_inherit_acl(const ACL *oldacl, ACL *newacl,
 						| INHERIT_ONLY_ACE);
 				if (inherited)
 					pnewace->flags |= INHERITED_ACE;
+<<<<<<< HEAD
 				if ((pnewace->type == ACCESS_ALLOWED_ACE_TYPE)
 				    && pownerace
 				    && !(pnewace->flags & ~pownerace->flags)) {
@@ -883,6 +946,10 @@ int ntfs_inherit_acl(const ACL *oldacl, ACL *newacl,
 					dst += usidsz + 8;
 					newcnt++;
 				}
+=======
+				dst += usidsz + 8;
+				newcnt++;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			}
 			if (ntfs_same_sid(&pnewace->sid, groupsid)) {
 				memcpy(&pnewace->sid, gsid, gsidsz);
@@ -898,18 +965,23 @@ int ntfs_inherit_acl(const ACL *oldacl, ACL *newacl,
 			}
 		}
 
+<<<<<<< HEAD
 			/*
 			 * inheritance for further inheritance
 			 *
 			 * Situations leading to output CONTAINER_INHERIT_ACE
 			 * 	or OBJECT_INHERIT_ACE
 			 */
+=======
+			/* inheritance for further inheritance */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (fordir
 		   && (poldace->flags
 			   & (CONTAINER_INHERIT_ACE | OBJECT_INHERIT_ACE))) {
 			pnewace = (ACCESS_ALLOWED_ACE*)
 					((char*)newacl + dst);
 			memcpy(pnewace,poldace,acesz);
+<<<<<<< HEAD
 			if ((poldace->flags & OBJECT_INHERIT_ACE)
 			   && !(poldace->flags & (CONTAINER_INHERIT_ACE
 					| NO_PROPAGATE_INHERIT_ACE)))
@@ -944,6 +1016,10 @@ int ntfs_inherit_acl(const ACL *oldacl, ACL *newacl,
 			    && ntfs_same_sid(&poldace->sid, usid)) {
 				pownerace = pnewace;
 			}
+=======
+			if (inherited)
+				pnewace->flags |= INHERITED_ACE;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			dst += acesz;
 			newcnt++;
 		}
@@ -1306,6 +1382,7 @@ struct POSIX_SECURITY *ntfs_replace_acl(const struct POSIX_SECURITY *oldpxdesc,
 }
 
 /*
+<<<<<<< HEAD
  *		Build a basic Posix ACL from a mode and umask,
  *	ignoring inheritance from the parent directory
  */
@@ -1345,6 +1422,8 @@ struct POSIX_SECURITY *ntfs_build_basic_posix(
 }
 
 /*
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *		Build an inherited Posix descriptor from parent
  *	descriptor (if any) restricted to creation mode
  *
@@ -2316,6 +2395,7 @@ return (0);
 					mapping,flags,pxace,pset);
 			break;
 
+<<<<<<< HEAD
 		case POSIX_ACL_GROUP_OBJ :
 			/* denials and grants for group when needed */
 			if (pset->groupowns && !pset->adminowns
@@ -2331,6 +2411,12 @@ return (0);
 		case POSIX_ACL_GROUP :
 
 			/* denials and grants for designated groups */
+=======
+		case POSIX_ACL_GROUP :
+		case POSIX_ACL_GROUP_OBJ :
+
+			/* denials and grants for groups */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 			ok = build_group_denials_grant(pacl,gsid,
 					mapping,flags,pxace,pset);
@@ -2587,6 +2673,10 @@ static int buildacls(char *secattr, int offs, mode_t mode, int isdir,
 	/* this ACE will be inserted after denials for group */
 
 	if (adminowns
+<<<<<<< HEAD
+=======
+	    || groupowns
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	    || (((mode >> 3) ^ mode) & 7)) {
 		grants = WORLD_RIGHTS;
 		if (isdir) {
@@ -4182,8 +4272,12 @@ static SID *encodesid(const char *sidstr)
 			cnt++;
 		}
 		bsid->sub_authority_count = cnt;
+<<<<<<< HEAD
 		if ((cnt > 0) && ntfs_valid_sid(bsid)
 		    && (ntfs_is_user_sid(bsid) || ntfs_known_group_sid(bsid))) {
+=======
+		if ((cnt > 0) && ntfs_valid_sid(bsid) && ntfs_is_user_sid(bsid)) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			sid = (SID*) ntfs_malloc(4 * cnt + 8);
 			if (sid)
 				memcpy(sid, bsid, 4 * cnt + 8);
@@ -4392,12 +4486,15 @@ struct MAPPING *ntfs_do_user_mapping(struct MAPLIST *firstitem)
 		if (uid
 		   || (!item->uidstr[0] && !item->gidstr[0])) {
 			sid = encodesid(item->sidstr);
+<<<<<<< HEAD
 			if (sid && ntfs_known_group_sid(sid)) {
 				ntfs_log_error("Bad user SID %s\n",
 					item->sidstr);
 				free(sid);
 				sid = (SID*)NULL;
 			}
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (sid && !item->uidstr[0] && !item->gidstr[0]
 			    && !ntfs_valid_pattern(sid)) {
 				ntfs_log_error("Bad implicit SID pattern %s\n",
@@ -4490,6 +4587,7 @@ struct MAPPING *ntfs_do_group_mapping(struct MAPLIST *firstitem)
 					if (mapping) {
 						mapping->sid = sid;
 						mapping->xid = gid;
+<<<<<<< HEAD
 					/* special groups point to themselves */
 						if (ntfs_known_group_sid(sid)) {
 							mapping->groups =
@@ -4499,6 +4597,9 @@ struct MAPPING *ntfs_do_group_mapping(struct MAPLIST *firstitem)
 							mapping->grcnt = 0;
 
 
+=======
+						mapping->grcnt = 0;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 						mapping->next = (struct MAPPING*)NULL;
 						if (lastmapping)
 							lastmapping->next = mapping;

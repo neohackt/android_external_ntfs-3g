@@ -4,7 +4,11 @@
  * Copyright (c) 2005-2007 Yura Pakhuchiy
  * Copyright (c) 2005 Yuval Fledel
  * Copyright (c) 2006-2009 Szabolcs Szakacsits
+<<<<<<< HEAD
  * Copyright (c) 2007-2015 Jean-Pierre Andre
+=======
+ * Copyright (c) 2007-2012 Jean-Pierre Andre
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  * Copyright (c) 2009 Erik Larsson
  *
  * This file is originated from the Linux-NTFS project.
@@ -78,9 +82,13 @@
 
 #if defined(__APPLE__) || defined(__DARWIN__)
 #include <sys/dirent.h>
+<<<<<<< HEAD
 #elif defined(__sun) && defined (__SVR4)
 #include <sys/param.h>
 #endif /* defined(__APPLE__) || defined(__DARWIN__), ... */
+=======
+#endif /* defined(__APPLE__) || defined(__DARWIN__) */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 #include "compat.h"
 #include "attrib.h"
@@ -98,7 +106,10 @@
 #include "logging.h"
 #include "xattrs.h"
 #include "misc.h"
+<<<<<<< HEAD
 #include "ioctl.h"
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 #include "ntfs-3g_common.h"
 
@@ -171,7 +182,11 @@ static const char *usage_msg =
 "\n"
 "Copyright (C) 2005-2007 Yura Pakhuchiy\n"
 "Copyright (C) 2006-2009 Szabolcs Szakacsits\n"
+<<<<<<< HEAD
 "Copyright (C) 2007-2016 Jean-Pierre Andre\n"
+=======
+"Copyright (C) 2007-2012 Jean-Pierre Andre\n"
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 "Copyright (C) 2009 Erik Larsson\n"
 "\n"
 "Usage:    %s [-o option[,...]] <device|image_file> <mount_point>\n"
@@ -232,10 +247,17 @@ static void ntfs_fuse_update_times(ntfs_inode *ni, ntfs_time_update_flags mask)
 	if (ctx->atime == ATIME_DISABLED)
 		mask &= ~NTFS_UPDATE_ATIME;
 	else if (ctx->atime == ATIME_RELATIVE && mask == NTFS_UPDATE_ATIME &&
+<<<<<<< HEAD
 			(sle64_to_cpu(ni->last_access_time)
 				>= sle64_to_cpu(ni->last_data_change_time)) &&
 			(sle64_to_cpu(ni->last_access_time)
 				>= sle64_to_cpu(ni->last_mft_change_time)))
+=======
+			(le64_to_cpu(ni->last_access_time)
+				>= le64_to_cpu(ni->last_data_change_time)) &&
+			(le64_to_cpu(ni->last_access_time)
+				>= le64_to_cpu(ni->last_mft_change_time)))
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		return;
 	ntfs_inode_update_times(ni, mask);
 }
@@ -527,11 +549,16 @@ static int ntfs_fuse_parse_path(const char *org_path, char **path,
 		if (stream_name_mbs) {
 			*stream_name = NULL;
 			res = ntfs_mbstoucs(stream_name_mbs, stream_name);
+<<<<<<< HEAD
 			if (res < 0) {
 				free(*path);
 				*path = NULL;
 				return -errno;
 			}
+=======
+			if (res < 0)
+				return -errno;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			return res;
 		}
 	} else
@@ -568,7 +595,11 @@ static int ntfs_macfuse_getxtimes(const char *org_path,
 	}
 	
 	/* We have no backup timestamp in NTFS. */
+<<<<<<< HEAD
 	crtime->tv_sec = sle64_to_cpu(ni->creation_time);
+=======
+	crtime->tv_sec = ni->creation_time;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 exit:
 	if (ntfs_inode_close(ni))
 		set_fuse_error(&res);
@@ -590,7 +621,11 @@ int ntfs_macfuse_setcrtime(const char *path, const struct timespec *tv)
 		return -errno;
 	
 	if (tv) {
+<<<<<<< HEAD
 		ni->creation_time = cpu_to_sle64(tv->tv_sec);
+=======
+		ni->creation_time = tv->tv_sec;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		ntfs_fuse_update_times(ni, NTFS_UPDATE_CTIME);
 	}
 
@@ -632,7 +667,11 @@ int ntfs_macfuse_setchgtime(const char *path, const struct timespec *tv)
 		return -errno;
 
 	if (tv) {
+<<<<<<< HEAD
 		ni->last_mft_change_time = cpu_to_sle64(tv->tv_sec);
+=======
+		ni->last_mft_change_time = tv->tv_sec;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		ntfs_fuse_update_times(ni, 0);
 	}
 
@@ -642,6 +681,11 @@ int ntfs_macfuse_setchgtime(const char *path, const struct timespec *tv)
 }
 #endif /* defined(__APPLE__) || defined(__DARWIN__) */
 
+<<<<<<< HEAD
+=======
+#if defined(FUSE_CAP_DONT_MASK) || defined(FUSE_CAP_BIG_WRITES) \
+		|| (defined(__APPLE__) || defined(__DARWIN__))
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 static void *ntfs_init(struct fuse_conn_info *conn)
 {
 #if defined(__APPLE__) || defined(__DARWIN__)
@@ -657,11 +701,17 @@ static void *ntfs_init(struct fuse_conn_info *conn)
 			>= SAFE_CAPACITY_FOR_BIG_WRITES))
 		conn->want |= FUSE_CAP_BIG_WRITES;
 #endif
+<<<<<<< HEAD
 #ifdef FUSE_CAP_IOCTL_DIR
 	conn->want |= FUSE_CAP_IOCTL_DIR;
 #endif /* defined(FUSE_CAP_IOCTL_DIR) */
 	return NULL;
 }
+=======
+	return NULL;
+}
+#endif /* defined(FUSE_CAP_DONT_MASK) || (defined(__APPLE__) || defined(__DARWIN__)) */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 static int ntfs_fuse_getattr(const char *org_path, struct stat *stbuf)
 {
@@ -798,9 +848,15 @@ static int ntfs_fuse_getattr(const char *org_path, struct stat *stbuf)
 			 * Check whether it's Interix symbolic link, block or
 			 * character device.
 			 */
+<<<<<<< HEAD
 			if ((u64)na->data_size <= sizeof(INTX_FILE_TYPES)
 					+ sizeof(ntfschar) * PATH_MAX
 				&& (u64)na->data_size >
+=======
+			if ((size_t)na->data_size <= sizeof(INTX_FILE_TYPES)
+					+ sizeof(ntfschar) * PATH_MAX
+				&& (size_t)na->data_size >
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					sizeof(INTX_FILE_TYPES)
 				&& !stream_name_len) {
 				
@@ -902,7 +958,11 @@ exit:
 
 static int ntfs_fuse_readlink(const char *org_path, char *buf, size_t buf_size)
 {
+<<<<<<< HEAD
 	char *path = NULL;
+=======
+	char *path;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ntfschar *stream_name;
 	ntfs_inode *ni = NULL;
 	ntfs_attr *na = NULL;
@@ -1060,6 +1120,7 @@ static int ntfs_fuse_filler(ntfs_fuse_fill_context_t *fill_ctx,
 			memset(filename + MAXNAMLEN, 0, filenamelen - MAXNAMLEN);
 			ntfs_log_debug("   after: '%s'\n", filename);
 		}
+<<<<<<< HEAD
 #elif defined(__sun) && defined (__SVR4)
 		/*
 		 * Returning file names larger than MAXNAMELEN (256) bytes
@@ -1079,6 +1140,9 @@ static int ntfs_fuse_filler(ntfs_fuse_fill_context_t *fill_ctx,
 			ntfs_log_debug("   after: '%s'\n", filename);
 		}
 #endif /* defined(__APPLE__) || defined(__DARWIN__), ... */
+=======
+#endif /* defined(__APPLE__) || defined(__DARWIN__) */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	
 		ret = fill_ctx->filler(fill_ctx->buf, filename, &st, 0);
 	}
@@ -1339,8 +1403,13 @@ static int ntfs_fuse_write(const char *org_path, const char *buf, size_t size,
 	res = total;
 	if ((res > 0)
 	    && (!ctx->dmtime
+<<<<<<< HEAD
 		|| (sle64_to_cpu(ntfs_current_time())
 		     - sle64_to_cpu(ni->last_data_change_time)) > ctx->dmtime))
+=======
+		|| (le64_to_cpu(ntfs_current_time())
+		     - le64_to_cpu(ni->last_data_change_time)) > ctx->dmtime))
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		ntfs_fuse_update_times(na->ni, NTFS_UPDATE_MCTIME);
 exit:
 	if (na)
@@ -1511,12 +1580,17 @@ static int ntfs_fuse_chmod(const char *path,
 	if (ntfs_fuse_is_named_data_stream(path))
 		return -EINVAL; /* n/a for named data streams. */
 
+<<<<<<< HEAD
 		/*
 		 * Return unsupported if no user mapping has been defined
 		 * or enforcing Windows-type inheritance
 		 */
 	if (ctx->inherit
 	    || !ntfs_fuse_fill_security_context(&security)) {
+=======
+	  /* JPA return unsupported if no user mapping has been defined */
+	if (!ntfs_fuse_fill_security_context(&security)) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (ctx->silent)
 			res = 0;
 		else
@@ -1555,12 +1629,16 @@ static int ntfs_fuse_chown(const char *path, uid_t uid, gid_t gid)
 
 	if (ntfs_fuse_is_named_data_stream(path))
 		return -EINVAL; /* n/a for named data streams. */
+<<<<<<< HEAD
 		/*
 		 * Return unsupported if no user mapping has been defined
 		 * or enforcing Windows-type inheritance
 		 */
 	if (ctx->inherit
 	    || !ntfs_fuse_fill_security_context(&security)) {
+=======
+	if (!ntfs_fuse_fill_security_context(&security)) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (ctx->silent)
 			return 0;
 		if (uid == ctx->uid && gid == ctx->gid)
@@ -1650,7 +1728,11 @@ static int ntfs_fuse_create(const char *org_path, mode_t typemode, dev_t dev,
 	ntfs_inode *dir_ni = NULL, *ni;
 	char *dir_path;
 	le32 securid;
+<<<<<<< HEAD
 	char *path = NULL;
+=======
+	char *path;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	gid_t gid;
 	mode_t dsetgid;
 	ntfschar *stream_name;
@@ -1669,7 +1751,11 @@ static int ntfs_fuse_create(const char *org_path, mode_t typemode, dev_t dev,
 	uname_len = ntfs_mbstoucs(name, &uname);
 	if ((uname_len < 0)
 	    || (ctx->windows_names
+<<<<<<< HEAD
 		&& ntfs_forbidden_names(ctx->vol,uname,uname_len))) {
+=======
+		&& ntfs_forbidden_chars(uname,uname_len))) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		res = -errno;
 		goto exit;
 	}
@@ -1709,7 +1795,11 @@ static int ntfs_fuse_create(const char *org_path, mode_t typemode, dev_t dev,
 			 * have to build a security attribute later.
 			 */
 		if (!ctx->security.mapping[MAPUSERS])
+<<<<<<< HEAD
 			securid = const_cpu_to_le32(0);
+=======
+			securid = 0;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		else
 			if (ctx->inherit)
 				securid = ntfs_inherited_id(&security,
@@ -1873,8 +1963,12 @@ static int ntfs_fuse_mknod_common(const char *org_path, mode_t mode, dev_t dev,
 	if (stream_name_len
 	    && (!S_ISREG(mode)
 		|| (ctx->windows_names
+<<<<<<< HEAD
 		    && ntfs_forbidden_names(ctx->vol,stream_name,
 					stream_name_len)))) {
+=======
+		    && ntfs_forbidden_chars(stream_name,stream_name_len)))) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		res = -EINVAL;
 		goto exit;
 	}
@@ -1943,7 +2037,11 @@ static int ntfs_fuse_link(const char *old_path, const char *new_path)
 	uname_len = ntfs_mbstoucs(name, &uname);
 	if ((uname_len < 0)
 	    || (ctx->windows_names
+<<<<<<< HEAD
 		&& ntfs_forbidden_names(ctx->vol,uname,uname_len))) {
+=======
+		&& ntfs_forbidden_chars(uname,uname_len))) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		res = -errno;
 		goto exit;
 	}
@@ -2324,7 +2422,11 @@ static int ntfs_fuse_utimens(const char *path, const struct timespec tv[2])
 #if !KERNELPERMS | (POSIXACLS & !KERNELACLS)
 		if (ntfs_allowed_as_owner(&security, ni)
 		    || ((tv[0].tv_nsec == UTIME_NOW)
+<<<<<<< HEAD
 			&& (tv[1].tv_nsec == UTIME_NOW)
+=======
+			&& (tv[0].tv_nsec == UTIME_NOW)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			&& ntfs_allowed_access(&security, ni, S_IWRITE))) {
 #endif
 			ntfs_time_update_flags mask = NTFS_UPDATE_CTIME;
@@ -2446,6 +2548,7 @@ static int ntfs_fuse_fsync(const char *path __attribute__((unused)),
 	return (ret);
 }
 
+<<<<<<< HEAD
 #if defined(FUSE_INTERNAL) || (FUSE_VERSION >= 28)
 static int ntfs_fuse_ioctl(const char *path,
 			int cmd, void *arg,
@@ -2470,6 +2573,8 @@ static int ntfs_fuse_ioctl(const char *path,
 }
 #endif /* defined(FUSE_INTERNAL) || (FUSE_VERSION >= 28) */
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 static int ntfs_fuse_bmap(const char *path, size_t blocksize, uint64_t *idx)
 {
 	ntfs_inode *ni;
@@ -2554,6 +2659,7 @@ static ntfs_inode *ntfs_check_access_xattr(struct SECURITY_CONTEXT *security,
 			 || (attr == XATTR_POSIX_DEF);
 		/*
 		 * When accessing Posix ACL, return unsupported if ACL
+<<<<<<< HEAD
 		 * were disabled or no user mapping has been defined,
 		 * or trying to change a Windows-inherited ACL.
 		 * However no error will be returned to getfacl
@@ -2568,6 +2674,16 @@ static ntfs_inode *ntfs_check_access_xattr(struct SECURITY_CONTEXT *security,
 				errno = 0;
 			else
 				errno = EOPNOTSUPP;
+=======
+		 * were disabled or no user mapping has been defined.
+		 * However no error will be returned to getfacl
+		 */
+		if ((!ntfs_fuse_fill_security_context(security)
+			|| (ctx->secure_flags
+			    & ((1 << SECURITY_DEFAULT) | (1 << SECURITY_RAW))))
+		    && foracl) {
+			errno = EOPNOTSUPP;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		} else {
 				/*
 				 * parent directory must be executable, and
@@ -2957,7 +3073,11 @@ static int ntfs_fuse_setxattr(const char *path, const char *name,
 			 * hijack internal data and ACL setting, whatever
 			 * mode was selected for xattr (from the user's
 			 * point of view, ACLs are not xattr)
+<<<<<<< HEAD
 			 * Note : ctime updated on successful settings
+=======
+			 * Note : updating an ACL does not set ctime
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			 */
 		ni = ntfs_check_access_xattr(&security,path,attr,TRUE);
 		if (ni) {
@@ -2973,6 +3093,7 @@ static int ntfs_fuse_setxattr(const char *path, const char *name,
 					res = -errno;
 			} else
 				res = -errno;
+<<<<<<< HEAD
 			if (attr != XATTR_NTFS_DOS_NAME) {
 				if (!res)
 					ntfs_fuse_update_times(ni,
@@ -2980,6 +3101,11 @@ static int ntfs_fuse_setxattr(const char *path, const char *name,
 				if (ntfs_inode_close(ni))
 					set_fuse_error(&res);
 			}
+=======
+			if ((attr != XATTR_NTFS_DOS_NAME)
+			   && ntfs_inode_close(ni))
+				set_fuse_error(&res);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		} else
 			res = -errno;
 #else
@@ -3015,6 +3141,7 @@ static int ntfs_fuse_setxattr(const char *path, const char *name,
 						res = -errno;
 				} else
 					res = -errno;
+<<<<<<< HEAD
 				if (attr != XATTR_NTFS_DOS_NAME) {
 					if (!res)
 						ntfs_fuse_update_times(ni,
@@ -3022,6 +3149,11 @@ static int ntfs_fuse_setxattr(const char *path, const char *name,
 					if (ntfs_inode_close(ni))
 						set_fuse_error(&res);
 				}
+=======
+				if ((attr != XATTR_NTFS_DOS_NAME)
+				    && ntfs_inode_close(ni))
+					set_fuse_error(&res);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			} else
 				res = -errno;
 		}
@@ -3141,12 +3273,18 @@ static int ntfs_fuse_setxattr(const char *path, const char *name,
 				res = -errno;
 		}
 	}
+<<<<<<< HEAD
 	if (!res) {
 		ntfs_fuse_update_times(ni, NTFS_UPDATE_CTIME);
 		if (!(ni->flags & FILE_ATTR_ARCHIVE)) {
 			set_archive(ni);
 			NInoFileNameSetDirty(ni);
 		}
+=======
+	if (!res && !(ni->flags & FILE_ATTR_ARCHIVE)) {
+		set_archive(ni);
+		NInoFileNameSetDirty(ni);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 exit:
 	if (na)
@@ -3190,7 +3328,11 @@ static int ntfs_fuse_removexattr(const char *path, const char *name)
 			 * hijack internal data and ACL removal, whatever
 			 * mode was selected for xattr (from the user's
 			 * point of view, ACLs are not xattr)
+<<<<<<< HEAD
 			 * Note : ctime updated on successful settings
+=======
+			 * Note : updating an ACL does not set ctime
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			 */
 			ni = ntfs_check_access_xattr(&security,path,attr,TRUE);
 			if (ni) {
@@ -3206,6 +3348,7 @@ static int ntfs_fuse_removexattr(const char *path, const char *name)
 						res = -errno;
 				} else
 					res = -errno;
+<<<<<<< HEAD
 				if (attr != XATTR_NTFS_DOS_NAME) {
 					if (!res)
 						ntfs_fuse_update_times(ni,
@@ -3213,6 +3356,11 @@ static int ntfs_fuse_removexattr(const char *path, const char *name)
 					if (ntfs_inode_close(ni))
 						set_fuse_error(&res);
 				}
+=======
+				if ((attr != XATTR_NTFS_DOS_NAME)
+				   && ntfs_inode_close(ni))
+					set_fuse_error(&res);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			} else
 				res = -errno;
 #else
@@ -3251,6 +3399,7 @@ static int ntfs_fuse_removexattr(const char *path, const char *name)
 						res = -errno;
 				} else
 					res = -errno;
+<<<<<<< HEAD
 				if (attr != XATTR_NTFS_DOS_NAME) {
 					if (!res)
 						ntfs_fuse_update_times(ni,
@@ -3258,6 +3407,11 @@ static int ntfs_fuse_removexattr(const char *path, const char *name)
 					if (ntfs_inode_close(ni))
 						set_fuse_error(&res);
 				}
+=======
+				if ((attr != XATTR_NTFS_DOS_NAME)
+				    && ntfs_inode_close(ni))
+					set_fuse_error(&res);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			} else
 				res = -errno;
 #endif
@@ -3332,12 +3486,18 @@ static int ntfs_fuse_removexattr(const char *path, const char *name)
 			errno = ENODATA;
 		res = -errno;
 	}
+<<<<<<< HEAD
 	if (!res) {
 		ntfs_fuse_update_times(ni, NTFS_UPDATE_CTIME);
 		if (!(ni->flags & FILE_ATTR_ARCHIVE)) {
 			set_archive(ni);
 			NInoFileNameSetDirty(ni);
 		}
+=======
+	if (!(ni->flags & FILE_ATTR_ARCHIVE)) {
+		set_archive(ni);
+		NInoFileNameSetDirty(ni);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 exit:
 	free(lename);
@@ -3392,6 +3552,17 @@ static void ntfs_fuse_destroy2(void *unused __attribute__((unused)))
 }
 
 static struct fuse_operations ntfs_3g_ops = {
+<<<<<<< HEAD
+=======
+#if defined(HAVE_UTIMENSAT) && (defined(FUSE_INTERNAL) || (FUSE_VERSION > 28))
+		/*
+		 * Accept UTIME_NOW and UTIME_OMIT in utimens, when
+		 * using internal fuse or a fuse version since 2.9
+		 * (this field is not present in older versions)
+		 */
+	.flag_utime_omit_ok = 1,
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	.getattr	= ntfs_fuse_getattr,
 	.readlink	= ntfs_fuse_readlink,
 	.readdir	= ntfs_fuse_readdir,
@@ -3421,9 +3592,12 @@ static struct fuse_operations ntfs_3g_ops = {
 	.fsyncdir	= ntfs_fuse_fsync,
 	.bmap		= ntfs_fuse_bmap,
 	.destroy        = ntfs_fuse_destroy2,
+<<<<<<< HEAD
 #if defined(FUSE_INTERNAL) || (FUSE_VERSION >= 28)
         .ioctl		= ntfs_fuse_ioctl,
 #endif /* defined(FUSE_INTERNAL) || (FUSE_VERSION >= 28) */
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 #if !KERNELPERMS | (POSIXACLS & !KERNELACLS)
 	.access		= ntfs_fuse_access,
 	.opendir	= ntfs_fuse_opendir,
@@ -3441,7 +3615,14 @@ static struct fuse_operations ntfs_3g_ops = {
 	.setbkuptime	= ntfs_macfuse_setbkuptime,
 	.setchgtime	= ntfs_macfuse_setchgtime,
 #endif /* defined(__APPLE__) || defined(__DARWIN__) */
+<<<<<<< HEAD
 	.init		= ntfs_init
+=======
+#if defined(FUSE_CAP_DONT_MASK) || defined(FUSE_CAP_BIG_WRITES) \
+		|| (defined(__APPLE__) || defined(__DARWIN__))
+	.init		= ntfs_init
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 };
 
 static int ntfs_fuse_init(void)
@@ -3898,7 +4079,10 @@ int main(int argc, char *argv[])
 	if (!ntfs_build_mapping(&ctx->security,ctx->usermap_path,
 		(ctx->vol->secure_flags
 			& ((1 << SECURITY_DEFAULT) | (1 << SECURITY_ACL)))
+<<<<<<< HEAD
 		&& !ctx->inherit
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		&& !(ctx->vol->secure_flags & (1 << SECURITY_WANTED)))) {
 #if POSIXACLS
 		/* use basic permissions if requested */
@@ -3930,7 +4114,10 @@ int main(int argc, char *argv[])
 #endif /* KERNELPERMS */
 		permissions_mode = "User mapping built";
 #endif /* POSIXACLS */
+<<<<<<< HEAD
 		ctx->dmask = ctx->fmask = 0;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	} else {
 		ctx->security.uid = ctx->uid;
 		ctx->security.gid = ctx->gid;

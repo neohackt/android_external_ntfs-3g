@@ -2,7 +2,10 @@
  * cluster - Part of the Linux-NTFS project.
  *
  * Copyright (c) 2002-2003 Richard Russon
+<<<<<<< HEAD
  * Copyright (c) 2014      Jean-Pierre Andre
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *
  * This function will locate the owner of any given sector or cluster range.
  *
@@ -47,8 +50,11 @@ int cluster_find(ntfs_volume *vol, LCN c_begin, LCN c_end, cluster_cb *cb, void 
 	int result = -1;
 	struct mft_search_ctx *m_ctx = NULL;
 	ntfs_attr_search_ctx  *a_ctx = NULL;
+<<<<<<< HEAD
 	s64 count;
 	BOOL found;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ATTR_RECORD *rec;
 	runlist *runs;
 
@@ -57,7 +63,10 @@ int cluster_find(ntfs_volume *vol, LCN c_begin, LCN c_end, cluster_cb *cb, void 
 
 	m_ctx = mft_get_search_ctx(vol);
 	m_ctx->flags_search = FEMR_IN_USE | FEMR_BASE_RECORD;
+<<<<<<< HEAD
 	count = 0;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	while (mft_next_record(m_ctx) == 0) {
 
@@ -69,12 +78,19 @@ int cluster_find(ntfs_volume *vol, LCN c_begin, LCN c_end, cluster_cb *cb, void 
 
 		a_ctx = ntfs_attr_get_search_ctx(m_ctx->inode, NULL);
 
+<<<<<<< HEAD
 		found = FALSE;
 		while ((rec = find_attribute(AT_UNUSED, a_ctx))) {
 
 			if (!rec->non_resident) {
 				ntfs_log_verbose("0x%02x skipped - attr is resident\n",
 					(int)le32_to_cpu(a_ctx->attr->type));
+=======
+		while ((rec = find_attribute(AT_UNUSED, a_ctx))) {
+
+			if (!rec->non_resident) {
+				ntfs_log_verbose("0x%02x skipped - attr is resident\n", a_ctx->attr->type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				continue;
 			}
 
@@ -84,8 +100,12 @@ int cluster_find(ntfs_volume *vol, LCN c_begin, LCN c_end, cluster_cb *cb, void 
 				goto done;
 			}
 
+<<<<<<< HEAD
 			ntfs_log_verbose("\t[0x%02X]\n",
 					(int)le32_to_cpu(a_ctx->attr->type));
+=======
+			ntfs_log_verbose("\t[0x%02X]\n", a_ctx->attr->type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 			ntfs_log_verbose("\t\tVCN\tLCN\tLength\n");
 			for (j = 0; runs[j].length > 0; j++) {
@@ -108,12 +128,16 @@ int cluster_find(ntfs_volume *vol, LCN c_begin, LCN c_end, cluster_cb *cb, void 
 
 				if ((*cb) (m_ctx->inode, a_ctx->attr, runs+j, data))
 					return 1;
+<<<<<<< HEAD
 				found = TRUE;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			}
 		}
 
 		ntfs_attr_put_search_ctx(a_ctx);
 		a_ctx = NULL;
+<<<<<<< HEAD
 		if (found)
 			count++;
 	}
@@ -122,6 +146,10 @@ int cluster_find(ntfs_volume *vol, LCN c_begin, LCN c_end, cluster_cb *cb, void 
 		ntfs_log_info("* %lld inodes found\n",(long long)count);
 	else
 		ntfs_log_info("* %s inode found\n", (count ? "one" : "no"));
+=======
+	}
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	result = 0;
 done:
 	ntfs_attr_put_search_ctx(a_ctx);

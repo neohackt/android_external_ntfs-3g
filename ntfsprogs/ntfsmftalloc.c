@@ -229,7 +229,11 @@ static void dump_mft_record(MFT_RECORD *m)
 	ntfs_log_info("Update sequence array offset = %u (0x%x)\n", u, u);
 	ntfs_log_info("Update sequence array size = %u\n", le16_to_cpu(m->usa_count));
 	ntfs_log_info("$LogFile sequence number (lsn) = %llu\n",
+<<<<<<< HEAD
 			(unsigned long long)sle64_to_cpu(m->lsn));
+=======
+			(unsigned long long)le64_to_cpu(m->lsn));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ntfs_log_info("Sequence number = %u\n", le16_to_cpu(m->sequence_number));
 	ntfs_log_info("Reference (hard link) count = %u\n",
 						le16_to_cpu(m->link_count));

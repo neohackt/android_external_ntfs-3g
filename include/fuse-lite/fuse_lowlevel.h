@@ -101,8 +101,15 @@ struct fuse_ctx {
 	/** Thread ID of the calling process */
 	pid_t pid;
 
+<<<<<<< HEAD
 	/** Umask of the calling process (introduced in version 2.8) */
 	mode_t umask;
+=======
+#ifdef POSIXACLS
+	/** Umask of the calling process (introduced in version 2.8) */
+	mode_t umask;
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 };
 
 /* 'to_set' flags in setattr */
@@ -803,6 +810,7 @@ struct fuse_lowlevel_ops {
 	 */
 	void (*bmap) (fuse_req_t req, fuse_ino_t ino, size_t blocksize,
 		      uint64_t idx);
+<<<<<<< HEAD
 	/**
 	 * Ioctl
 	 *
@@ -834,6 +842,8 @@ struct fuse_lowlevel_ops {
 		       struct fuse_file_info *fi, unsigned flags,
 		       const void *in_buf, size_t in_bufsz, size_t out_bufsz);
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 };
 
 /**
@@ -1051,6 +1061,7 @@ size_t fuse_add_direntry(fuse_req_t req, char *buf, size_t bufsize,
 			 const char *name, const struct stat *stbuf,
 			 off_t off);
 
+<<<<<<< HEAD
 /**
  * Reply to finish ioctl
  *
@@ -1065,6 +1076,8 @@ size_t fuse_add_direntry(fuse_req_t req, char *buf, size_t bufsize,
 int fuse_reply_ioctl(fuse_req_t req, int result, const void *buf, size_t size);
 
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /* ----------------------------------------------------------- *
  * Utility functions					       *
  * ----------------------------------------------------------- */

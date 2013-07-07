@@ -6,7 +6,11 @@
  * Copyright (c) 2002-2006 Szabolcs Szakacsits
  * Copyright (c) 2005      Erik Sornes
  * Copyright (c) 2007      Yura Pakhuchiy
+<<<<<<< HEAD
  * Copyright (c) 2010-2014 Jean-Pierre Andre
+=======
+ * Copyright (c) 2010      Jean-Pierre Andre
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *
  * This utility will create an NTFS 1.2 or 3.1 volume on a user
  * specified (block) device.
@@ -287,7 +291,11 @@ static void mkntfs_version(void)
 	ntfs_log_info("Copyright (c) 2002-2006 Szabolcs Szakacsits\n");
 	ntfs_log_info("Copyright (c) 2005      Erik Sornes\n");
 	ntfs_log_info("Copyright (c) 2007      Yura Pakhuchiy\n");
+<<<<<<< HEAD
 	ntfs_log_info("Copyright (c) 2010-2014 Jean-Pierre Andre\n");
+=======
+	ntfs_log_info("Copyright (c) 2010-2012 Jean-Pierre Andre\n");
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ntfs_log_info("\n%s\n%s%s\n", ntfs_gpl, ntfs_bugs, ntfs_home);
 }
 
@@ -590,7 +598,11 @@ static void mkntfs_init_options(struct mkntfs_options *opts2)
 /**
  * mkntfs_parse_options
  */
+<<<<<<< HEAD
 static int mkntfs_parse_options(int argc, char *argv[], struct mkntfs_options *opts2)
+=======
+static BOOL mkntfs_parse_options(int argc, char *argv[], struct mkntfs_options *opts2)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 {
 	static const char *sopt = "-c:CfFhH:IlL:np:qQs:S:TUvVz:";
 	static const struct option lopt[] = {
@@ -620,7 +632,10 @@ static int mkntfs_parse_options(int argc, char *argv[], struct mkntfs_options *o
 
 	int c = -1;
 	int lic = 0;
+<<<<<<< HEAD
 	int help = 0;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	int err = 0;
 	int ver = 0;
 
@@ -662,7 +677,11 @@ static int mkntfs_parse_options(int argc, char *argv[], struct mkntfs_options *o
 				err++;
 			break;
 		case 'h':
+<<<<<<< HEAD
 			help++;	/* display help */
+=======
+			err++;	/* display help */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			break;
 		case 'I':
 			opts2->disable_indexing = TRUE;
@@ -746,7 +765,11 @@ static int mkntfs_parse_options(int argc, char *argv[], struct mkntfs_options *o
 		}
 	}
 
+<<<<<<< HEAD
 	if (!err && !help && !ver && !lic) {
+=======
+	if (!err && !ver && !lic) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (opts2->dev_name == NULL) {
 			if (argc > 1)
 				ntfs_log_error("You must specify a device.\n");
@@ -758,11 +781,18 @@ static int mkntfs_parse_options(int argc, char *argv[], struct mkntfs_options *o
 		mkntfs_version();
 	if (lic)
 		mkntfs_license();
+<<<<<<< HEAD
 	if (err || help)
 		mkntfs_usage();
 
 		/* tri-state 0 : done, 1 : error, -1 : proceed */
 	return (err ? 1 : (help || ver || lic ? 0 : -1));
+=======
+	if (err)
+		mkntfs_usage();
+
+	return (!err && !ver && !lic);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 
@@ -1552,7 +1582,11 @@ static int insert_positioned_attr_in_mft_record(MFT_RECORD *m,
 	a->instance = m->next_attr_instance;
 	m->next_attr_instance = cpu_to_le16((le16_to_cpu(m->next_attr_instance)
 			+ 1) & 0xffff);
+<<<<<<< HEAD
 	a->lowest_vcn = const_cpu_to_sle64(0);
+=======
+	a->lowest_vcn = cpu_to_le64(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	a->highest_vcn = cpu_to_sle64(highest_vcn - 1LL);
 	a->mapping_pairs_offset = cpu_to_le16(hdr_size + ((name_len + 7) & ~7));
 	memset(a->reserved1, 0, sizeof(a->reserved1));
@@ -1571,7 +1605,11 @@ static int insert_positioned_attr_in_mft_record(MFT_RECORD *m,
 		a->compression_unit = 4;
 		inited_size = val_len;
 		/* FIXME: Set the compressed size. */
+<<<<<<< HEAD
 		a->compressed_size = const_cpu_to_sle64(0);
+=======
+		a->compressed_size = cpu_to_le64(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		/* FIXME: Write out the compressed data. */
 		/* FIXME: err = build_mapping_pairs_compressed(); */
 		err = -EOPNOTSUPP;
@@ -1745,7 +1783,11 @@ static int insert_non_resident_attr_in_mft_record(MFT_RECORD *m,
 	a->instance = m->next_attr_instance;
 	m->next_attr_instance = cpu_to_le16((le16_to_cpu(m->next_attr_instance)
 			+ 1) & 0xffff);
+<<<<<<< HEAD
 	a->lowest_vcn = const_cpu_to_sle64(0);
+=======
+	a->lowest_vcn = cpu_to_le64(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	for (i = 0; rl[i].length; i++)
 		;
 	a->highest_vcn = cpu_to_sle64(rl[i].vcn - 1);
@@ -1767,7 +1809,11 @@ static int insert_non_resident_attr_in_mft_record(MFT_RECORD *m,
 		}
 		a->compression_unit = 4;
 		/* FIXME: Set the compressed size. */
+<<<<<<< HEAD
 		a->compressed_size = const_cpu_to_sle64(0);
+=======
+		a->compressed_size = cpu_to_le64(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		/* FIXME: Write out the compressed data. */
 		/* FIXME: err = build_mapping_pairs_compressed(); */
 		err = -EOPNOTSUPP;
@@ -1926,17 +1972,30 @@ static int add_attr_std_info(MFT_RECORD *m, const FILE_ATTR_FLAGS flags,
 	si.last_mft_change_time = si.creation_time;
 	si.last_access_time = si.creation_time;
 	si.file_attributes = flags; /* already LE */
+<<<<<<< HEAD
 	si.maximum_versions = const_cpu_to_le32(0);
 	si.version_number = const_cpu_to_le32(0);
 	si.class_id = const_cpu_to_le32(0);
+=======
+	si.maximum_versions = cpu_to_le32(0);
+	si.version_number = cpu_to_le32(0);
+	si.class_id = cpu_to_le32(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	si.security_id = security_id;
 	if (si.security_id != const_cpu_to_le32(0))
 		sd_size = 72;
 	/* FIXME: $Quota support... */
+<<<<<<< HEAD
 	si.owner_id = const_cpu_to_le32(0);
 	si.quota_charged = const_cpu_to_le64(0ULL);
 	/* FIXME: $UsnJrnl support... Not needed on fresh w2k3-volume */
 	si.usn = const_cpu_to_le64(0ULL);
+=======
+	si.owner_id = cpu_to_le32(0);
+	si.quota_charged = cpu_to_le64(0ULL);
+	/* FIXME: $UsnJrnl support... Not needed on fresh w2k3-volume */
+	si.usn = cpu_to_le64(0ULL);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	/* NTFS 1.2: size of si = 48, NTFS 3.[01]: size of si = 72 */
 	err = insert_resident_attr_in_mft_record(m, AT_STANDARD_INFORMATION,
 			NULL, 0, CASE_SENSITIVE, const_cpu_to_le16(0),
@@ -2055,7 +2114,11 @@ static int add_attr_file_name(MFT_RECORD *m, const leMFT_REF parent_dir,
 	}
 	if (packed_ea_size) {
 		fn->packed_ea_size = cpu_to_le16(packed_ea_size);
+<<<<<<< HEAD
 		fn->reserved = const_cpu_to_le16(0);
+=======
+		fn->reserved = cpu_to_le16(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	} else {
 		fn->reparse_point_tag = cpu_to_le32(reparse_point_tag);
 	}
@@ -2481,12 +2544,20 @@ static int upgrade_to_large_index(MFT_RECORD *m, const char *name,
 	}
 	/* Setup header. */
 	ia_val->magic = magic_INDX;
+<<<<<<< HEAD
 	ia_val->usa_ofs = const_cpu_to_le16(sizeof(INDEX_ALLOCATION));
+=======
+	ia_val->usa_ofs = cpu_to_le16(sizeof(INDEX_ALLOCATION));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (index_block_size >= NTFS_BLOCK_SIZE) {
 		ia_val->usa_count = cpu_to_le16(index_block_size /
 				NTFS_BLOCK_SIZE + 1);
 	} else {
+<<<<<<< HEAD
 		ia_val->usa_count = const_cpu_to_le16(1);
+=======
+		ia_val->usa_count = cpu_to_le16(1);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		ntfs_log_error("Sector size is bigger than index block size. "
 				"Setting usa_count to 1. If Windows chkdsk "
 				"reports this as corruption, please email %s "
@@ -2496,9 +2567,15 @@ static int upgrade_to_large_index(MFT_RECORD *m, const char *name,
 	}
 	/* Set USN to 1. */
 	*(le16*)((char*)ia_val + le16_to_cpu(ia_val->usa_ofs)) =
+<<<<<<< HEAD
 			const_cpu_to_le16(1);
 	ia_val->lsn = const_cpu_to_sle64(0);
 	ia_val->index_block_vcn = const_cpu_to_sle64(0);
+=======
+			cpu_to_le16(1);
+	ia_val->lsn = cpu_to_le64(0);
+	ia_val->index_block_vcn = cpu_to_le64(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ia_val->index.ih_flags = LEAF_NODE;
 	/* Align to 8-byte boundary. */
 	ia_val->index.entries_offset = cpu_to_le32((sizeof(INDEX_HEADER) +
@@ -2540,8 +2617,13 @@ static int upgrade_to_large_index(MFT_RECORD *m, const char *name,
 		goto err_out;
 	}
 	/* Set VCN pointer to 0LL. */
+<<<<<<< HEAD
 	*(leVCN*)((char*)re + le16_to_cpu(re->length) - sizeof(VCN)) =
 			const_cpu_to_sle64(0);
+=======
+	*(leVCN*)((char*)re + cpu_to_le16(re->length) - sizeof(VCN)) =
+			cpu_to_le64(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	err = ntfs_mst_pre_write_fixup((NTFS_RECORD*)ia_val, index_block_size);
 	if (err) {
 		err = -errno;
@@ -2930,9 +3012,15 @@ static int initialize_quota(MFT_RECORD *m)
 	idx_entry_q1_data->flags = QUOTA_FLAG_DEFAULT_LIMITS;
 	idx_entry_q1_data->bytes_used = const_cpu_to_le64(0x00);
 	idx_entry_q1_data->change_time = mkntfs_time();
+<<<<<<< HEAD
 	idx_entry_q1_data->threshold = const_cpu_to_sle64(-1);
 	idx_entry_q1_data->limit = const_cpu_to_sle64(-1);
 	idx_entry_q1_data->exceeded_time = const_cpu_to_sle64(0);
+=======
+	idx_entry_q1_data->threshold = cpu_to_sle64(-1);
+	idx_entry_q1_data->limit = cpu_to_sle64(-1);
+	idx_entry_q1_data->exceeded_time = const_cpu_to_le64(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	err = insert_index_entry_in_res_dir_index(idx_entry_q1, q1_size, m,
 			NTFS_INDEX_Q, 2, AT_UNUSED);
 	free(idx_entry_q1);
@@ -2957,9 +3045,15 @@ static int initialize_quota(MFT_RECORD *m)
 	idx_entry_q2_data->flags = QUOTA_FLAG_DEFAULT_LIMITS;
 	idx_entry_q2_data->bytes_used = const_cpu_to_le64(0x00);
 	idx_entry_q2_data->change_time = mkntfs_time();
+<<<<<<< HEAD
 	idx_entry_q2_data->threshold = const_cpu_to_sle64(-1);
 	idx_entry_q2_data->limit = const_cpu_to_sle64(-1);
 	idx_entry_q2_data->exceeded_time = const_cpu_to_sle64(0);
+=======
+	idx_entry_q2_data->threshold = cpu_to_sle64(-1);
+	idx_entry_q2_data->limit = cpu_to_sle64(-1);
+	idx_entry_q2_data->exceeded_time = const_cpu_to_le64(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	idx_entry_q2_data->sid.revision = 1;
 	idx_entry_q2_data->sid.sub_authority_count = 2;
 	for (i = 0; i < 5; i++)
@@ -3133,8 +3227,13 @@ do_next:
 	ie->indexed_file = file_ref;
 	ie->length = cpu_to_le16(i);
 	ie->key_length = cpu_to_le16(file_name_size);
+<<<<<<< HEAD
 	ie->ie_flags = const_cpu_to_le16(0);
 	ie->reserved = const_cpu_to_le16(0);
+=======
+	ie->ie_flags = cpu_to_le16(0);
+	ie->reserved = cpu_to_le16(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	memcpy((char*)&ie->key.file_name, (char*)file_name, file_name_size);
 	return 0;
 }
@@ -3189,7 +3288,11 @@ static int create_hardlink_res(MFT_RECORD *m_parent, const leMFT_REF ref_parent,
 	}
 	if (packed_ea_size) {
 		fn->packed_ea_size = cpu_to_le16(packed_ea_size);
+<<<<<<< HEAD
 		fn->reserved = const_cpu_to_le16(0);
+=======
+		fn->reserved = cpu_to_le16(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	} else {
 		fn->reparse_point_tag = cpu_to_le32(reparse_point_tag);
 	}
@@ -3304,7 +3407,11 @@ static int create_hardlink(INDEX_BLOCK *idx, const leMFT_REF ref_parent,
 	}
 	if (packed_ea_size) {
 		fn->packed_ea_size = cpu_to_le16(packed_ea_size);
+<<<<<<< HEAD
 		fn->reserved = const_cpu_to_le16(0);
+=======
+		fn->reserved = cpu_to_le16(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	} else {
 		fn->reparse_point_tag = cpu_to_le32(reparse_point_tag);
 	}
@@ -3332,7 +3439,11 @@ static int create_hardlink(INDEX_BLOCK *idx, const leMFT_REF ref_parent,
 	m_file->link_count = cpu_to_le16(i + 1);
 	/* Add the file_name to @m_file. */
 	i = insert_resident_attr_in_mft_record(m_file, AT_FILE_NAME, NULL, 0,
+<<<<<<< HEAD
 			CASE_SENSITIVE, const_cpu_to_le16(0),
+=======
+			CASE_SENSITIVE, cpu_to_le16(0),
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			RESIDENT_ATTR_IS_INDEXED, (u8*)fn, fn_size);
 	if (i < 0) {
 		ntfs_log_error("create_hardlink failed adding file name attribute: "
@@ -3388,10 +3499,16 @@ static int index_obj_id_insert(MFT_RECORD *m, const GUID *guid,
 	if (!idx_entry_new)
 		return -errno;
 	idx_entry_new->data_offset = cpu_to_le16(data_ofs);
+<<<<<<< HEAD
 	idx_entry_new->data_length =
 			const_cpu_to_le16(sizeof(OBJ_ID_INDEX_DATA));
 	idx_entry_new->length = cpu_to_le16(idx_size);
 	idx_entry_new->key_length = const_cpu_to_le16(sizeof(GUID));
+=======
+	idx_entry_new->data_length = cpu_to_le16(sizeof(OBJ_ID_INDEX_DATA));
+	idx_entry_new->length = cpu_to_le16(idx_size);
+	idx_entry_new->key_length = cpu_to_le16(sizeof(GUID));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	idx_entry_new->key.object_id = *guid;
 	oi = (OBJ_ID_INDEX_DATA*)((u8*)idx_entry_new + data_ofs);
 	oi->mft_reference = ref;
@@ -3553,6 +3670,13 @@ static long mkntfs_get_page_size(void)
 	page_size = sysconf(_SC_PAGESIZE);
 	if (page_size < 0)
 #endif
+<<<<<<< HEAD
+=======
+#ifdef _SC_PAGE_SIZE
+		page_size = sysconf(_SC_PAGE_SIZE);
+	if (page_size < 0)
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	{
 		ntfs_log_warning("Failed to determine system page size.  "
 				"Assuming safe default of 4096 bytes.\n");
@@ -3636,12 +3760,19 @@ static BOOL mkntfs_override_vol_params(ntfs_volume *vol)
 			opts.part_start_sect = 0;
 			winboot = FALSE;
 		} else if (opts.part_start_sect >> 32) {
+<<<<<<< HEAD
 			ntfs_log_warning("The partition start sector was not "
 				"specified for %s and the automatically "
 				"determined value is too large (%lld). "
 				"It has been set to 0.\n",
 				vol->dev->d_name,
 				(long long)opts.part_start_sect);
+=======
+			ntfs_log_warning("The partition start sector specified "
+				"for %s and the automatically determined value "
+				"is too large.  It has been set to 0.\n",
+				vol->dev->d_name);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			opts.part_start_sect = 0;
 			winboot = FALSE;
 		}
@@ -3704,8 +3835,12 @@ static BOOL mkntfs_override_vol_params(ntfs_volume *vol)
 				(long long)(volume_size / 1024));
 		return FALSE;
 	}
+<<<<<<< HEAD
 	ntfs_log_debug("volume size = %llikiB\n",
 			(long long)(volume_size / 1024));
+=======
+	ntfs_log_debug("volume size = %llikiB\n", volume_size / 1024);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	/* If user didn't specify the cluster size, determine it now. */
 	if (!vol->cluster_size) {
 		/*
@@ -3790,8 +3925,12 @@ static BOOL mkntfs_override_vol_params(ntfs_volume *vol)
 		return FALSE;
 	}
 	ntfs_log_debug("number of clusters = %llu (0x%llx)\n",
+<<<<<<< HEAD
 			(unsigned long long)vol->nr_clusters,
 			(unsigned long long)vol->nr_clusters);
+=======
+			vol->nr_clusters, vol->nr_clusters);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	/* Number of clusters must fit within 32 bits (Win2k limitation). */
 	if (vol->nr_clusters >> 32) {
 		if (vol->cluster_size >= 65536) {
@@ -3870,7 +4009,11 @@ static BOOL mkntfs_initialize_bitmaps(void)
 	i = (g_lcn_bitmap_byte_size + g_vol->cluster_size - 1) &
 			~(g_vol->cluster_size - 1);
 	ntfs_log_debug("g_lcn_bitmap_byte_size = %i, allocated = %llu\n",
+<<<<<<< HEAD
 			g_lcn_bitmap_byte_size, (unsigned long long)i);
+=======
+			g_lcn_bitmap_byte_size, i);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	g_dynamic_buf_size = mkntfs_get_page_size();
 	g_dynamic_buf = (u8*)ntfs_calloc(g_dynamic_buf_size);
 	if (!g_dynamic_buf)
@@ -4411,7 +4554,11 @@ static BOOL mkntfs_create_root_structures(void)
 			return FALSE;
 		}
 		if (i == 0 || i > 23)
+<<<<<<< HEAD
 			m->sequence_number = const_cpu_to_le16(1);
+=======
+			m->sequence_number = cpu_to_le16(1);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		else
 			m->sequence_number = cpu_to_le16(i);
 	}
@@ -4428,7 +4575,11 @@ static BOOL mkntfs_create_root_structures(void)
 						"\n");
 				return FALSE;
 			}
+<<<<<<< HEAD
 			m->flags = const_cpu_to_le16(0);
+=======
+			m->flags = cpu_to_le16(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			m->sequence_number = cpu_to_le16(i);
 		}
 	}
@@ -4458,6 +4609,7 @@ static BOOL mkntfs_create_root_structures(void)
 		if (i == 0 || i == 1 || i == 2 || i == 6 || i == 8 ||
 				i == 10) {
 			add_attr_std_info(m, file_attrs,
+<<<<<<< HEAD
 				const_cpu_to_le32(0x0100));
 		} else if (i == 9) {
 			file_attrs |= FILE_ATTR_VIEW_INDEX_PRESENT;
@@ -4466,14 +4618,31 @@ static BOOL mkntfs_create_root_structures(void)
 		} else if (i == 11) {
 			add_attr_std_info(m, file_attrs,
 				const_cpu_to_le32(0x0101));
+=======
+				cpu_to_le32(0x0100));
+		} else if (i == 9) {
+			file_attrs |= FILE_ATTR_VIEW_INDEX_PRESENT;
+			add_attr_std_info(m, file_attrs,
+				cpu_to_le32(0x0101));
+		} else if (i == 11) {
+			add_attr_std_info(m, file_attrs,
+				cpu_to_le32(0x0101));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		} else if (i == 24 || i == 25 || i == 26) {
 			file_attrs |= FILE_ATTR_ARCHIVE;
 			file_attrs |= FILE_ATTR_VIEW_INDEX_PRESENT;
 			add_attr_std_info(m, file_attrs,
+<<<<<<< HEAD
 				const_cpu_to_le32(0x0101));
 		} else {
 			add_attr_std_info(m, file_attrs,
 				const_cpu_to_le32(0x00));
+=======
+				cpu_to_le32(0x0101));
+		} else {
+			add_attr_std_info(m, file_attrs,
+				cpu_to_le32(0x00));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		}
 	}
 	/* The root directory mft reference. */
@@ -4698,7 +4867,11 @@ static BOOL mkntfs_create_root_structures(void)
 	 * Leave zero for now as NT4 leaves it zero, too. If want it later, see
 	 * ../libntfs/bootsect.c for how to calculate it.
 	 */
+<<<<<<< HEAD
 	bs->checksum = const_cpu_to_le32(0);
+=======
+	bs->checksum = cpu_to_le32(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	/* Make sure the bootsector is ok. */
 	if (!ntfs_boot_sector_is_ntfs(bs)) {
 		free(bs);
@@ -4969,7 +5142,11 @@ static int mkntfs_redirect(struct mkntfs_options *opts2)
 		goto done;
 	}
 	/* Initialize the random number generator with the current time. */
+<<<<<<< HEAD
 	srandom(sle64_to_cpu(mkntfs_time())/10000000);
+=======
+	srandom(le64_to_cpu(mkntfs_time())/10000000);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	/* Allocate and initialize ntfs_volume structure g_vol. */
 	g_vol = ntfs_volume_alloc();
 	if (!g_vol) {
@@ -5002,7 +5179,11 @@ static int mkntfs_redirect(struct mkntfs_options *opts2)
 			g_vol->upcase_len * sizeof(ntfschar));
 	/* keep the version fields as zero */
 	memset(g_upcaseinfo, 0, sizeof(struct UPCASEINFO));
+<<<<<<< HEAD
 	g_upcaseinfo->len = const_cpu_to_le32(sizeof(struct UPCASEINFO));
+=======
+	g_upcaseinfo->len = cpu_to_le32(sizeof(struct UPCASEINFO));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	g_upcaseinfo->crc = cpu_to_le64(upcase_crc);
 	g_vol->attrdef = ntfs_malloc(sizeof(attrdef_ntfs3x_array));
 	if (!g_vol->attrdef) {
@@ -5175,11 +5356,19 @@ int main(int argc, char *argv[])
 
 	mkntfs_init_options(&opts);			/* Set up the options */
 
+<<<<<<< HEAD
 			/* Read the command line options */
 	result = mkntfs_parse_options(argc, argv, &opts);
 
 	if (result < 0)
 		result = mkntfs_redirect(&opts);
 
+=======
+	if (!mkntfs_parse_options(argc, argv, &opts))	/* Read the command line options */
+		goto done;
+
+	result = mkntfs_redirect(&opts);
+done:
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	return result;
 }

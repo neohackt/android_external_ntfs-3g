@@ -321,8 +321,13 @@ int ntfs_set_efs_info(ntfs_inode *ni, const char *value, size_t size,
 
 int ntfs_efs_fixup_attribute(ntfs_attr_search_ctx *ctx, ntfs_attr *na) 
 {
+<<<<<<< HEAD
 	s64 newsize;
 	s64 oldsize;
+=======
+	u64 newsize;
+	u64 oldsize;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	le16 appended_bytes;
 	u16 padding_length;
 	ntfs_inode *ni;
@@ -420,8 +425,13 @@ int ntfs_efs_fixup_attribute(ntfs_attr_search_ctx *ctx, ntfs_attr *na)
 	NInoSetDirty(ni);
 	NInoFileNameSetDirty(ni);
 
+<<<<<<< HEAD
 	ctx->attr->data_size = cpu_to_sle64(newsize);
 	if (sle64_to_cpu(ctx->attr->initialized_size) > newsize)
+=======
+	ctx->attr->data_size = cpu_to_le64(newsize);
+	if (le64_to_cpu(ctx->attr->initialized_size) > newsize)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		ctx->attr->initialized_size = ctx->attr->data_size;
 	ctx->attr->flags |= ATTR_IS_ENCRYPTED;
 	if (close_ctx)

@@ -69,6 +69,7 @@ static void convert_stat(const struct stat *stbuf, struct fuse_attr *attr)
     attr->nlink     = stbuf->st_nlink;
     attr->uid       = stbuf->st_uid;
     attr->gid       = stbuf->st_gid;
+<<<<<<< HEAD
 #if defined(__SOLARIS__) && defined(_LP64)
 	/* Must pack the device the old way (attr->rdev limited to 32 bits) */
     attr->rdev      = ((major(stbuf->st_rdev) & 0x3fff) << 18)
@@ -76,6 +77,9 @@ static void convert_stat(const struct stat *stbuf, struct fuse_attr *attr)
 #else
     attr->rdev      = stbuf->st_rdev;
 #endif
+=======
+    attr->rdev      = stbuf->st_rdev;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
     attr->size      = stbuf->st_size;
     attr->blocks    = stbuf->st_blocks;
     attr->atime     = stbuf->st_atime;
@@ -191,8 +195,12 @@ static int send_reply(fuse_req_t req, int error, const void *arg,
     struct iovec iov[2];
     int count = 1;
     if (argsize) {
+<<<<<<< HEAD
 		/* Note : const qualifier dropped */
         iov[1].iov_base = (void *)(uintptr_t) arg;
+=======
+        iov[1].iov_base = (void *) arg;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
         iov[1].iov_len = argsize;
         count++;
     }
@@ -340,8 +348,17 @@ int fuse_reply_entry(fuse_req_t req, const struct fuse_entry_param *e)
 
     memset(&arg, 0, sizeof(arg));
     fill_entry(&arg, e);
+<<<<<<< HEAD
     return send_reply_ok(req, &arg, (req->f->conn.proto_minor >= 12 
 			? sizeof(arg) : FUSE_COMPAT_ENTRY_OUT_SIZE));
+=======
+#ifdef POSIXACLS
+    return send_reply_ok(req, &arg, (req->f->conn.proto_minor >= 12 
+			? sizeof(arg) : FUSE_COMPAT_ENTRY_OUT_SIZE));
+#else
+    return send_reply_ok(req, &arg, sizeof(arg));
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 int fuse_reply_create(fuse_req_t req, const struct fuse_entry_param *e,
@@ -354,6 +371,10 @@ int fuse_reply_create(fuse_req_t req, const struct fuse_entry_param *e,
 
     memset(&arg, 0, sizeof(arg));
     fill_entry(&arg.e, e);
+<<<<<<< HEAD
+=======
+#ifdef POSIXACLS
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
     if (req->f->conn.proto_minor < 12) {
 	fill_open((struct fuse_open_out*)
 		((char*)&arg + FUSE_COMPAT_ENTRY_OUT_SIZE), f);
@@ -363,6 +384,13 @@ int fuse_reply_create(fuse_req_t req, const struct fuse_entry_param *e,
     	fill_open(&arg.o, f);
     	return send_reply_ok(req, &arg, sizeof(arg));
     }
+<<<<<<< HEAD
+=======
+#else
+    fill_open(&arg.o, f);
+    return send_reply_ok(req, &arg, sizeof(arg));
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 int fuse_reply_attr(fuse_req_t req, const struct stat *attr,
@@ -375,8 +403,17 @@ int fuse_reply_attr(fuse_req_t req, const struct stat *attr,
     arg.attr_valid_nsec = calc_timeout_nsec(attr_timeout);
     convert_stat(attr, &arg.attr);
 
+<<<<<<< HEAD
     return send_reply_ok(req, &arg, (req->f->conn.proto_minor >= 12
 			? sizeof(arg) : FUSE_COMPAT_FUSE_ATTR_OUT_SIZE));
+=======
+#ifdef POSIXACLS
+    return send_reply_ok(req, &arg, (req->f->conn.proto_minor >= 12
+			? sizeof(arg) : FUSE_COMPAT_FUSE_ATTR_OUT_SIZE));
+#else
+    return send_reply_ok(req, &arg, sizeof(arg));
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 int fuse_reply_readlink(fuse_req_t req, const char *linkname)
@@ -456,6 +493,7 @@ int fuse_reply_bmap(fuse_req_t req, uint64_t idx)
     return send_reply_ok(req, &arg, sizeof(arg));
 }
 
+<<<<<<< HEAD
 int fuse_reply_ioctl(fuse_req_t req, int result, const void *buf, size_t size)
 {
     struct fuse_ioctl_out arg;
@@ -478,6 +516,8 @@ int fuse_reply_ioctl(fuse_req_t req, int result, const void *buf, size_t size)
     return send_reply_iov(req, 0, iov, count);
 }
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 static void do_lookup(fuse_req_t req, fuse_ino_t nodeid, const void *inarg)
 {
     const char *name = (const char *) inarg;
@@ -554,6 +594,7 @@ static void do_mknod(fuse_req_t req, fuse_ino_t nodeid, const void *inarg)
     const struct fuse_mknod_in *arg = (const struct fuse_mknod_in *) inarg;
     const char *name = PARAM(arg);
 
+<<<<<<< HEAD
     if (req->f->conn.proto_minor >= 12)
 	req->ctx.umask = arg->umask;
     else
@@ -569,6 +610,18 @@ static void do_mknod(fuse_req_t req, fuse_ino_t nodeid, const void *inarg)
 	req->f->op.mknod(req, nodeid, name, arg->mode, arg->rdev);
 #endif
     } else
+=======
+#ifdef POSIXACLS
+    if (req->f->conn.proto_minor >= 12)
+	req->ctx.umask = arg->umask;
+    else
+#endif
+	name = (const char *) inarg + FUSE_COMPAT_MKNOD_IN_SIZE;
+
+    if (req->f->op.mknod)
+	req->f->op.mknod(req, nodeid, name, arg->mode, arg->rdev);
+    else
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
         fuse_reply_err(req, ENOSYS);
 }
 
@@ -576,8 +629,15 @@ static void do_mkdir(fuse_req_t req, fuse_ino_t nodeid, const void *inarg)
 {
     const struct fuse_mkdir_in *arg = (const struct fuse_mkdir_in *) inarg;
 
+<<<<<<< HEAD
     if (req->f->conn.proto_minor >= 12)
 	req->ctx.umask = arg->umask;
+=======
+#ifdef POSIXACLS
+    if (req->f->conn.proto_minor >= 12)
+	req->ctx.umask = arg->umask;
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
     if (req->f->op.mkdir)
         req->f->op.mkdir(req, nodeid, PARAM(arg), arg->mode);
@@ -649,9 +709,17 @@ static void do_create(fuse_req_t req, fuse_ino_t nodeid, const void *inarg)
         memset(&fi, 0, sizeof(fi));
         fi.flags = arg->flags;
 
+<<<<<<< HEAD
 	if (req->f->conn.proto_minor >= 12)
 		req->ctx.umask = arg->umask;
 	else
+=======
+#ifdef POSIXACLS
+	if (req->f->conn.proto_minor >= 12)
+		req->ctx.umask = arg->umask;
+	else
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		name = (const char *) inarg + sizeof(struct fuse_open_in);
 
 	req->f->op.create(req, nodeid, name, arg->mode, &fi);
@@ -699,6 +767,10 @@ static void do_write(fuse_req_t req, fuse_ino_t nodeid, const void *inarg)
     fi.writepage = arg->write_flags & 1;
 
     if (req->f->op.write) {
+<<<<<<< HEAD
+=======
+#ifdef POSIXACLS
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	const char *buf;
 
 	if (req->f->conn.proto_minor >= 12)
@@ -706,6 +778,12 @@ static void do_write(fuse_req_t req, fuse_ino_t nodeid, const void *inarg)
 	else
 		buf = ((const char*)arg) + FUSE_COMPAT_WRITE_IN_SIZE;
         req->f->op.write(req, nodeid, buf, arg->size, arg->offset, &fi);
+<<<<<<< HEAD
+=======
+#else
+        req->f->op.write(req, nodeid, PARAM(arg), arg->size, arg->offset, &fi);
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
     } else
         fuse_reply_err(req, ENOSYS);
 }
@@ -1024,6 +1102,7 @@ static void do_bmap(fuse_req_t req, fuse_ino_t nodeid, const void *inarg)
         fuse_reply_err(req, ENOSYS);
 }
 
+<<<<<<< HEAD
 static void do_ioctl(fuse_req_t req, fuse_ino_t nodeid, const void *inarg)
 {
     const struct fuse_ioctl_in *arg = (const struct fuse_ioctl_in *) inarg;
@@ -1057,6 +1136,8 @@ static void do_ioctl(fuse_req_t req, fuse_ino_t nodeid, const void *inarg)
     	fuse_reply_err(req, ENOSYS);
 }
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 static void do_init(fuse_req_t req, fuse_ino_t nodeid, const void *inarg)
 {
     const struct fuse_init_in *arg = (const struct fuse_init_in *) inarg;
@@ -1093,8 +1174,11 @@ static void do_init(fuse_req_t req, fuse_ino_t nodeid, const void *inarg)
 #endif
 	if (arg->flags & FUSE_BIG_WRITES)
 	    f->conn.capable |= FUSE_CAP_BIG_WRITES;
+<<<<<<< HEAD
 	if (arg->flags & FUSE_HAS_IOCTL_DIR)
 	    f->conn.capable |= FUSE_CAP_IOCTL_DIR;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
     } else {
         f->conn.async_read = 0;
         f->conn.max_readahead = 0;
@@ -1117,6 +1201,7 @@ static void do_init(fuse_req_t req, fuse_ino_t nodeid, const void *inarg)
     memset(&outarg, 0, sizeof(outarg));
     outarg.major = FUSE_KERNEL_VERSION;
 	/*
+<<<<<<< HEAD
 	 * Suggest using protocol 7.18 when available, and fallback
 	 * to 7.12 or even earlier when running on an old kernel.
 	 * Protocol 7.12 has the ability to process the umask
@@ -1147,10 +1232,33 @@ static void do_init(fuse_req_t req, fuse_ino_t nodeid, const void *inarg)
 #endif
     	}
     }
+=======
+	 * if POSIXACLS is not set, protocol 7.8 provides a good
+	 * compatibility with older kernel modules.
+	 * if POSIXACLS is set, we try to use protocol 7.12 supposed
+	 * to have the ability to process the umask conditionnally,
+	 * but, when using an older kernel module, we fallback to 7.8
+	 */
+#ifdef POSIXACLS
+    if (arg->major > 7 || (arg->major == 7 && arg->minor >= 12))
+	    outarg.minor = FUSE_KERNEL_MINOR_VERSION;
+    else
+	    outarg.minor = FUSE_KERNEL_MINOR_FALLBACK;
+#else
+    outarg.minor = FUSE_KERNEL_MINOR_VERSION;
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
     if (f->conn.async_read)
         outarg.flags |= FUSE_ASYNC_READ;
     if (f->op.getlk && f->op.setlk)
         outarg.flags |= FUSE_POSIX_LOCKS;
+<<<<<<< HEAD
+=======
+#ifdef POSIXACLS
+    if (f->conn.want & FUSE_CAP_DONT_MASK)
+	outarg.flags |= FUSE_DONT_MASK;
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
     if (f->conn.want & FUSE_CAP_BIG_WRITES)
 	outarg.flags |= FUSE_BIG_WRITES;
     outarg.max_readahead = f->conn.max_readahead;
@@ -1251,7 +1359,10 @@ static struct {
     [FUSE_CREATE]      = { do_create,      "CREATE"      },
     [FUSE_INTERRUPT]   = { do_interrupt,   "INTERRUPT"   },
     [FUSE_BMAP]        = { do_bmap,        "BMAP"        },
+<<<<<<< HEAD
     [FUSE_IOCTL]       = { do_ioctl,       "IOCTL"       },
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
     [FUSE_DESTROY]     = { do_destroy,     "DESTROY"     },
 };
 

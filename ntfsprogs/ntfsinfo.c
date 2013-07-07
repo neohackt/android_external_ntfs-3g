@@ -8,7 +8,10 @@
  * Copyright (c) 2004-2005 Yuval Fledel
  * Copyright (c) 2004-2007 Yura Pakhuchiy
  * Copyright (c)      2005 Cristian Klein
+<<<<<<< HEAD
  * Copyright (c) 2011-2015 Jean-Pierre Andre
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *
  * This utility will dump a file's attributes.
  *
@@ -119,7 +122,10 @@ static void version(void)
 	printf("    2003      Leonard Norrgård\n");
 	printf("    2004-2005 Yuval Fledel\n");
 	printf("    2004-2007 Yura Pakhuchiy\n");
+<<<<<<< HEAD
 	printf("    2011-2014 Jean-Pierre Andre\n");
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	printf("\n%s\n%s%s\n", ntfs_gpl, ntfs_bugs, ntfs_home);
 }
 
@@ -304,8 +310,12 @@ static int parse_options(int argc, char *argv[])
 	if (help || err)
 		usage();
 
+<<<<<<< HEAD
 		/* tri-state 0 : done, 1 : error, -1 : proceed */
 	return (err ? 1 : (help || ver ? 0 : -1));
+=======
+	return (!err && !help && !ver);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 
@@ -408,6 +418,7 @@ static char *ntfs_attr_get_name_mbs(ATTR_RECORD *attr)
 		return NULL;
 }
 
+<<<<<<< HEAD
 static const char *reparse_type_name(le32 tag)
 {
 	const char *name;
@@ -424,6 +435,8 @@ static const char *reparse_type_name(le32 tag)
 				name = "";
 	return (name);
 }
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 /* *************** functions for dumping global info ******************** */
 /**
@@ -436,7 +449,11 @@ static void ntfs_dump_volume(ntfs_volume *vol)
 	printf("\tDevice state: %lu\n", vol->dev->d_state);
 	printf("\tVolume Name: %s\n", vol->vol_name);
 	printf("\tVolume State: %lu\n", vol->state);
+<<<<<<< HEAD
 	printf("\tVolume Flags: 0x%04x", (int)le16_to_cpu(vol->flags));
+=======
+	printf("\tVolume Flags: 0x%04x", (int)vol->flags);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (vol->flags & VOLUME_IS_DIRTY)
 		printf(" DIRTY");
 	if (vol->flags & VOLUME_MODIFIED_BY_CHKDSK)
@@ -792,8 +809,11 @@ static void ntfs_dump_attr_list(ATTR_RECORD *attr, ntfs_volume *vol)
 static void ntfs_dump_filename(const char *indent,
 		FILE_NAME_ATTR *file_name_attr)
 {
+<<<<<<< HEAD
 	le32 tag;
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	printf("%sParent directory:\t %lld (0x%llx)\n", indent,
 			(long long)MREF_LE(file_name_attr->parent_directory),
 			(long long)MREF_LE(file_name_attr->parent_directory));
@@ -831,12 +851,19 @@ static void ntfs_dump_filename(const char *indent,
 			(unsigned)file_name_attr->file_name_length);
 	ntfs_dump_flags(indent, AT_FILE_NAME, file_name_attr->file_attributes);
 	if (file_name_attr->file_attributes & FILE_ATTR_REPARSE_POINT &&
+<<<<<<< HEAD
 			file_name_attr->reparse_point_tag) {
 		tag = file_name_attr->reparse_point_tag;
 		printf("%sReparse point tag:\t 0x%08lx%s\n", indent,
 				(long)le32_to_cpu(tag),
 				reparse_type_name(tag));
 	} else if (file_name_attr->reparse_point_tag) {
+=======
+			file_name_attr->reparse_point_tag)
+		printf("%sReparse point tag:\t 0x%x\n", indent, (unsigned)
+				le32_to_cpu(file_name_attr->reparse_point_tag));
+	else if (file_name_attr->reparse_point_tag) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		printf("%sEA Length:\t\t %d (0x%x)\n", indent, (unsigned)
 				le16_to_cpu(file_name_attr->packed_ea_size),
 				(unsigned)
@@ -1451,7 +1478,10 @@ static void ntfs_dump_index_key(INDEX_ENTRY *entry, INDEX_ATTR_TYPE type)
 {
 	char *sid;
 	char printable_GUID[37];
+<<<<<<< HEAD
 	le32 tag;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	switch (type) {
 	case INDEX_ATTR_SECURE_SII:
@@ -1475,10 +1505,15 @@ static void ntfs_dump_index_key(INDEX_ENTRY *entry, INDEX_ATTR_TYPE type)
 		ntfs_log_verbose("\t\tKey GUID:\t\t %s\n", printable_GUID);
 		break;
 	case INDEX_ATTR_REPARSE_R:
+<<<<<<< HEAD
 		tag = entry->key.reparse.reparse_tag;
 		ntfs_log_verbose("\t\tKey reparse tag:\t 0x%08lx%s\n",
 				(long)le32_to_cpu(tag),
 				reparse_type_name(tag));
+=======
+		ntfs_log_verbose("\t\tKey reparse tag:\t 0x%08x\n", (unsigned)
+				le32_to_cpu(entry->key.reparse.reparse_tag));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		ntfs_log_verbose("\t\tKey file id:\t\t %llu (0x%llx)\n",
 				(unsigned long long)
 				le64_to_cpu(entry->key.reparse.file_id),
@@ -1718,7 +1753,11 @@ static INDEX_ATTR_TYPE get_index_attr_type(ntfs_inode *ni, ATTR_RECORD *attr,
 		else
 			/* weird, this should be illegal */
 			ntfs_log_error("Unknown index attribute type: 0x%0X\n",
+<<<<<<< HEAD
 				       le32_to_cpu(index_root->type));
+=======
+				       index_root->type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		return INDEX_ATTR_UNKNOWN;
 	}
 
@@ -1969,6 +2008,7 @@ static void ntfs_dump_attr_bitmap(ATTR_RECORD *attr __attribute__((unused)))
  *
  * of ntfs 3.x dumps the reparse_point attribute
  */
+<<<<<<< HEAD
 static void ntfs_dump_attr_reparse_point(ATTR_RECORD *attr
 			__attribute__((unused)), ntfs_inode *inode)
 {
@@ -2012,6 +2052,11 @@ static void ntfs_dump_attr_reparse_point(ATTR_RECORD *attr
 	} else {
 		ntfs_log_perror("Failed to get the reparse data");
 	}
+=======
+static void ntfs_dump_attr_reparse_point(ATTR_RECORD *attr __attribute__((unused)))
+{
+	/* TODO */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -2043,12 +2088,17 @@ static void ntfs_dump_attr_ea_information(ATTR_RECORD *attr)
  */
 static void ntfs_dump_attr_ea(ATTR_RECORD *attr, ntfs_volume *vol)
 {
+<<<<<<< HEAD
 	const EA_ATTR *ea;
 	const u8 *pvalue;
 	u8 *buf = NULL;
 	const le32 *pval;
 	int offset;
 	int cnt;
+=======
+	EA_ATTR *ea;
+	u8 *buf = NULL;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	s64 data_size;
 
 	if (attr->non_resident) {
@@ -2086,7 +2136,10 @@ static void ntfs_dump_attr_ea(ATTR_RECORD *attr, ntfs_volume *vol)
 			return;
 		ea = (EA_ATTR*)((u8*)attr + le16_to_cpu(attr->value_offset));
 	}
+<<<<<<< HEAD
 	offset = 0;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	while (1) {
 		printf("\n\tEA flags:\t\t ");
 		if (ea->flags) {
@@ -2103,11 +2156,15 @@ static void ntfs_dump_attr_ea(ATTR_RECORD *attr, ntfs_volume *vol)
 		printf("\tValue length:\t %d (0x%x)\n",
 				(unsigned)le16_to_cpu(ea->value_length),
 				(unsigned)le16_to_cpu(ea->value_length));
+<<<<<<< HEAD
 			/* Name expected to be null terminated ? */
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		printf("\tName:\t\t '%s'\n", ea->name);
 		printf("\tValue:\t\t ");
 		if (ea->name_length == 11 &&
 				!strncmp((const char*)"SETFILEBITS",
+<<<<<<< HEAD
 				(const char*)ea->name, 11)) {
 			pval = (const le32*)(ea->value + ea->name_length + 1);
 			printf("0%lo\n", (unsigned long)le32_to_cpu(*pval));
@@ -2133,6 +2190,19 @@ static void ntfs_dump_attr_ea(ATTR_RECORD *attr, ntfs_volume *vol)
 		} else
 			break;
 		if (offset >= data_size)
+=======
+				(const char*)ea->name, 11))
+			printf("0%o\n", (unsigned)le32_to_cpu(*(le32*)
+					(ea->value + ea->name_length + 1)));
+		else
+			printf("'%s'\n", ea->value + ea->name_length + 1);
+		if (ea->next_entry_offset)
+			ea = (EA_ATTR*)((u8*)ea +
+					le32_to_cpu(ea->next_entry_offset));
+		else
+			break;
+		if ((u8*)ea - buf >= data_size)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			break;
 	}
 	free(buf);
@@ -2363,7 +2433,11 @@ static void ntfs_dump_file_attributes(ntfs_inode *inode)
 			ntfs_dump_attr_bitmap(ctx->attr);
 			break;
 		case AT_REPARSE_POINT:
+<<<<<<< HEAD
 			ntfs_dump_attr_reparse_point(ctx->attr, inode);
+=======
+			ntfs_dump_attr_reparse_point(ctx->attr);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			break;
 		case AT_EA_INFORMATION:
 			ntfs_dump_attr_ea_information(ctx->attr);
@@ -2388,10 +2462,15 @@ static void ntfs_dump_file_attributes(ntfs_inode *inode)
 				"enumerating attributes");
 	} else {
 		printf("End of inode reached\n");
+<<<<<<< HEAD
 		if (opts.verbose) {
 			printf("Total runs: %lu (fragments: %lu)\n",
 					runcount.runs, runcount.fragments);
 		}
+=======
+		printf("Total runs: %lu (fragments: %lu)\n",
+				runcount.runs, runcount.fragments);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 
 	/* close all data-structures we used */
@@ -2410,17 +2489,27 @@ static void ntfs_dump_file_attributes(ntfs_inode *inode)
 int main(int argc, char **argv)
 {
 	ntfs_volume *vol;
+<<<<<<< HEAD
 	int res;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	setlinebuf(stdout);
 
 	ntfs_log_set_handler(ntfs_log_handler_outerr);
 
+<<<<<<< HEAD
 	res = parse_options(argc, argv);
 	if (res > 0)
 		printf("Failed to parse command line options\n");
 	if (res >= 0)
 		exit(res);
+=======
+	if (!parse_options(argc, argv)) {
+		printf("Failed to parse command line options\n");
+		exit(1);
+	}
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	utils_set_locale();
 
@@ -2442,6 +2531,7 @@ int main(int argc, char **argv)
 		ntfs_inode *inode;
 		/* obtain the inode */
 		if (opts.filename) {
+<<<<<<< HEAD
 #ifdef HAVE_WINDOWS_H
 			char *unix_name;
 
@@ -2456,6 +2546,10 @@ int main(int argc, char **argv)
 			inode = ntfs_pathname_to_inode(vol, NULL,
 					opts.filename);
 #endif
+=======
+			inode = ntfs_pathname_to_inode(vol, NULL,
+					opts.filename);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		} else {
 			inode = ntfs_inode_open(vol, MK_MREF(opts.inode, 0));
 		}

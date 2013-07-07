@@ -5,7 +5,11 @@
  * Copyright (c) 2004-2005 Richard Russon
  * Copyright (c) 2004-2008 Szabolcs Szakacsits
  * Copyright (c) 2005-2007 Yura Pakhuchiy
+<<<<<<< HEAD
  * Copyright (c) 2008-2014 Jean-Pierre Andre
+=======
+ * Copyright (c) 2008-2010 Jean-Pierre Andre
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *
  * This program/include file is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as published
@@ -384,7 +388,11 @@ u64 ntfs_inode_lookup_by_name(ntfs_inode *dir_ni,
 	}
 
 	/* Get the starting vcn of the index_block holding the child node. */
+<<<<<<< HEAD
 	vcn = sle64_to_cpup((sle64*)((u8*)ie + le16_to_cpu(ie->length) - 8));
+=======
+	vcn = sle64_to_cpup((u8*)ie + le16_to_cpu(ie->length) - 8);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 descend_into_child_node:
 
@@ -496,7 +504,11 @@ descend_into_child_node:
 			goto close_err_out;
 		}
 		/* Child node present, descend into it. */
+<<<<<<< HEAD
 		vcn = sle64_to_cpup((sle64*)((u8*)ie + le16_to_cpu(ie->length) - 8));
+=======
+		vcn = sle64_to_cpup((u8*)ie + le16_to_cpu(ie->length) - 8);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (vcn >= 0)
 			goto descend_into_child_node;
 		ntfs_log_error("Negative child node vcn in directory inode "
@@ -1531,7 +1543,11 @@ static ntfs_inode *__ntfs_create(ntfs_inode *dir_ni, le32 securid,
 	si->last_access_time = ni->last_access_time;
 	if (securid) {
 		set_nino_flag(ni, v3_Extensions);
+<<<<<<< HEAD
 		ni->owner_id = si->owner_id = const_cpu_to_le32(0);
+=======
+		ni->owner_id = si->owner_id = 0;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		ni->security_id = si->security_id = securid;
 		ni->quota_charged = si->quota_charged = const_cpu_to_le64(0);
 		ni->usn = si->usn = const_cpu_to_le64(0);
@@ -1599,12 +1615,21 @@ static ntfs_inode *__ntfs_create(ntfs_inode *dir_ni, le32 securid,
 			ir->clusters_per_index_block = 
 					ni->vol->indx_record_size >>
 					NTFS_BLOCK_SIZE_BITS;
+<<<<<<< HEAD
 		ir->index.entries_offset = const_cpu_to_le32(sizeof(INDEX_HEADER));
 		ir->index.index_length = cpu_to_le32(index_len);
 		ir->index.allocated_size = cpu_to_le32(index_len);
 		ie = (INDEX_ENTRY*)((u8*)ir + sizeof(INDEX_ROOT));
 		ie->length = const_cpu_to_le16(sizeof(INDEX_ENTRY_HEADER));
 		ie->key_length = const_cpu_to_le16(0);
+=======
+		ir->index.entries_offset = cpu_to_le32(sizeof(INDEX_HEADER));
+		ir->index.index_length = cpu_to_le32(index_len);
+		ir->index.allocated_size = cpu_to_le32(index_len);
+		ie = (INDEX_ENTRY*)((u8*)ir + sizeof(INDEX_ROOT));
+		ie->length = cpu_to_le16(sizeof(INDEX_ENTRY_HEADER));
+		ie->key_length = 0;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		ie->ie_flags = INDEX_ENTRY_END;
 		/* Add INDEX_ROOT attribute to inode. */
 		if (ntfs_attr_add(ni, AT_INDEX_ROOT, NTFS_INDEX_I30, 4,
@@ -1691,7 +1716,11 @@ static ntfs_inode *__ntfs_create(ntfs_inode *dir_ni, le32 securid,
 	fn->last_mft_change_time = ni->last_mft_change_time;
 	fn->last_access_time = ni->last_access_time;
 	if (ni->mrec->flags & MFT_RECORD_IS_DIRECTORY)
+<<<<<<< HEAD
 		fn->data_size = fn->allocated_size = const_cpu_to_sle64(0);
+=======
+		fn->data_size = fn->allocated_size = const_cpu_to_le64(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	else {
 		fn->data_size = cpu_to_sle64(ni->data_size);
 		fn->allocated_size = cpu_to_sle64(ni->allocated_size);
@@ -1711,7 +1740,11 @@ static ntfs_inode *__ntfs_create(ntfs_inode *dir_ni, le32 securid,
 		goto err_out;
 	}
 	/* Set hard links count and directory flag. */
+<<<<<<< HEAD
 	ni->mrec->link_count = const_cpu_to_le16(1);
+=======
+	ni->mrec->link_count = cpu_to_le16(1);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (S_ISDIR(type))
 		ni->mrec->flags |= MFT_RECORD_IS_DIRECTORY;
 	ntfs_inode_mark_dirty(ni);
@@ -1970,7 +2003,11 @@ search:
 	 * (Windows also does so), however delete the name if it were
 	 * in an extent, to avoid leaving an attribute list.
 	 */
+<<<<<<< HEAD
 	if ((ni->mrec->link_count == const_cpu_to_le16(1)) && !actx->base_ntfs_ino) {
+=======
+	if ((ni->mrec->link_count == cpu_to_le16(1)) && !actx->base_ntfs_ino) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			/* make sure to not loop to another search */
 		looking_for_dos_name = FALSE;
 	} else {
@@ -2157,6 +2194,14 @@ static int ntfs_link_i(ntfs_inode *ni, ntfs_inode *dir_ni, const ntfschar *name,
 		goto err_out;
 	}
 	
+<<<<<<< HEAD
+=======
+	if ((ni->flags & FILE_ATTR_REPARSE_POINT)
+	   && !ntfs_possible_symlink(ni)) {
+		err = EOPNOTSUPP;
+		goto err_out;
+	}
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (NVolHideDotFiles(dir_ni->vol)) {
 		/* Set hidden flag according to the latest name */
 		if ((name_len > 1)
@@ -2181,7 +2226,11 @@ static int ntfs_link_i(ntfs_inode *ni, ntfs_inode *dir_ni, const ntfschar *name,
 	fn->file_attributes = ni->flags;
 	if (ni->mrec->flags & MFT_RECORD_IS_DIRECTORY) {
 		fn->file_attributes |= FILE_ATTR_I30_INDEX_PRESENT;
+<<<<<<< HEAD
 		fn->data_size = fn->allocated_size = const_cpu_to_sle64(0);
+=======
+		fn->data_size = fn->allocated_size = const_cpu_to_le64(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	} else {
 		fn->allocated_size = cpu_to_sle64(ni->allocated_size);
 		fn->data_size = cpu_to_sle64(ni->data_size);
@@ -2645,8 +2694,12 @@ int ntfs_set_ntfs_dos_name(ntfs_inode *ni, ntfs_inode *dir_ni,
 	if (shortlen > MAX_DOS_NAME_LENGTH)
 		shortlen = MAX_DOS_NAME_LENGTH;
 			/* make sure the short name has valid chars */
+<<<<<<< HEAD
 	if ((shortlen < 0)
 	    || ntfs_forbidden_names(ni->vol,shortname,shortlen)) {
+=======
+	if ((shortlen < 0) || ntfs_forbidden_chars(shortname,shortlen)) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		ntfs_inode_close_in_dir(ni,dir_ni);
 		ntfs_inode_close(dir_ni);
 		res = -errno;
@@ -2657,7 +2710,11 @@ int ntfs_set_ntfs_dos_name(ntfs_inode *ni, ntfs_inode *dir_ni,
 	if (longlen > 0) {
 		oldlen = get_dos_name(ni, dnum, oldname);
 		if ((oldlen >= 0)
+<<<<<<< HEAD
 		    && !ntfs_forbidden_names(ni->vol, longname, longlen)) {
+=======
+		    && !ntfs_forbidden_chars(longname, longlen)) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (oldlen > 0) {
 				if (flags & XATTR_CREATE) {
 					res = -1;

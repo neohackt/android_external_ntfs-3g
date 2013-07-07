@@ -49,6 +49,7 @@ extern "C" {
 #endif
 
 #define FUSE_CAP_BIG_WRITES	(1 << 5)
+<<<<<<< HEAD
 #define FUSE_CAP_IOCTL_DIR	(1 << 11)
 
 /**
@@ -65,6 +66,8 @@ extern "C" {
 #define FUSE_IOCTL_DIR		(1 << 4)
 
 #define FUSE_IOCTL_MAX_IOV	256
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 /**
  * Information about open files

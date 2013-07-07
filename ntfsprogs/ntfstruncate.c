@@ -75,7 +75,11 @@ BOOL success = FALSE;
 
 char *dev_name;
 s64 inode;
+<<<<<<< HEAD
 ATTR_TYPES attr_type;
+=======
+u32 attr_type;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 ntfschar *attr_name = NULL;
 u32 attr_name_len;
 s64 new_len;
@@ -137,7 +141,11 @@ static void license(void)
  * usage - print a list of the parameters to the program
  */
 __attribute__((noreturn))
+<<<<<<< HEAD
 static void usage(int ret)
+=======
+static void usage(void)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 {
 	copyright();
 	fprintf(stderr, "Usage: %s [options] device inode [attr-type "
@@ -155,7 +163,11 @@ static void usage(int ret)
 			"    -l    Display licensing information\n"
 			"    -h    Display this help\n", EXEC_NAME);
 	fprintf(stderr, "%s%s", ntfs_bugs, ntfs_home);
+<<<<<<< HEAD
 	exit(ret);
+=======
+	exit(1);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -194,6 +206,7 @@ static void parse_options(int argc, char *argv[])
 			license();
 			exit(0);
 		case 'h':
+<<<<<<< HEAD
 			usage(0);
 		case '?':
 		default:
@@ -201,6 +214,14 @@ static void parse_options(int argc, char *argv[])
 		}
 	if (optind == argc)
 		usage(1);
+=======
+		case '?':
+		default:
+			usage();
+		}
+	if (optind == argc)
+		usage();
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (opts.verbose > 1)
 		ntfs_log_set_levels(NTFS_LOG_LEVEL_DEBUG | NTFS_LOG_LEVEL_TRACE |
@@ -211,7 +232,11 @@ static void parse_options(int argc, char *argv[])
 	ntfs_log_verbose("device name = %s\n", dev_name);
 
 	if (optind == argc)
+<<<<<<< HEAD
 		usage(1);
+=======
+		usage();
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	/* Get the inode. */
 	ll = strtoll(argv[optind++], &s, 0);
@@ -221,7 +246,11 @@ static void parse_options(int argc, char *argv[])
 	ntfs_log_verbose("inode = %lli\n", (long long)inode);
 
 	if (optind == argc)
+<<<<<<< HEAD
 		usage(1);
+=======
+		usage();
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	/* Get the attribute type, if specified. */
 	s = argv[optind++];
@@ -236,7 +265,11 @@ static void parse_options(int argc, char *argv[])
 		if (*s2 || !ul || (ul >= ULONG_MAX && errno == ERANGE))
 			err_exit("Invalid attribute type %s: %s\n", s,
 					strerror(errno));
+<<<<<<< HEAD
 		attr_type = cpu_to_le32(ul);
+=======
+		attr_type = ul;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 		/* Get the attribute name, if specified. */
 		s = argv[optind++];
@@ -252,13 +285,21 @@ static void parse_options(int argc, char *argv[])
 
 			s = argv[optind++];
 			if (optind != argc)
+<<<<<<< HEAD
 				usage(1);
+=======
+				usage();
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		} else {
 			attr_name = AT_UNNAMED;
 			attr_name_len = 0;
 		}
 	}
+<<<<<<< HEAD
 	ntfs_log_verbose("attribute type = 0x%x\n", (unsigned int)le32_to_cpu(attr_type));
+=======
+	ntfs_log_verbose("attribute type = 0x%x\n", (unsigned int)attr_type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (attr_name == AT_UNNAMED)
 		ntfs_log_verbose("attribute name = \"\" (UNNAMED)\n");
 	else
@@ -286,7 +327,11 @@ static void parse_options(int argc, char *argv[])
  */
 static int ucstos(char *dest, const ntfschar *src, int maxlen)
 {
+<<<<<<< HEAD
 	u16 u;
+=======
+	ntfschar u;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	int i;
 
 	/* Need one byte for null terminator. */
@@ -314,7 +359,10 @@ static void dump_resident_attr_val(ATTR_TYPES type, char *val, u32 val_len)
 	const char *todo = "This is still work in progress.";
 	char *buf;
 	int i, j;
+<<<<<<< HEAD
 	VOLUME_FLAGS flags;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	u32 u;
 
 	switch (type) {
@@ -357,54 +405,89 @@ static void dump_resident_attr_val(ATTR_TYPES type, char *val, u32 val_len)
 #define VOL_INF(x) ((VOLUME_INFORMATION *)(x))
 		printf("NTFS version %i.%i\n", VOL_INF(val)->major_ver,
 				VOL_INF(val)->minor_ver);
+<<<<<<< HEAD
 		flags = VOL_INF(val)->flags;
 #undef VOL_INF
 		printf("Volume flags = 0x%x: ", le16_to_cpu(flags));
 		if (!flags) {
+=======
+		i = VOL_INF(val)->flags;
+#undef VOL_INF
+		printf("Volume flags = 0x%x: ", i);
+		if (!i) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			printf("NONE\n");
 			return;
 		}
 		j = 0;
+<<<<<<< HEAD
 		if (flags & VOLUME_MODIFIED_BY_CHKDSK) {
 			j = 1;
 			printf("VOLUME_MODIFIED_BY_CHKDSK");
 		}
 		if (flags & VOLUME_REPAIR_OBJECT_ID) {
+=======
+		if (i & VOLUME_MODIFIED_BY_CHKDSK) {
+			j = 1;
+			printf("VOLUME_MODIFIED_BY_CHKDSK");
+		}
+		if (i & VOLUME_REPAIR_OBJECT_ID) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (j)
 				printf(" | ");
 			else
 				j = 0;
 			printf("VOLUME_REPAIR_OBJECT_ID");
 		}
+<<<<<<< HEAD
 		if (flags & VOLUME_DELETE_USN_UNDERWAY) {
+=======
+		if (i & VOLUME_DELETE_USN_UNDERWAY) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (j)
 				printf(" | ");
 			else
 				j = 0;
 			printf("VOLUME_DELETE_USN_UNDERWAY");
 		}
+<<<<<<< HEAD
 		if (flags & VOLUME_MOUNTED_ON_NT4) {
+=======
+		if (i & VOLUME_MOUNTED_ON_NT4) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (j)
 				printf(" | ");
 			else
 				j = 0;
 			printf("VOLUME_MOUNTED_ON_NT4");
 		}
+<<<<<<< HEAD
 		if (flags & VOLUME_UPGRADE_ON_MOUNT) {
+=======
+		if (i & VOLUME_UPGRADE_ON_MOUNT) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (j)
 				printf(" | ");
 			else
 				j = 0;
 			printf("VOLUME_UPGRADE_ON_MOUNT");
 		}
+<<<<<<< HEAD
 		if (flags & VOLUME_RESIZE_LOG_FILE) {
+=======
+		if (i & VOLUME_RESIZE_LOG_FILE) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (j)
 				printf(" | ");
 			else
 				j = 0;
 			printf("VOLUME_RESIZE_LOG_FILE");
 		}
+<<<<<<< HEAD
 		if (flags & VOLUME_IS_DIRTY) {
+=======
+		if (i & VOLUME_IS_DIRTY) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (j)
 				printf(" | ");
 			else
@@ -532,7 +615,10 @@ static void dump_attr_record(MFT_RECORD *m, ATTR_RECORD *a)
 	unsigned int u;
 	char s[0x200];
 	int i;
+<<<<<<< HEAD
 	ATTR_FLAGS flags;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	printf("-- Beginning dump of attribute record at offset 0x%x. --\n",
 			(unsigned)((u8*)a - (u8*)m));
@@ -565,12 +651,21 @@ static void dump_attr_record(MFT_RECORD *m, ATTR_RECORD *a)
 	printf("Length of resident part = %u (0x%x)\n", u, u);
 	printf("Attribute is %sresident\n", a->non_resident ? "non-" : "");
 	printf("Name length = %u unicode characters\n", a->name_length);
+<<<<<<< HEAD
 	printf("Name offset = %u (0x%x)\n", le16_to_cpu(a->name_offset),
 			le16_to_cpu(a->name_offset));
 	flags = a->flags;
 	if (a->name_length) {
 		if (ucstos(s, (ntfschar*)((char*)a +
 				le16_to_cpu(a->name_offset)),
+=======
+	printf("Name offset = %u (0x%x)\n", cpu_to_le16(a->name_offset),
+			cpu_to_le16(a->name_offset));
+	u = a->flags;
+	if (a->name_length) {
+		if (ucstos(s, (ntfschar*)((char*)a +
+				cpu_to_le16(a->name_offset)),
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				min((int)sizeof(s),
 						a->name_length + 1)) == -1) {
 			ntfs_log_error("Could not convert Unicode string to single "
@@ -581,6 +676,7 @@ static void dump_attr_record(MFT_RECORD *m, ATTR_RECORD *a)
 		}
 		printf("Name = %s\n", s);
 	}
+<<<<<<< HEAD
 	printf("Attribute flags = 0x%x: ", le16_to_cpu(flags));
 	if (!flags)
 		printf("NONE");
@@ -592,6 +688,19 @@ static void dump_attr_record(MFT_RECORD *m, ATTR_RECORD *a)
 				first = FALSE;
 			}
 			if ((flags & ATTR_COMPRESSION_MASK) & ~ATTR_IS_COMPRESSED) {
+=======
+	printf("Attribute flags = 0x%x: ", le16_to_cpu(u));
+	if (!u)
+		printf("NONE");
+	else {
+		int first = TRUE;
+		if (u & ATTR_COMPRESSION_MASK) {
+			if (u & ATTR_IS_COMPRESSED) {
+				printf("ATTR_IS_COMPRESSED");
+				first = FALSE;
+			}
+			if ((u & ATTR_COMPRESSION_MASK) & ~ATTR_IS_COMPRESSED) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				if (!first)
 					printf(" | ");
 				else
@@ -599,14 +708,22 @@ static void dump_attr_record(MFT_RECORD *m, ATTR_RECORD *a)
 				printf("ATTR_UNKNOWN_COMPRESSION");
 			}
 		}
+<<<<<<< HEAD
 		if (flags & ATTR_IS_ENCRYPTED) {
+=======
+		if (u & ATTR_IS_ENCRYPTED) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (!first)
 				printf(" | ");
 			else
 				first = FALSE;
 			printf("ATTR_IS_ENCRYPTED");
 		}
+<<<<<<< HEAD
 		if (flags & ATTR_IS_SPARSE) {
+=======
+		if (u & ATTR_IS_SPARSE) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (!first)
 				printf(" | ");
 			else
@@ -640,7 +757,11 @@ static void dump_mft_record(MFT_RECORD *m)
 	printf("Update sequence array offset = %u (0x%x)\n", u, u);
 	printf("Update sequence array size = %u\n", le16_to_cpu(m->usa_count));
 	printf("$LogFile sequence number (lsn) = %llu\n",
+<<<<<<< HEAD
 			(unsigned long long)sle64_to_cpu(m->lsn));
+=======
+			(unsigned long long)le64_to_cpu(m->lsn));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	printf("Sequence number = %u\n", le16_to_cpu(m->sequence_number));
 	printf("Reference (hard link) count = %u\n",
 						le16_to_cpu(m->link_count));
@@ -667,7 +788,11 @@ static void dump_mft_record(MFT_RECORD *m)
 	a = (ATTR_RECORD*)((char*)m + le16_to_cpu(m->attrs_offset));
 	printf("-- Beginning dump of attributes within mft record. --\n");
 	while ((char*)a < (char*)m + le32_to_cpu(m->bytes_in_use)) {
+<<<<<<< HEAD
 		if (a->type == attr_type)
+=======
+		if (a->type == cpu_to_le32(attr_type))
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			dump_attr_record(m, a);
 		if (a->type == AT_END)
 			break;
@@ -766,7 +891,11 @@ int main(int argc, char **argv)
 	na = ntfs_attr_open(ni, attr_type, attr_name, attr_name_len);
 	if (!na)
 		err_exit("Failed to open attribute 0x%x: %s\n",
+<<<<<<< HEAD
 				(unsigned int)le32_to_cpu(attr_type), strerror(errno));
+=======
+				(unsigned int)attr_type, strerror(errno));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (!opts.quiet && opts.verbose > 1) {
 		ntfs_log_verbose("Dumping mft record before calling "
@@ -778,7 +907,11 @@ int main(int argc, char **argv)
 	err = ntfs_attr_truncate(na, new_len);
 	if (err)
 		err_exit("Failed to truncate attribute 0x%x: %s\n",
+<<<<<<< HEAD
 				(unsigned int)le32_to_cpu(attr_type), strerror(errno));
+=======
+				(unsigned int)attr_type, strerror(errno));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (!opts.quiet && opts.verbose > 1) {
 		ntfs_log_verbose("Dumping mft record after calling "

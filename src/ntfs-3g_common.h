@@ -118,7 +118,11 @@ typedef struct {
 	unsigned int dmask;
 	ntfs_fuse_streams_interface streams;
 	ntfs_atime_t atime;
+<<<<<<< HEAD
 	s64 dmtime;
+=======
+	u64 dmtime;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	BOOL ro;
 	BOOL show_sys_files;
 	BOOL hide_hid_files;

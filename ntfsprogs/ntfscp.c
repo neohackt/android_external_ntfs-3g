@@ -4,7 +4,10 @@
  * Copyright (c) 2004-2007 Yura Pakhuchiy
  * Copyright (c) 2005 Anton Altaparmakov
  * Copyright (c) 2006 Hil Liao
+<<<<<<< HEAD
  * Copyright (c) 2014 Jean-Pierre Andre
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *
  * This utility will copy file to an NTFS volume.
  *
@@ -54,11 +57,17 @@
 #include "utils.h"
 #include "volume.h"
 #include "dir.h"
+<<<<<<< HEAD
 #include "bitmap.h"
 #include "debug.h"
 /* #include "version.h" */
 #include "logging.h"
 #include "misc.h"
+=======
+#include "debug.h"
+/* #include "version.h" */
+#include "logging.h"
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 struct options {
 	char		*device;	/* Device/File to work with */
@@ -68,12 +77,16 @@ struct options {
 	int		 force;		/* Override common sense */
 	int		 quiet;		/* Less output */
 	int		 verbose;	/* Extra output */
+<<<<<<< HEAD
 	int		 minfragments;	/* Do minimal fragmentation */
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	int		 noaction;	/* Do not write to disk */
 	ATTR_TYPES	 attribute;	/* Write to this attribute. */
 	int		 inode;		/* Treat dest_file as inode number. */
 };
 
+<<<<<<< HEAD
 struct ALLOC_CONTEXT {
 	ntfs_volume *vol;
 	ntfs_attr *na;
@@ -89,6 +102,8 @@ struct ALLOC_CONTEXT {
 
 enum STEP { STEP_ERR, STEP_ZERO, STEP_ONE } ;
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 static const char *EXEC_NAME = "ntfscp";
 static struct options opts;
 static volatile sig_atomic_t caught_terminate = 0;
@@ -107,7 +122,10 @@ static void version(void)
 	ntfs_log_info("Copyright (c) 2004-2007 Yura Pakhuchiy\n");
 	ntfs_log_info("Copyright (c) 2005 Anton Altaparmakov\n");
 	ntfs_log_info("Copyright (c) 2006 Hil Liao\n");
+<<<<<<< HEAD
 	ntfs_log_info("Copyright (c) 2014 Jean-Pierre Andre\n");
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ntfs_log_info("\n%s\n%s%s\n", ntfs_gpl, ntfs_bugs, ntfs_home);
 }
 
@@ -125,7 +143,10 @@ static void usage(void)
 		"    -i, --inode           Treat dest_file as inode number\n"
 		"    -f, --force           Use less caution\n"
 		"    -h, --help            Print this help\n"
+<<<<<<< HEAD
 		"    -m, --min_fragments   Do minimal fragmentation\n"
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		"    -N, --attr-name NAME  Write to attribute with this name\n"
 		"    -n, --no-action       Do not write to disk\n"
 		"    -q, --quiet           Less output\n"
@@ -146,13 +167,20 @@ static void usage(void)
  */
 static int parse_options(int argc, char **argv)
 {
+<<<<<<< HEAD
 	static const char *sopt = "-a:ifh?mN:no:qVv";
+=======
+	static const char *sopt = "-a:ifh?N:nqVv";
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	static const struct option lopt[] = {
 		{ "attribute",	required_argument,	NULL, 'a' },
 		{ "inode",	no_argument,		NULL, 'i' },
 		{ "force",	no_argument,		NULL, 'f' },
 		{ "help",	no_argument,		NULL, 'h' },
+<<<<<<< HEAD
 		{ "min-fragments", no_argument,		NULL, 'm' },
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		{ "attr-name",	required_argument,	NULL, 'N' },
 		{ "no-action",	no_argument,		NULL, 'n' },
 		{ "quiet",	no_argument,		NULL, 'q' },
@@ -215,11 +243,22 @@ static int parse_options(int argc, char **argv)
 			opts.force++;
 			break;
 		case 'h':
+<<<<<<< HEAD
 			help++;
 			break;
 		case 'm':
 			opts.minfragments++;
 			break;
+=======
+		case '?':
+			if (strncmp(argv[optind - 1], "--log-", 6) == 0) {
+				if (!ntfs_log_parse_option(argv[optind - 1]))
+					err++;
+				break;
+			}
+			help++;
+			break;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		case 'N':
 			if (opts.attr_name) {
 				ntfs_log_error("You can specify only one "
@@ -242,6 +281,7 @@ static int parse_options(int argc, char **argv)
 			opts.verbose++;
 			ntfs_log_set_levels(NTFS_LOG_LEVEL_VERBOSE);
 			break;
+<<<<<<< HEAD
 		case '?':
 			if (strncmp(argv[optind - 1], "--log-", 6) == 0) {
 				if (!ntfs_log_parse_option(argv[optind - 1]))
@@ -249,6 +289,8 @@ static int parse_options(int argc, char **argv)
 				break;
 			}
 			/* fall through */
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		default:
 			ntfs_log_error("Unknown option '%s'.\n",
 					argv[optind - 1]);
@@ -291,8 +333,12 @@ static int parse_options(int argc, char **argv)
 	if (help || err)
 		usage();
 
+<<<<<<< HEAD
 		/* tri-state 0 : done, 1 : error, -1 : proceed */
 	return (err ? 1 : (help || ver ? 0 : -1));
+=======
+	return (!err && !help && !ver);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -303,6 +349,7 @@ static void signal_handler(int arg __attribute__((unused)))
 	caught_terminate++;
 }
 
+<<<<<<< HEAD
 /*
  *		Search for the next '0' in a bitmap chunk
  *
@@ -783,6 +830,8 @@ static int preallocate(ntfs_attr *na, s64 new_size)
 	return (err);
 }
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /**
  * Create a regular file under the given directory inode
  *
@@ -806,7 +855,11 @@ static ntfs_inode *ntfs_new_file(ntfs_inode *dir_ni,
 					filename);
 		return NULL;
 	}
+<<<<<<< HEAD
 	ni = ntfs_create(dir_ni, const_cpu_to_le32(0), ufilename, ufilename_len, S_IFREG);
+=======
+	ni = ntfs_create(dir_ni, 0, ufilename, ufilename_len, S_IFREG);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	free(ufilename);
 	return ni;
 }
@@ -826,7 +879,10 @@ int main(int argc, char *argv[])
 	ntfs_inode *out;
 	ntfs_attr *na;
 	int flags = 0;
+<<<<<<< HEAD
 	int res;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	int result = 1;
 	s64 new_size;
 	u64 offset;
@@ -834,6 +890,7 @@ int main(int argc, char *argv[])
 	s64 br, bw;
 	ntfschar *attr_name;
 	int attr_name_len = 0;
+<<<<<<< HEAD
 #ifdef HAVE_WINDOWS_H
 	char *unix_name;
 #endif
@@ -843,6 +900,13 @@ int main(int argc, char *argv[])
 	res = parse_options(argc, argv);
 	if (res >= 0)
 		return (res);
+=======
+
+	ntfs_log_set_handler(ntfs_log_handler_stderr);
+
+	if (!parse_options(argc, argv))
+		return 1;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	utils_set_locale();
 
@@ -903,6 +967,7 @@ int main(int argc, char *argv[])
 			goto close_src;
 		}
 		out = ntfs_inode_open(vol, inode_num);
+<<<<<<< HEAD
 	} else {
 #ifdef HAVE_WINDOWS_H
 		unix_name = ntfs_utils_unix_path(opts.dest_file);
@@ -914,6 +979,10 @@ int main(int argc, char *argv[])
 		out = ntfs_pathname_to_inode(vol, NULL, opts.dest_file);
 #endif
 	}
+=======
+	} else
+		out = ntfs_pathname_to_inode(vol, NULL, opts.dest_file);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (!out) {
 		/* Copy the file if the dest_file's parent dir can be opened. */
 		char *parent_dirname;
@@ -922,6 +991,7 @@ int main(int argc, char *argv[])
 		ntfs_inode *ni;
 		char *dirname_last_whack;
 
+<<<<<<< HEAD
 #ifdef HAVE_WINDOWS_H
 		filename = basename(unix_name);
 		parent_dirname = strdup(unix_name);
@@ -929,16 +999,24 @@ int main(int argc, char *argv[])
 		filename = basename(opts.dest_file);
 		parent_dirname = strdup(opts.dest_file);
 #endif
+=======
+		filename = basename(opts.dest_file);
+		parent_dirname = strdup(opts.dest_file);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (!parent_dirname) {
 			ntfs_log_perror("strdup() failed");
 			goto close_src;
 		}
 		dirname_last_whack = strrchr(parent_dirname, '/');
 		if (dirname_last_whack) {
+<<<<<<< HEAD
 			if (dirname_last_whack == parent_dirname)
 				dirname_last_whack[1] = 0;
 			else
 				*dirname_last_whack = 0;
+=======
+			dirname_last_whack[1] = 0;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			dir_ni = ntfs_pathname_to_inode(vol, NULL,
 					parent_dirname);
 		} else {
@@ -1000,6 +1078,7 @@ int main(int argc, char *argv[])
 			ntfs_inode_close(out);
 			goto close_src;
 		}
+<<<<<<< HEAD
 #ifdef HAVE_WINDOWS_H
 		strcpy(overwrite_filename, unix_name);
 #else
@@ -1010,6 +1089,14 @@ int main(int argc, char *argv[])
 		}
 		strcat(overwrite_filename, filename);
 		ni = ntfs_pathname_to_inode(vol, dir_ni, overwrite_filename);
+=======
+		strcpy(overwrite_filename, opts.dest_file);
+		if (opts.dest_file[dest_dirname_len - 1] != '/') {
+			strcat(overwrite_filename, "/");
+		}
+		strcat(overwrite_filename, filename);
+		ni = ntfs_pathname_to_inode(vol, NULL, overwrite_filename);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		/* Does a file with the same name exist in the dest dir? */
 		if (ni) {
 			ntfs_log_verbose("Destination path has a file with "
@@ -1061,6 +1148,7 @@ int main(int argc, char *argv[])
 			goto close_dst;
 		}
 	}
+<<<<<<< HEAD
 
 	ntfs_log_verbose("Old file size: %lld\n", (long long)na->data_size);
 	if (opts.minfragments && NAttrCompressed(na)) {
@@ -1099,6 +1187,15 @@ int main(int argc, char *argv[])
 					"ERROR: Couldn't resize attribute");
 				goto close_attr;
 			}
+=======
+	ntfs_ucsfree(attr_name);
+
+	ntfs_log_verbose("Old file size: %lld\n", (long long)na->data_size);
+	if (na->data_size != new_size) {
+		if (ntfs_attr_truncate_solid(na, new_size)) {
+			ntfs_log_perror("ERROR: Couldn't resize attribute");
+			goto close_attr;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		}
 	}
 
@@ -1137,7 +1234,11 @@ int main(int argc, char *argv[])
 close_attr:
 	ntfs_attr_close(na);
 close_dst:
+<<<<<<< HEAD
 	while (ntfs_inode_close(out) && !opts.noaction) {
+=======
+	while (ntfs_inode_close(out)) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (errno != EBUSY) {
 			ntfs_log_error("Sync failed. Run chkdsk.\n");
 			break;

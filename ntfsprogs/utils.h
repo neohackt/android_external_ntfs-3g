@@ -101,6 +101,7 @@ int mft_next_record(struct mft_search_ctx *ctx);
 #define MAX_PATH 1024
 #endif
 
+<<<<<<< HEAD
 #ifdef HAVE_WINDOWS_H
 /*
  *	Macroes to hide the needs to translate formats on older Windows
@@ -122,6 +123,8 @@ char *ntfs_utils_unix_path(const char *in);
 		ntfs_utils_reformat(_b,MAX_FMT,fmt), args); } while (0)
 #endif
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /**
  * linux-ntfs's ntfs_mbstoucs has different semantics, so we emulate it with
  * ntfs-3g's.

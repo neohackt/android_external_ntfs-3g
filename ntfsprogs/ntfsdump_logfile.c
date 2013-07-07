@@ -306,8 +306,13 @@ static void restart_header_sanity(RESTART_PAGE_HEADER *rstr, u8 *buf)
 					"size.  Cannot handle this yet.\n");
 	}
 	/* Abort if the version number is not 1.1. */
+<<<<<<< HEAD
 	if (sle16_to_cpu(rstr->major_ver) != 1 ||
 			sle16_to_cpu(rstr->minor_ver) != 1)
+=======
+	if (sle16_to_cpu(rstr->major_ver != 1) ||
+			sle16_to_cpu(rstr->minor_ver != 1))
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		log_err_exit(buf, "Unknown $LogFile version %i.%i.  Only know "
 				"how to handle version 1.1.\n",
 				sle16_to_cpu(rstr->major_ver),
@@ -542,11 +547,19 @@ static void dump_log_record(LOG_RECORD *lr)
 {
 	unsigned int i;
 	ntfs_log_info("this lsn = 0x%llx\n",
+<<<<<<< HEAD
 			(unsigned long long)sle64_to_cpu(lr->this_lsn));
 	ntfs_log_info("client previous lsn = 0x%llx\n", (unsigned long long)
 			sle64_to_cpu(lr->client_previous_lsn));
 	ntfs_log_info("client undo next lsn = 0x%llx\n", (unsigned long long)
 			sle64_to_cpu(lr->client_undo_next_lsn));
+=======
+			(unsigned long long)le64_to_cpu(lr->this_lsn));
+	ntfs_log_info("client previous lsn = 0x%llx\n", (unsigned long long)
+			le64_to_cpu(lr->client_previous_lsn));
+	ntfs_log_info("client undo next lsn = 0x%llx\n", (unsigned long long)
+			le64_to_cpu(lr->client_undo_next_lsn));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ntfs_log_info("client data length = 0x%x\n",
 			(unsigned int)le32_to_cpu(lr->client_data_length));
 	ntfs_log_info("client_id.seq_number = 0x%x\n",
@@ -557,7 +570,11 @@ static void dump_log_record(LOG_RECORD *lr)
 			(unsigned int)le32_to_cpu(lr->record_type));
 	ntfs_log_info("transaction_id = 0x%x\n",
 			(unsigned int)le32_to_cpu(lr->transaction_id));
+<<<<<<< HEAD
 	ntfs_log_info("flags = 0x%x:", le16_to_cpu(lr->flags));
+=======
+	ntfs_log_info("flags = 0x%x:", lr->flags);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (!lr->flags)
 		ntfs_log_info(" NONE\n");
 	else {
@@ -628,14 +645,24 @@ rcrd_pass_loc:
 			"CHKD");
 // TODO: I am here... (AIA)
 	ntfs_log_info("copy.last_lsn/file_offset = 0x%llx\n", (unsigned long long)
+<<<<<<< HEAD
 			sle64_to_cpu(rcrd->copy.last_lsn));
+=======
+			le64_to_cpu(rcrd->copy.last_lsn));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ntfs_log_info("flags = 0x%x\n", (unsigned int)le32_to_cpu(rcrd->flags));
 	ntfs_log_info("page count = %i\n", le16_to_cpu(rcrd->page_count));
 	ntfs_log_info("page position = %i\n", le16_to_cpu(rcrd->page_position));
 	ntfs_log_info("header.next_record_offset = 0x%llx\n", (unsigned long long)
+<<<<<<< HEAD
 			le16_to_cpu(rcrd->header.packed.next_record_offset));
 	ntfs_log_info("header.last_end_lsn = 0x%llx\n", (unsigned long long)
 			sle64_to_cpu(rcrd->header.packed.last_end_lsn));
+=======
+			le64_to_cpu(rcrd->header.packed.next_record_offset));
+	ntfs_log_info("header.last_end_lsn = 0x%llx\n", (unsigned long long)
+			le64_to_cpu(rcrd->header.packed.last_end_lsn));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	/*
 	 * Where does the 0x40 come from? Is it just usa_offset +
 	 * usa_client * 2 + 7 & ~7 or is it derived from somewhere?
@@ -648,7 +675,11 @@ rcrd_pass_loc:
 		client++;
 		lr = (LOG_RECORD*)((u8*)lr + 0x70);
 	} while (((u8*)lr + 0x70 <= (u8*)rcrd +
+<<<<<<< HEAD
 			le16_to_cpu(rcrd->header.packed.next_record_offset)));
+=======
+			le64_to_cpu(rcrd->header.packed.next_record_offset)));
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	pass++;
 	goto rcrd_pass_loc;

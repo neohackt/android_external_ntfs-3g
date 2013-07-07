@@ -124,8 +124,11 @@ extern int ntfs_mft_record_format(const ntfs_volume *vol, const MFT_REF mref);
 
 extern ntfs_inode *ntfs_mft_record_alloc(ntfs_volume *vol, ntfs_inode *base_ni);
 
+<<<<<<< HEAD
 extern ntfs_inode *ntfs_mft_rec_alloc(ntfs_volume *vol, BOOL mft_data);
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 extern int ntfs_mft_record_free(ntfs_volume *vol, ntfs_inode *ni);
 
 extern int ntfs_mft_usn_dec(MFT_RECORD *mrec);

@@ -98,6 +98,10 @@ struct fuse {
     struct fuse_config conf;
     int intr_installed;
     struct fuse_fs *fs;
+<<<<<<< HEAD
+=======
+    int utime_omit_ok;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 };
 
 struct lock {
@@ -1040,6 +1044,7 @@ int fuse_fs_removexattr(struct fuse_fs *fs, const char *path, const char *name)
         return -ENOSYS;
 }
 
+<<<<<<< HEAD
 int fuse_fs_ioctl(struct fuse_fs *fs, const char *path, int cmd, void *arg,
 		  struct fuse_file_info *fi, unsigned int flags, void *data)
 {
@@ -1055,6 +1060,8 @@ int fuse_fs_ioctl(struct fuse_fs *fs, const char *path, int cmd, void *arg,
 	return -ENOSYS;
 }
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 static int is_open(struct fuse *f, fuse_ino_t dir, const char *name)
 {
     struct node *node;
@@ -1442,7 +1449,11 @@ static void fuse_lib_setattr(fuse_req_t req, fuse_ino_t ino, struct stat *attr,
                 err = fuse_fs_truncate(f->fs, path, attr->st_size);
         }
 #ifdef HAVE_UTIMENSAT
+<<<<<<< HEAD
         if (!err &&
+=======
+        if (!err && f->utime_omit_ok &&
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
             (valid & (FUSE_SET_ATTR_ATIME | FUSE_SET_ATTR_MTIME))) {
             struct timespec tv[2];
 
@@ -2731,6 +2742,7 @@ static void fuse_lib_bmap(fuse_req_t req, fuse_ino_t ino, size_t blocksize,
         reply_err(req, err);
 }
 
+<<<<<<< HEAD
 static void fuse_lib_ioctl(fuse_req_t req, fuse_ino_t ino, int cmd, void *arg,
 			   struct fuse_file_info *llfi, unsigned int flags,
 			   const void *in_buf, size_t in_bufsz,
@@ -2785,6 +2797,8 @@ out:
     free(out_buf);
 }
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 static struct fuse_lowlevel_ops fuse_path_ops = {
     .init = fuse_lib_init,
     .destroy = fuse_lib_destroy,
@@ -2820,7 +2834,10 @@ static struct fuse_lowlevel_ops fuse_path_ops = {
     .getlk = fuse_lib_getlk,
     .setlk = fuse_lib_setlk,
     .bmap = fuse_lib_bmap,
+<<<<<<< HEAD
     .ioctl = fuse_lib_ioctl,
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 };
 
 struct fuse_session *fuse_get_session(struct fuse *f)
@@ -3067,6 +3084,10 @@ struct fuse *fuse_new(struct fuse_chan *ch, struct fuse_args *args,
         goto out_free;
 
     f->fs = fs;
+<<<<<<< HEAD
+=======
+    f->utime_omit_ok = fs->op.flag_utime_omit_ok;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
     /* Oh f**k, this is ugly! */
     if (!fs->op.lock) {
@@ -3121,6 +3142,13 @@ struct fuse *fuse_new(struct fuse_chan *ch, struct fuse_args *args,
 
     fuse_session_add_chan(f->se, ch);
 
+<<<<<<< HEAD
+=======
+#ifndef __SOLARIS__
+    if (f->conf.debug)
+        fprintf(stderr, "utime_omit_ok: %i\n", f->utime_omit_ok);
+#endif /* ! __SOLARIS__ */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
     f->ctr = 0;
     f->generation = 0;
     /* FIXME: Dynamic hash table */

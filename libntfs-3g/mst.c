@@ -101,7 +101,11 @@ int ntfs_mst_post_read_fixup_warn(NTFS_RECORD *b, const u32 size,
 			errno = EIO;
 			ntfs_log_perror("Incomplete multi-sector transfer: "
 				"magic: 0x%08x  size: %d  usa_ofs: %d  usa_count:"
+<<<<<<< HEAD
 				" %d  data: %d  usn: %d", le32_to_cpu(*(le32 *)b), size,
+=======
+				" %d  data: %d  usn: %d", *(le32 *)b, size,
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				usa_ofs, usa_count, *data_pos, usn);
 			b->magic = magic_BAAD;
 			return -1;
@@ -157,8 +161,12 @@ int ntfs_mst_post_read_fixup(NTFS_RECORD *b, const u32 size)
 int ntfs_mst_pre_write_fixup(NTFS_RECORD *b, const u32 size)
 {
 	u16 usa_ofs, usa_count, usn;
+<<<<<<< HEAD
 	le16 le_usn;
 	le16 *usa_pos, *data_pos;
+=======
+	u16 *usa_pos, *data_pos;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	ntfs_log_trace("Entering\n");
 
@@ -182,7 +190,11 @@ int ntfs_mst_pre_write_fixup(NTFS_RECORD *b, const u32 size)
 		return -1;
 	}
 	/* Position of usn in update sequence array. */
+<<<<<<< HEAD
 	usa_pos = (le16*)((u8*)b + usa_ofs);
+=======
+	usa_pos = (u16*)((u8*)b + usa_ofs);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	/*
 	 * Cyclically increment the update sequence number
 	 * (skipping 0 and -1, i.e. 0xffff).
@@ -190,10 +202,17 @@ int ntfs_mst_pre_write_fixup(NTFS_RECORD *b, const u32 size)
 	usn = le16_to_cpup(usa_pos) + 1;
 	if (usn == 0xffff || !usn)
 		usn = 1;
+<<<<<<< HEAD
 	le_usn = cpu_to_le16(usn);
 	*usa_pos = le_usn;
 	/* Position in data of first le16 that needs fixing up. */
 	data_pos = (le16*)b + NTFS_BLOCK_SIZE/sizeof(le16) - 1;
+=======
+	usn = cpu_to_le16(usn);
+	*usa_pos = usn;
+	/* Position in data of first u16 that needs fixing up. */
+	data_pos = (u16*)b + NTFS_BLOCK_SIZE/sizeof(u16) - 1;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	/* Fixup all sectors. */
 	while (usa_count--) {
 		/*
@@ -202,9 +221,15 @@ int ntfs_mst_pre_write_fixup(NTFS_RECORD *b, const u32 size)
 		 */
 		*(++usa_pos) = *data_pos;
 		/* Apply fixup to data. */
+<<<<<<< HEAD
 		*data_pos = le_usn;
 		/* Increment position in data as well. */
 		data_pos += NTFS_BLOCK_SIZE/sizeof(le16);
+=======
+		*data_pos = usn;
+		/* Increment position in data as well. */
+		data_pos += NTFS_BLOCK_SIZE/sizeof(u16);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 	return 0;
 }

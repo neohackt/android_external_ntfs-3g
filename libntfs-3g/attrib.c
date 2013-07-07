@@ -5,7 +5,11 @@
  * Copyright (c) 2002-2005 Richard Russon
  * Copyright (c) 2002-2008 Szabolcs Szakacsits
  * Copyright (c) 2004-2007 Yura Pakhuchiy
+<<<<<<< HEAD
  * Copyright (c) 2007-2015 Jean-Pierre Andre
+=======
+ * Copyright (c) 2007-2011 Jean-Pierre Andre
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  * Copyright (c) 2010      Erik Larsson
  *
  * This program/include file is free software; you can redistribute it and/or
@@ -96,7 +100,11 @@ static void NAttrSetFlag(ntfs_attr *na, FILE_ATTR_FLAGS flag)
 		na->ni->flags |= flag;
 	else
 		ntfs_log_trace("Denied setting flag %d for not unnamed data "
+<<<<<<< HEAD
 			       "attribute\n", le32_to_cpu(flag));
+=======
+			       "attribute\n", flag);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 static void NAttrClearFlag(ntfs_attr *na, FILE_ATTR_FLAGS flag)
@@ -405,7 +413,11 @@ ntfs_attr *ntfs_attr_open(ntfs_inode *ni, const ATTR_TYPES type,
 	le16 cs;
 
 	ntfs_log_enter("Entering for inode %lld, attr 0x%x.\n",
+<<<<<<< HEAD
 		       (unsigned long long)ni->mft_no, le32_to_cpu(type));
+=======
+		       (unsigned long long)ni->mft_no, type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	
 	if (!ni || !ni->vol || !ni->mrec) {
 		errno = EINVAL;
@@ -452,10 +464,16 @@ ntfs_attr *ntfs_attr_open(ntfs_inode *ni, const ATTR_TYPES type,
 	 * does not detect or fix them so we need to cope with it, too.
 	 */
 	if (type == AT_ATTRIBUTE_LIST)
+<<<<<<< HEAD
 		a->flags = const_cpu_to_le16(0);
 
 	if ((type == AT_DATA)
 	   && (a->non_resident ? !a->initialized_size : !a->value_length)) {
+=======
+		a->flags = 0;
+
+	if ((type == AT_DATA) && !a->initialized_size) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		/*
 		 * Define/redefine the compression state if stream is
 		 * empty, based on the compression mark on parent
@@ -484,7 +502,11 @@ ntfs_attr *ntfs_attr_open(ntfs_inode *ni, const ATTR_TYPES type,
 		errno = EIO;
 		ntfs_log_perror("Inode %lld has corrupt attribute flags "
 				"(0x%x <> 0x%x)",(unsigned long long)ni->mft_no,
+<<<<<<< HEAD
 				le16_to_cpu(a->flags), le32_to_cpu(na->ni->flags));
+=======
+				a->flags, na->ni->flags);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		goto put_err_out;
 	}
 
@@ -494,7 +516,11 @@ ntfs_attr *ntfs_attr_open(ntfs_inode *ni, const ATTR_TYPES type,
 			errno = EIO;
 			ntfs_log_perror("Compressed inode %lld attr 0x%x has "
 					"no compression unit",
+<<<<<<< HEAD
 					(unsigned long long)ni->mft_no, le32_to_cpu(type));
+=======
+					(unsigned long long)ni->mft_no, type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			goto put_err_out;
 		}
 		ntfs_attr_init(na, TRUE, a->flags,
@@ -561,7 +587,11 @@ int ntfs_attr_map_runlist(ntfs_attr *na, VCN vcn)
 	ntfs_attr_search_ctx *ctx;
 
 	ntfs_log_trace("Entering for inode 0x%llx, attr 0x%x, vcn 0x%llx.\n",
+<<<<<<< HEAD
 		(unsigned long long)na->ni->mft_no, le32_to_cpu(na->type), (long long)vcn);
+=======
+		(unsigned long long)na->ni->mft_no, na->type, (long long)vcn);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	lcn = ntfs_rl_vcn_to_lcn(na->rl, vcn);
 	if (lcn >= 0 || lcn == LCN_HOLE || lcn == LCN_ENOENT)
@@ -601,19 +631,37 @@ int ntfs_attr_map_runlist(ntfs_attr *na, VCN vcn)
 
 static int ntfs_attr_map_partial_runlist(ntfs_attr *na, VCN vcn)
 {
+<<<<<<< HEAD
 	VCN last_vcn;
 	VCN highest_vcn;
 	VCN needed;
+=======
+	LCN lcn;
+	VCN last_vcn;
+	VCN highest_vcn;
+	VCN needed;
+	VCN existing_vcn;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	runlist_element *rl;
 	ATTR_RECORD *a;
 	BOOL startseen;
 	ntfs_attr_search_ctx *ctx;
+<<<<<<< HEAD
 	BOOL done;
 	BOOL newrunlist;
 
 	if (NAttrFullyMapped(na))
 		return 0;
 
+=======
+
+	lcn = ntfs_rl_vcn_to_lcn(na->rl, vcn);
+	if (lcn >= 0 || lcn == LCN_HOLE || lcn == LCN_ENOENT)
+		return 0;
+
+	existing_vcn = (na->rl ? na->rl->vcn : -1);
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ctx = ntfs_attr_get_search_ctx(na->ni, NULL);
 	if (!ctx)
 		return -1;
@@ -624,15 +672,20 @@ static int ntfs_attr_map_partial_runlist(ntfs_attr *na, VCN vcn)
 	needed = vcn;
 	highest_vcn = 0;
 	startseen = FALSE;
+<<<<<<< HEAD
 	done = FALSE;
 	rl = (runlist_element*)NULL;
 	do {
 		newrunlist = FALSE;
+=======
+	do {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		/* Find the attribute in the mft record. */
 		if (!ntfs_attr_lookup(na->type, na->name, na->name_len, CASE_SENSITIVE,
 				needed, NULL, 0, ctx)) {
 
 			a = ctx->attr;
+<<<<<<< HEAD
 				/* Decode and merge the runlist. */
 			if (ntfs_rl_vcn_to_lcn(na->rl, needed)
 						== LCN_RL_NOT_MAPPED) {
@@ -653,10 +706,24 @@ static int ntfs_attr_map_partial_runlist(ntfs_attr *na, VCN vcn)
 						errno = EIO;
 					}
 					done = TRUE;
+=======
+			/* Decode and merge the runlist. */
+			rl = ntfs_mapping_pairs_decompress(na->ni->vol, a,
+					na->rl);
+			if (rl) {
+				na->rl = rl;
+				highest_vcn = le64_to_cpu(a->highest_vcn);
+				/* corruption detection */
+				if (((highest_vcn + 1) < last_vcn)
+				    && ((highest_vcn + 1) <= needed)) {
+					ntfs_log_error("Corrupt attribute list\n");
+					rl = (runlist_element*)NULL;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				}
 				needed = highest_vcn + 1;
 				if (!a->lowest_vcn)
 					startseen = TRUE;
+<<<<<<< HEAD
 			}
 		} else {
 			done = TRUE;
@@ -674,6 +741,18 @@ static int ntfs_attr_map_partial_runlist(ntfs_attr *na, VCN vcn)
 		rl = (runlist_element*)NULL;
 		errno = EIO;
 	}
+=======
+				/* reaching a previously allocated part ? */
+				if ((existing_vcn >= 0)
+				    && (needed >= existing_vcn)) {
+					needed = last_vcn;
+				}
+			}
+		} else
+			rl = (runlist_element*)NULL;
+	} while (rl && (needed < last_vcn));
+	ntfs_attr_put_search_ctx(ctx);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		/* mark fully mapped if we did so */
 	if (rl && startseen)
 		NAttrSetFullyMapped(na);
@@ -701,10 +780,16 @@ int ntfs_attr_map_whole_runlist(ntfs_attr *na)
 	ntfs_volume *vol = na->ni->vol;
 	ATTR_RECORD *a;
 	int ret = -1;
+<<<<<<< HEAD
 	int not_mapped;
 
 	ntfs_log_enter("Entering for inode %llu, attr 0x%x.\n",
 		       (unsigned long long)na->ni->mft_no, le32_to_cpu(na->type));
+=======
+
+	ntfs_log_enter("Entering for inode %llu, attr 0x%x.\n",
+		       (unsigned long long)na->ni->mft_no, na->type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 		/* avoid multiple full runlist mappings */
 	if (NAttrFullyMapped(na)) {
@@ -721,7 +806,11 @@ int ntfs_attr_map_whole_runlist(ntfs_attr *na)
 	while (1) {
 		runlist_element *rl;
 
+<<<<<<< HEAD
 		not_mapped = 0;
+=======
+		int not_mapped = 0;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (ntfs_rl_vcn_to_lcn(na->rl, next_vcn) == LCN_RL_NOT_MAPPED)
 			not_mapped = 1;
 
@@ -776,6 +865,7 @@ int ntfs_attr_map_whole_runlist(ntfs_attr *na)
 		ntfs_log_perror("Couldn't find attribute for runlist mapping");
 		goto err_out;
 	}
+<<<<<<< HEAD
 		/*
 		 * Cannot check highest_vcn when the last runlist has
 		 * been modified earlier, as runlists and sizes may be
@@ -783,6 +873,9 @@ int ntfs_attr_map_whole_runlist(ntfs_attr *na)
 		 * HOLES_DELAY is used
 		 */
 	if (not_mapped && highest_vcn && highest_vcn != last_vcn - 1) {
+=======
+	if (highest_vcn && highest_vcn != last_vcn - 1) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		errno = EIO;
 		ntfs_log_perror("Failed to load full runlist: inode: %llu "
 				"highest_vcn: 0x%llx last_vcn: 0x%llx",
@@ -831,7 +924,11 @@ LCN ntfs_attr_vcn_to_lcn(ntfs_attr *na, const VCN vcn)
 		return (LCN)LCN_EINVAL;
 
 	ntfs_log_trace("Entering for inode 0x%llx, attr 0x%x.\n", (unsigned long
+<<<<<<< HEAD
 			long)na->ni->mft_no, le32_to_cpu(na->type));
+=======
+			long)na->ni->mft_no, na->type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 retry:
 	/* Convert vcn to lcn. If that fails map the runlist and retry once. */
 	lcn = ntfs_rl_vcn_to_lcn(na->rl, vcn);
@@ -883,7 +980,11 @@ runlist_element *ntfs_attr_find_vcn(ntfs_attr *na, const VCN vcn)
 	}
 
 	ntfs_log_trace("Entering for inode 0x%llx, attr 0x%x, vcn %llx\n",
+<<<<<<< HEAD
 		       (unsigned long long)na->ni->mft_no, le32_to_cpu(na->type),
+=======
+		       (unsigned long long)na->ni->mft_no, na->type,
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		       (long long)vcn);
 retry:
 	rl = na->rl;
@@ -1040,7 +1141,11 @@ res_err_out:
 				count--;
 				total2++;
 			} else {
+<<<<<<< HEAD
 				*(le16*)((u8*)b+count-2) = cpu_to_le16(efs_padding_length);
+=======
+				*(u16*)((u8*)b+count-2) = cpu_to_le16(efs_padding_length);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				count -= 2;
 				total2 +=2;
 			}
@@ -1176,7 +1281,11 @@ s64 ntfs_attr_pread(ntfs_attr *na, const s64 pos, s64 count, void *b)
 	
 	ntfs_log_enter("Entering for inode %lld attr 0x%x pos %lld count "
 		       "%lld\n", (unsigned long long)na->ni->mft_no,
+<<<<<<< HEAD
 		       le32_to_cpu(na->type), (long long)pos, (long long)count);
+=======
+		       na->type, (long long)pos, (long long)count);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	ret = ntfs_attr_pread_i(na, pos, count, b);
 	
@@ -1267,6 +1376,7 @@ static int ntfs_attr_fill_hole(ntfs_attr *na, s64 count, s64 *ofs,
 	 
 	/* Map the runlist to be able to update mapping pairs later. */
 #if PARTIAL_RUNLIST_UPDATING
+<<<<<<< HEAD
 	if (!na->rl) {
 		if (ntfs_attr_map_whole_runlist(na))
 			goto err_out;
@@ -1276,6 +1386,21 @@ static int ntfs_attr_fill_hole(ntfs_attr *na, s64 count, s64 *ofs,
 			if (ntfs_attr_map_partial_runlist(na,
 				(cur_vcn ? cur_vcn - 1 : cur_vcn)))
 					goto err_out;
+=======
+	if ((!na->rl
+	    || !NAttrDataAppending(na))) {
+		if (ntfs_attr_map_whole_runlist(na))
+			goto err_out;
+	} else {
+		/* make sure the previous non-hole is mapped */
+		rlc = *rl;
+		rlc--;
+		if (((*rl)->lcn == LCN_HOLE)
+		    && cur_vcn
+		    && (rlc->vcn < 0)) {
+			if (ntfs_attr_map_partial_runlist(na, cur_vcn - 1))
+				goto err_out;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		}
 	}
 #else
@@ -1362,7 +1487,10 @@ static int ntfs_attr_fill_hole(ntfs_attr *na, s64 count, s64 *ofs,
 		na->compressed_size += need << vol->cluster_size_bits;
 	
 	*rl = ntfs_runlists_merge(na->rl, rlc);
+<<<<<<< HEAD
 	NAttrSetRunlistDirty(na);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		/*
 		 * For a compressed attribute, we must be sure there are two
 		 * available entries, so reserve them before it gets too late.
@@ -1592,7 +1720,10 @@ ntfs_log_error("No free run, case 4\n");
 				rl = ++(*prl);
 			}
 		}
+<<<<<<< HEAD
 	NAttrSetRunlistDirty(na);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if ((*update_from == -1) || ((*prl)->vcn < *update_from))
 		*update_from = (*prl)->vcn;
 	}
@@ -1729,7 +1860,10 @@ static int borrow_from_hole(ntfs_attr *na, runlist_element **prl,
 				zrl->length = endblock - allocated;
 				zrl[1].length -= zrl->length;
 				zrl[1].vcn = zrl->vcn + zrl->length;
+<<<<<<< HEAD
 				NAttrSetRunlistDirty(na);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			}
 		}
 		if (*prl) {
@@ -1780,8 +1914,12 @@ static int ntfs_attr_truncate_i(ntfs_attr *na, const s64 newsize,
  * appropriately to the return code of ntfs_pwrite(), or to EINVAL in case of
  * invalid arguments.
  */
+<<<<<<< HEAD
 static s64 ntfs_attr_pwrite_i(ntfs_attr *na, const s64 pos, s64 count,
 								const void *b)
+=======
+s64 ntfs_attr_pwrite(ntfs_attr *na, const s64 pos, s64 count, const void *b)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 {
 	s64 written, to_write, ofs, old_initialized_size, old_data_size;
 	s64 total = 0;
@@ -1799,7 +1937,21 @@ static s64 ntfs_attr_pwrite_i(ntfs_attr *na, const s64 pos, s64 count,
 	} need_to = { 0, 0 };
 	BOOL wasnonresident = FALSE;
 	BOOL compressed;
+<<<<<<< HEAD
 
+=======
+	BOOL updatemap;
+
+	ntfs_log_enter("Entering for inode %lld, attr 0x%x, pos 0x%llx, count "
+		       "0x%llx.\n", (long long)na->ni->mft_no, na->type,
+		       (long long)pos, (long long)count);
+	
+	if (!na || !na->ni || !na->ni->vol || !b || pos < 0 || count < 0) {
+		errno = EINVAL;
+		ntfs_log_perror("%s", __FUNCTION__);
+		goto errno_set;
+	}
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	vol = na->ni->vol;
 	compressed = (na->data_flags & ATTR_COMPRESSION_MASK)
 			 != const_cpu_to_le16(0);
@@ -1944,6 +2096,7 @@ static s64 ntfs_attr_pwrite_i(ntfs_attr *na, const s64 pos, s64 count,
 		 * However, for compressed file, we need the full compression
 		 * block, which may be split in several extents.
 		 */
+<<<<<<< HEAD
 		if (compressed && !NAttrDataAppending(na)) {
 			if (ntfs_attr_map_whole_runlist(na))
 				goto err_out;
@@ -1955,6 +2108,10 @@ static s64 ntfs_attr_pwrite_i(ntfs_attr *na, const s64 pos, s64 count,
 				block_begin = pos >> vol->cluster_size_bits;
 			else
 				block_begin = na->initialized_size >> vol->cluster_size_bits;
+=======
+		if (NAttrDataAppending(na)) {
+			VCN block_begin = pos >> vol->cluster_size_bits;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 			if (compressed)
 				block_begin &= -na->compression_block_clusters;
@@ -1964,11 +2121,18 @@ static s64 ntfs_attr_pwrite_i(ntfs_attr *na, const s64 pos, s64 count,
 				goto err_out;
 			if ((update_from == -1) || (block_begin < update_from))
 				update_from = block_begin;
+<<<<<<< HEAD
 		}
 #else
 			if (ntfs_attr_map_whole_runlist(na))
 				goto err_out;
 #endif
+=======
+		} else
+#endif
+			if (ntfs_attr_map_whole_runlist(na))
+				goto err_out;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		/*
 		 * For a compressed attribute, we must be sure there is an
 		 * available entry, and, when reopening a compressed file,
@@ -2245,7 +2409,17 @@ done:
 		 * of the mapping list. This makes a difference only if
 		 * inode extents were needed.
 		 */
+<<<<<<< HEAD
 	if (NAttrRunlistDirty(na)) {
+=======
+#if PARTIAL_RUNLIST_UPDATING
+	updatemap = NAttrFullyMapped(na) || NAttrDataAppending(na);
+#else
+	updatemap = (compressed
+			? NAttrFullyMapped(na) != 0 : update_from != -1);
+#endif
+	if (updatemap) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (ntfs_attr_update_mapping_pairs(na,
 				(update_from < 0 ? 0 : update_from))) {
 			/*
@@ -2260,6 +2434,10 @@ done:
 		NAttrClearDataAppending(na);
 	}
 out:	
+<<<<<<< HEAD
+=======
+	ntfs_log_leave("\n");
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	return total;
 rl_err_out:
 	eo = errno;
@@ -2314,7 +2492,13 @@ err_out:
 	if (ctx)
 		ntfs_attr_put_search_ctx(ctx);
 	/* Update mapping pairs if needed. */
+<<<<<<< HEAD
 	if (NAttrRunlistDirty(na))
+=======
+	updatemap = (compressed
+			? NAttrFullyMapped(na) != 0 : update_from != -1);
+	if (updatemap)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		ntfs_attr_update_mapping_pairs(na, 0);
 	/* Restore original data_size if needed. */
 	if (need_to.undo_data_size
@@ -2326,6 +2510,7 @@ errno_set:
 	goto out;
 }
 
+<<<<<<< HEAD
 s64 ntfs_attr_pwrite(ntfs_attr *na, const s64 pos, s64 count, const void *b)
 {
 	s64 total;
@@ -2359,6 +2544,8 @@ out :
 }
 
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 int ntfs_attr_pclose(ntfs_attr *na)
 {
 	s64 ofs;
@@ -2373,8 +2560,12 @@ int ntfs_attr_pclose(ntfs_attr *na)
 	BOOL compressed;
 
 	ntfs_log_enter("Entering for inode 0x%llx, attr 0x%x.\n",
+<<<<<<< HEAD
 			(unsigned long long)na->ni->mft_no,
 			le32_to_cpu(na->type));
+=======
+			na->ni->mft_no, na->type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	
 	if (!na || !na->ni || !na->ni->vol) {
 		errno = EINVAL;
@@ -2593,7 +2784,11 @@ s64 ntfs_attr_mst_pread(ntfs_attr *na, const s64 pos, const s64 bk_cnt,
 	BOOL warn;
 
 	ntfs_log_trace("Entering for inode 0x%llx, attr type 0x%x, pos 0x%llx.\n",
+<<<<<<< HEAD
 			(unsigned long long)na->ni->mft_no, le32_to_cpu(na->type),
+=======
+			(unsigned long long)na->ni->mft_no, na->type,
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			(long long)pos);
 	if (bk_cnt < 0 || bk_size % NTFS_BLOCK_SIZE) {
 		errno = EINVAL;
@@ -2649,7 +2844,11 @@ s64 ntfs_attr_mst_pwrite(ntfs_attr *na, const s64 pos, s64 bk_cnt,
 	s64 written, i;
 
 	ntfs_log_trace("Entering for inode 0x%llx, attr type 0x%x, pos 0x%llx.\n",
+<<<<<<< HEAD
 			(unsigned long long)na->ni->mft_no, le32_to_cpu(na->type),
+=======
+			(unsigned long long)na->ni->mft_no, na->type,
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			(long long)pos);
 	if (bk_cnt < 0 || bk_size % NTFS_BLOCK_SIZE) {
 		errno = EINVAL;
@@ -2767,7 +2966,11 @@ static int ntfs_attr_find(const ATTR_TYPES type, const ntfschar *name,
 	ntfschar *upcase;
 	u32 upcase_len;
 
+<<<<<<< HEAD
 	ntfs_log_trace("attribute type 0x%x.\n", le32_to_cpu(type));
+=======
+	ntfs_log_trace("attribute type 0x%x.\n", type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (ctx->ntfs_ino) {
 		vol = ctx->ntfs_ino->vol;
@@ -2992,7 +3195,11 @@ static int ntfs_external_attr_find(ATTR_TYPES type, const ntfschar *name,
 	ni = ctx->ntfs_ino;
 	base_ni = ctx->base_ntfs_ino;
 	ntfs_log_trace("Entering for inode %lld, attribute type 0x%x.\n",
+<<<<<<< HEAD
 			(unsigned long long)ni->mft_no, le32_to_cpu(type));
+=======
+			(unsigned long long)ni->mft_no, type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (!base_ni) {
 		/* First call happens with the base mft record. */
 		base_ni = ctx->base_ntfs_ino = ctx->ntfs_ino;
@@ -3375,7 +3582,11 @@ int ntfs_attr_lookup(const ATTR_TYPES type, const ntfschar *name,
 	ntfs_inode *base_ni;
 	int ret = -1;
 
+<<<<<<< HEAD
 	ntfs_log_enter("Entering for attribute type 0x%x\n", le32_to_cpu(type));
+=======
+	ntfs_log_enter("Entering for attribute type 0x%x\n", type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	
 	if (!ctx || !ctx->mrec || !ctx->attr || (name && name != AT_UNNAMED &&
 			(!ctx->ntfs_ino || !(vol = ctx->ntfs_ino->vol) ||
@@ -3543,7 +3754,11 @@ ATTR_DEF *ntfs_attr_find_in_attrdef(const ntfs_volume *vol,
 
 	if (!vol || !vol->attrdef || !type) {
 		errno = EINVAL;
+<<<<<<< HEAD
 		ntfs_log_perror("%s: type=%d", __FUNCTION__, le32_to_cpu(type));
+=======
+		ntfs_log_perror("%s: type=%d", __FUNCTION__, type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		return NULL;
 	}
 	for (ad = vol->attrdef; (u8*)ad - (u8*)vol->attrdef <
@@ -3558,7 +3773,11 @@ ATTR_DEF *ntfs_attr_find_in_attrdef(const ntfs_volume *vol,
 		break;
 	}
 	errno = ENOENT;
+<<<<<<< HEAD
 	ntfs_log_perror("%s: type=%d", __FUNCTION__, le32_to_cpu(type));
+=======
+	ntfs_log_perror("%s: type=%d", __FUNCTION__, type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	return NULL;
 }
 
@@ -3619,7 +3838,11 @@ int ntfs_attr_size_bounds_check(const ntfs_volume *vol, const ATTR_TYPES type,
 	    ((max_size > 0) && (size > max_size))) {
 		errno = ERANGE;
 		ntfs_log_perror("Attr type %d size check failed (min,size,max="
+<<<<<<< HEAD
 			"%lld,%lld,%lld)", le32_to_cpu(type), (long long)min_size,
+=======
+			"%lld,%lld,%lld)", type, (long long)min_size,
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			(long long)size, (long long)max_size);
 		return -1;
 	}
@@ -3799,7 +4022,11 @@ int ntfs_resident_attr_record_add(ntfs_inode *ni, ATTR_TYPES type,
 	ntfs_inode *base_ni;
 
 	ntfs_log_trace("Entering for inode 0x%llx, attr 0x%x, flags 0x%x.\n",
+<<<<<<< HEAD
 		(long long) ni->mft_no, (unsigned) le32_to_cpu(type), (unsigned) le16_to_cpu(data_flags));
+=======
+		(long long) ni->mft_no, (unsigned) type, (unsigned) data_flags);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (!ni || (!name && name_len)) {
 		errno = EINVAL;
@@ -3853,7 +4080,11 @@ int ntfs_resident_attr_record_add(ntfs_inode *ni, ATTR_TYPES type,
 	a->non_resident = 0;
 	a->name_length = name_len;
 	a->name_offset = (name_len
+<<<<<<< HEAD
 		? const_cpu_to_le16(offsetof(ATTR_RECORD, resident_end))
+=======
+		? cpu_to_le16(offsetof(ATTR_RECORD, resident_end))
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		: const_cpu_to_le16(0));
 	a->flags = data_flags;
 	a->instance = m->next_attr_instance;
@@ -3932,8 +4163,13 @@ int ntfs_non_resident_attr_record_add(ntfs_inode *ni, ATTR_TYPES type,
 
 	ntfs_log_trace("Entering for inode 0x%llx, attr 0x%x, lowest_vcn %lld, "
 			"dataruns_size %d, flags 0x%x.\n",
+<<<<<<< HEAD
 			(long long) ni->mft_no, (unsigned) le32_to_cpu(type),
 			(long long) lowest_vcn, dataruns_size, (unsigned) le16_to_cpu(flags));
+=======
+			(long long) ni->mft_no, (unsigned) type,
+			(long long) lowest_vcn, dataruns_size, (unsigned) flags);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (!ni || dataruns_size <= 0 || (!name && name_len)) {
 		errno = EINVAL;
@@ -3960,7 +4196,11 @@ int ntfs_non_resident_attr_record_add(ntfs_inode *ni, ATTR_TYPES type,
 	if (!ntfs_attr_find(type, name, name_len, CASE_SENSITIVE, NULL, 0,
 			ctx)) {
 		err = EEXIST;
+<<<<<<< HEAD
 		ntfs_log_perror("Attribute 0x%x already present", le32_to_cpu(type));
+=======
+		ntfs_log_perror("Attribute 0x%x already present", type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		goto put_err_out;
 	}
 	if (errno != ENOENT) {
@@ -3999,10 +4239,17 @@ int ntfs_non_resident_attr_record_add(ntfs_inode *ni, ATTR_TYPES type,
 			? STANDARD_COMPRESSION_UNIT : 0;
 	/* If @lowest_vcn == 0, than setup empty attribute. */
 	if (!lowest_vcn) {
+<<<<<<< HEAD
 		a->highest_vcn = const_cpu_to_sle64(-1);
 		a->allocated_size = const_cpu_to_sle64(0);
 		a->data_size = const_cpu_to_sle64(0);
 		a->initialized_size = const_cpu_to_sle64(0);
+=======
+		a->highest_vcn = cpu_to_sle64(-1);
+		a->allocated_size = 0;
+		a->data_size = 0;
+		a->initialized_size = 0;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		/* Set empty mapping pairs. */
 		*((u8*)a + le16_to_cpu(a->mapping_pairs_offset)) = 0;
 	}
@@ -4221,7 +4468,11 @@ int ntfs_attr_add(ntfs_inode *ni, ATTR_TYPES type,
 	}
 
 	ntfs_log_trace("Entering for inode %lld, attr %x, size %lld.\n",
+<<<<<<< HEAD
 			(long long)ni->mft_no, le32_to_cpu(type), (long long)size);
+=======
+			(long long)ni->mft_no, type, (long long)size);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (ni->nr_extents == -1)
 		ni = ni->base_ni;
@@ -4443,7 +4694,11 @@ int ntfs_attr_rm(ntfs_attr *na)
 	}
 
 	ntfs_log_trace("Entering for inode 0x%llx, attr 0x%x.\n",
+<<<<<<< HEAD
 		(long long) na->ni->mft_no, le32_to_cpu(na->type));
+=======
+		(long long) na->ni->mft_no, na->type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	/* Free cluster allocation. */
 	if (NAttrNonResident(na)) {
@@ -4791,7 +5046,11 @@ int ntfs_attr_make_non_resident(ntfs_attr *na,
 	int mp_size, mp_ofs, name_ofs, arec_size, err;
 
 	ntfs_log_trace("Entering for inode 0x%llx, attr 0x%x.\n", (unsigned long
+<<<<<<< HEAD
 			long)na->ni->mft_no, le32_to_cpu(na->type));
+=======
+			long)na->ni->mft_no, na->type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	/* Some preliminary sanity checking. */
 	if (NAttrNonResident(na)) {
@@ -4899,7 +5158,11 @@ int ntfs_attr_make_non_resident(ntfs_attr *na,
 	a->name_offset = cpu_to_le16(name_ofs);
 
 	/* Setup the fields specific to non-resident attributes. */
+<<<<<<< HEAD
 	a->lowest_vcn = const_cpu_to_sle64(0);
+=======
+	a->lowest_vcn = cpu_to_sle64(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	a->highest_vcn = cpu_to_sle64((new_allocated_size - 1) >>
 						vol->cluster_size_bits);
 
@@ -4916,7 +5179,11 @@ int ntfs_attr_make_non_resident(ntfs_attr *na,
 	if ((a->flags & ATTR_COMPRESSION_MASK) == ATTR_IS_COMPRESSED) {
 			/* support only ATTR_IS_COMPRESSED compression mode */
 		a->compression_unit = STANDARD_COMPRESSION_UNIT;
+<<<<<<< HEAD
 		a->compressed_size = const_cpu_to_sle64(0);
+=======
+		a->compressed_size = const_cpu_to_le64(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	} else {
 		a->compression_unit = 0;
 		a->flags &= ~ATTR_COMPRESSION_MASK;
@@ -4977,7 +5244,11 @@ static int ntfs_resident_attr_resize(ntfs_attr *na, const s64 newsize);
  *	ENOSPC - There is no enough space in base mft to resize $ATTRIBUTE_LIST.
  */
 static int ntfs_resident_attr_resize_i(ntfs_attr *na, const s64 newsize,
+<<<<<<< HEAD
 			hole_type holes)
+=======
+			BOOL force_non_resident)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 {
 	ntfs_attr_search_ctx *ctx;
 	ntfs_volume *vol;
@@ -4985,7 +5256,11 @@ static int ntfs_resident_attr_resize_i(ntfs_attr *na, const s64 newsize,
 	int err, ret = STATUS_ERROR;
 
 	ntfs_log_trace("Inode 0x%llx attr 0x%x new size %lld\n", 
+<<<<<<< HEAD
 		       (unsigned long long)na->ni->mft_no, le32_to_cpu(na->type),
+=======
+		       (unsigned long long)na->ni->mft_no, na->type, 
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		       (long long)newsize);
 
 	/* Get the attribute record that needs modification. */
@@ -5015,7 +5290,11 @@ static int ntfs_resident_attr_resize_i(ntfs_attr *na, const s64 newsize,
 	 * attribute non-resident if the attribute type supports it. If it is
 	 * smaller we can go ahead and attempt the resize.
 	 */
+<<<<<<< HEAD
 	if ((newsize < vol->mft_record_size) && (holes != HOLES_NONRES)) {
+=======
+	if ((newsize < vol->mft_record_size) && !force_non_resident) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		/* Perform the resize of the attribute record. */
 		if (!(ret = ntfs_resident_attr_value_resize(ctx->mrec, ctx->attr,
 				newsize))) {
@@ -5060,7 +5339,11 @@ static int ntfs_resident_attr_resize_i(ntfs_attr *na, const s64 newsize,
 		 * could cause the attribute to be made resident again,
 		 * so size changes are not allowed.
 		 */
+<<<<<<< HEAD
 		if (holes == HOLES_NONRES) {
+=======
+		if (force_non_resident) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			ret = 0;
 			if (newsize != na->data_size) {
 				ntfs_log_error("Cannot change size when"
@@ -5071,7 +5354,11 @@ static int ntfs_resident_attr_resize_i(ntfs_attr *na, const s64 newsize,
 			return (ret);
 		}
 		/* Resize non-resident attribute */
+<<<<<<< HEAD
 		return ntfs_attr_truncate_i(na, newsize, holes);
+=======
+		return ntfs_attr_truncate_i(na, newsize, HOLES_OK);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	} else if (errno != ENOSPC && errno != EPERM) {
 		err = errno;
 		ntfs_log_perror("Failed to make attribute non-resident");
@@ -5127,7 +5414,11 @@ static int ntfs_resident_attr_resize_i(ntfs_attr *na, const s64 newsize,
 		ntfs_inode_mark_dirty(tna->ni);
 		ntfs_attr_close(tna);
 		ntfs_attr_put_search_ctx(ctx);
+<<<<<<< HEAD
 		return ntfs_resident_attr_resize_i(na, newsize, holes);
+=======
+		return ntfs_resident_attr_resize_i(na, newsize, force_non_resident);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 	/* Check whether error occurred. */
 	if (errno != ENOENT) {
@@ -5147,7 +5438,11 @@ static int ntfs_resident_attr_resize_i(ntfs_attr *na, const s64 newsize,
 			ntfs_log_perror("Could not free space in MFT record");
 			return -1;
 		}
+<<<<<<< HEAD
 		return ntfs_resident_attr_resize_i(na, newsize, holes);
+=======
+		return ntfs_resident_attr_resize_i(na, newsize, force_non_resident);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 
 	/*
@@ -5186,7 +5481,11 @@ static int ntfs_resident_attr_resize_i(ntfs_attr *na, const s64 newsize,
 		ntfs_attr_put_search_ctx(ctx);
 		if (ntfs_inode_add_attrlist(ni))
 			return -1;
+<<<<<<< HEAD
 		return ntfs_resident_attr_resize_i(na, newsize, holes);
+=======
+		return ntfs_resident_attr_resize_i(na, newsize, force_non_resident);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 	/* Allocate new mft record. */
 	ni = ntfs_mft_record_alloc(vol, ni);
@@ -5207,7 +5506,11 @@ static int ntfs_resident_attr_resize_i(ntfs_attr *na, const s64 newsize,
 
 	ntfs_attr_put_search_ctx(ctx);
 	/* Try to perform resize once again. */
+<<<<<<< HEAD
 	return ntfs_resident_attr_resize_i(na, newsize, holes);
+=======
+	return ntfs_resident_attr_resize_i(na, newsize, force_non_resident);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 resize_done:
 	/*
@@ -5228,7 +5531,11 @@ static int ntfs_resident_attr_resize(ntfs_attr *na, const s64 newsize)
 	int ret; 
 	
 	ntfs_log_enter("Entering\n");
+<<<<<<< HEAD
 	ret = ntfs_resident_attr_resize_i(na, newsize, HOLES_OK);
+=======
+	ret = ntfs_resident_attr_resize_i(na, newsize, FALSE);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ntfs_log_leave("\n");
 	return ret;
 }
@@ -5252,7 +5559,11 @@ int ntfs_attr_force_non_resident(ntfs_attr *na)
 {
 	int res;
 
+<<<<<<< HEAD
 	res = ntfs_resident_attr_resize_i(na, na->data_size, HOLES_NONRES);
+=======
+	res = ntfs_resident_attr_resize_i(na, na->data_size, TRUE);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (!res && !NAttrNonResident(na)) {
 		res = -1;
 		errno = EIO;
@@ -5288,7 +5599,11 @@ static int ntfs_attr_make_resident(ntfs_attr *na, ntfs_attr_search_ctx *ctx)
 	s64 arec_size, bytes_read;
 
 	ntfs_log_trace("Entering for inode 0x%llx, attr 0x%x.\n", (unsigned long
+<<<<<<< HEAD
 			long)na->ni->mft_no, le32_to_cpu(na->type));
+=======
+			long)na->ni->mft_no, na->type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	/* Should be called for the first extent of the attribute. */
 	if (sle64_to_cpu(a->lowest_vcn)) {
@@ -5362,7 +5677,11 @@ static int ntfs_attr_make_resident(ntfs_attr *na, ntfs_attr_search_ctx *ctx)
 
 	/* Convert the attribute record to describe a resident attribute. */
 	a->non_resident = 0;
+<<<<<<< HEAD
 	a->flags = const_cpu_to_le16(0);
+=======
+	a->flags = 0;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	a->value_length = cpu_to_le32(na->data_size);
 	a->value_offset = cpu_to_le16(val_ofs);
 	/*
@@ -5450,7 +5769,11 @@ static int ntfs_attr_update_meta(ATTR_RECORD *a, ntfs_attr *na, MFT_RECORD *m,
 	int sparse, ret = 0;
 	
 	ntfs_log_trace("Entering for inode 0x%llx, attr 0x%x\n", 
+<<<<<<< HEAD
 		       (unsigned long long)na->ni->mft_no, le32_to_cpu(na->type));
+=======
+		       (unsigned long long)na->ni->mft_no, na->type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	
 	if (a->lowest_vcn)
 		goto out;
@@ -5593,7 +5916,11 @@ retry:
 	}
 
 	ntfs_log_trace("Entering for inode %llu, attr 0x%x\n", 
+<<<<<<< HEAD
 		       (unsigned long long)na->ni->mft_no, le32_to_cpu(na->type));
+=======
+		       (unsigned long long)na->ni->mft_no, na->type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (!NAttrNonResident(na)) {
 		errno = EINVAL;
@@ -5615,7 +5942,11 @@ retry:
 		BOOL changed;
 
 		if (!(na->data_flags & ATTR_IS_SPARSE)) {
+<<<<<<< HEAD
 			int sparse = 0;
+=======
+			int sparse;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			runlist_element *xrl;
 
 				/*
@@ -5623,6 +5954,7 @@ retry:
 				 * have to check whether there is a hole
 				 * in the updated region.
 				 */
+<<<<<<< HEAD
 			for (xrl = na->rl; xrl->length; xrl++) {
 				if (xrl->lcn < 0) {
 					if (xrl->lcn == LCN_HOLE) {
@@ -5635,6 +5967,12 @@ retry:
 					}
 				}
 			}
+=======
+			xrl = na->rl;
+			if (xrl->lcn == LCN_RL_NOT_MAPPED)
+				xrl++;
+			sparse = ntfs_rl_sparse(xrl);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (sparse < 0) {
 				ntfs_log_error("Could not check whether sparse\n");
 				errno = EIO;
@@ -5895,12 +6233,17 @@ retry:
 			ntfs_log_perror("%s: get mp size failed", __FUNCTION__);
 			goto put_err_out;
 		}
+<<<<<<< HEAD
 		/* Allocate new mft record, with special case for mft itself */
 		if (!na->ni->mft_no)
 			ni = ntfs_mft_rec_alloc(na->ni->vol,
 				na->type == AT_DATA);
 		else
 			ni = ntfs_mft_record_alloc(na->ni->vol, base_ni);
+=======
+		/* Allocate new mft record. */
+		ni = ntfs_mft_record_alloc(na->ni->vol, base_ni);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (!ni) {
 			ntfs_log_perror("Could not allocate new MFT record");
 			goto put_err_out;
@@ -5955,7 +6298,10 @@ retry:
 			break;
 	}
 ok:
+<<<<<<< HEAD
 	NAttrClearRunlistDirty(na);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ret = 0;
 out:
 	return ret;
@@ -6022,7 +6368,11 @@ static int ntfs_non_resident_attr_shrink(ntfs_attr *na, const s64 newsize)
 	int err;
 
 	ntfs_log_trace("Inode 0x%llx attr 0x%x new size %lld\n", (unsigned long long)
+<<<<<<< HEAD
 		       na->ni->mft_no, le32_to_cpu(na->type), (long long)newsize);
+=======
+		       na->ni->mft_no, na->type, (long long)newsize);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	vol = na->ni->vol;
 
@@ -6083,7 +6433,10 @@ static int ntfs_non_resident_attr_shrink(ntfs_attr *na, const s64 newsize)
 			ntfs_log_trace("Eeek! Run list truncation failed.\n");
 			return -1;
 		}
+<<<<<<< HEAD
 		NAttrSetRunlistDirty(na);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 		/* Prepare to mapping pairs update. */
 		na->allocated_size = first_free_vcn << vol->cluster_size_bits;
@@ -6134,8 +6487,12 @@ static int ntfs_non_resident_attr_shrink(ntfs_attr *na, const s64 newsize)
 
 	/* If the attribute now has zero size, make it resident. */
 	if (!newsize) {
+<<<<<<< HEAD
 		if (!(na->data_flags & ATTR_IS_ENCRYPTED)
 		    && ntfs_attr_make_resident(na, ctx)) {
+=======
+		if (ntfs_attr_make_resident(na, ctx)) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			/* If couldn't make resident, just continue. */
 			if (errno != EPERM)
 				ntfs_log_error("Failed to make attribute "
@@ -6180,7 +6537,11 @@ static int ntfs_non_resident_attr_expand_i(ntfs_attr *na, const s64 newsize,
 	int err;
 
 	ntfs_log_trace("Inode %lld, attr 0x%x, new size %lld old size %lld\n",
+<<<<<<< HEAD
 			(unsigned long long)na->ni->mft_no, le32_to_cpu(na->type),
+=======
+			(unsigned long long)na->ni->mft_no, na->type,
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			(long long)newsize, (long long)na->data_size);
 
 	vol = na->ni->vol;
@@ -6300,7 +6661,10 @@ static int ntfs_non_resident_attr_expand_i(ntfs_attr *na, const s64 newsize,
 			return -1;
 		}
 		na->rl = rln;
+<<<<<<< HEAD
 		NAttrSetRunlistDirty(na);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 		/* Prepare to mapping pairs update. */
 		na->allocated_size = first_free_vcn << vol->cluster_size_bits;
@@ -6386,7 +6750,10 @@ rollback:
 		na->rl = NULL;
 		ntfs_log_perror("Couldn't truncate runlist. Rollback failed");
 	} else {
+<<<<<<< HEAD
 		NAttrSetRunlistDirty(na);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		/* Prepare to mapping pairs update. */
 		na->allocated_size = org_alloc_size;
 		/* Restore mapping pairs. */
@@ -6451,7 +6818,11 @@ static int ntfs_attr_truncate_i(ntfs_attr *na, const s64 newsize,
 	}
 
 	ntfs_log_enter("Entering for inode %lld, attr 0x%x, size %lld\n",
+<<<<<<< HEAD
 		       (unsigned long long)na->ni->mft_no, le32_to_cpu(na->type),
+=======
+		       (unsigned long long)na->ni->mft_no, na->type, 
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		       (long long)newsize);
 
 	if (na->data_size == newsize) {
@@ -6463,7 +6834,11 @@ static int ntfs_attr_truncate_i(ntfs_attr *na, const s64 newsize,
 	 * Encrypted attributes are not supported. We return access denied,
 	 * which is what Windows NT4 does, too.
 	 */
+<<<<<<< HEAD
 	if ((na->data_flags & ATTR_IS_ENCRYPTED) && !na->ni->vol->efs_raw) {
+=======
+	if (na->data_flags & ATTR_IS_ENCRYPTED) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		errno = EACCES;
 		ntfs_log_trace("Cannot truncate encrypted attribute\n");
 		goto out;
@@ -6507,7 +6882,11 @@ static int ntfs_attr_truncate_i(ntfs_attr *na, const s64 newsize,
 		else
 			ret = ntfs_non_resident_attr_shrink(na, fullsize);
 	} else
+<<<<<<< HEAD
 		ret = ntfs_resident_attr_resize_i(na, newsize, holes);
+=======
+		ret = ntfs_resident_attr_resize(na, newsize);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 out:	
 	ntfs_log_leave("Return status %d\n", ret);
 	return ret;
@@ -6653,8 +7032,12 @@ void *ntfs_attr_readall(ntfs_inode *ni, const ATTR_TYPES type,
 	
 	na = ntfs_attr_open(ni, type, name, name_len);
 	if (!na) {
+<<<<<<< HEAD
 		ntfs_log_perror("ntfs_attr_open failed, inode %lld attr 0x%lx",
 				(long long)ni->mft_no,(long)le32_to_cpu(type));
+=======
+		ntfs_log_perror("ntfs_attr_open failed");
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		goto err_exit;
 	}
 	data = ntfs_malloc(na->data_size);
@@ -6760,6 +7143,7 @@ exit:
 	return res;
 }
 
+<<<<<<< HEAD
 /*
  *		Shrink the size of a data attribute if needed
  *
@@ -6796,6 +7180,8 @@ int ntfs_attr_shrink_size(ntfs_inode *ni, ntfschar *stream_name,
 	}
 	return (res);
 }
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 int ntfs_attr_exist(ntfs_inode *ni, const ATTR_TYPES type, const ntfschar *name,
 		    u32 name_len)
@@ -6836,7 +7222,11 @@ int ntfs_attr_remove(ntfs_inode *ni, const ATTR_TYPES type, ntfschar *name,
 			/* do not log removal of non-existent stream */
 		if (type != AT_DATA) {
 			ntfs_log_perror("Failed to open attribute 0x%02x of inode "
+<<<<<<< HEAD
 				"0x%llx", le32_to_cpu(type), (unsigned long long)ni->mft_no);
+=======
+				"0x%llx", type, (unsigned long long)ni->mft_no);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		}
 		return -1;
 	}
@@ -6844,7 +7234,11 @@ int ntfs_attr_remove(ntfs_inode *ni, const ATTR_TYPES type, ntfschar *name,
 	ret = ntfs_attr_rm(na);
 	if (ret)
 		ntfs_log_perror("Failed to remove attribute 0x%02x of inode "
+<<<<<<< HEAD
 				"0x%llx", le32_to_cpu(type), (unsigned long long)ni->mft_no);
+=======
+				"0x%llx", type, (unsigned long long)ni->mft_no);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ntfs_attr_close(na);
 	
 	return ret;

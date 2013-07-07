@@ -28,6 +28,7 @@
 
 #ifndef NO_NTFS_DEVICE_DEFAULT_IO_OPS
 
+<<<<<<< HEAD
 #if defined(linux) || defined(__uClinux__) || defined(__sun) \
 		|| defined(__APPLE__) || defined(__DARWIN__)
   /* Make sure the presence of <windows.h> means compiling for Windows */
@@ -40,6 +41,14 @@
 #define ntfs_device_default_io_ops ntfs_device_unix_io_ops
 
 #else /* HAVE_WINDOWS_H */
+=======
+#ifndef __CYGWIN32__
+
+/* Not on Cygwin; use standard Unix style low level device operations. */
+#define ntfs_device_default_io_ops ntfs_device_unix_io_ops
+
+#else /* __CYGWIN32__ */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 #ifndef HDIO_GETGEO
 #	define HDIO_GETGEO	0x301
@@ -66,6 +75,7 @@ struct hd_geometry {
 #	define BLKBSZSET	0x40041271
 #endif
 
+<<<<<<< HEAD
 /* On Windows (and Cygwin) : use Win32 low level device operations. */
 #define ntfs_device_default_io_ops ntfs_device_win32_io_ops
 
@@ -75,6 +85,12 @@ int ntfs_win32_ftruncate(int fd, s64 size);
 int ntfs_device_win32_ftruncate(struct ntfs_device*, s64);
 
 #endif /* HAVE_WINDOWS_H */
+=======
+/* On Cygwin; use Win32 low level device operations. */
+#define ntfs_device_default_io_ops ntfs_device_win32_io_ops
+
+#endif /* __CYGWIN32__ */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 
 /* Forward declaration. */

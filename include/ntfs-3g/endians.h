@@ -61,6 +61,7 @@
 #		define __BYTE_ORDER BYTE_ORDER
 #		define __LITTLE_ENDIAN LITTLE_ENDIAN
 #		define __BIG_ENDIAN BIG_ENDIAN
+<<<<<<< HEAD
 #	elif defined(__BYTE_ORDER__) && defined(__LITTLE_ENDIAN__) && \
 			defined(__BIG_ENDIAN__)
 #		define __BYTE_ORDER __BYTE_ORDER__
@@ -71,6 +72,12 @@
 #		define __BYTE_ORDER __BYTE_ORDER__
 #		define __LITTLE_ENDIAN __ORDER_LITTLE_ENDIAN__
 #		define __BIG_ENDIAN __ORDER_BIG_ENDIAN__
+=======
+#	elif defined(__BYTE_ORDER__)
+#		define __BYTE_ORDER __BYTE_ORDER__
+#		define __LITTLE_ENDIAN __LITTLE_ENDIAN__
+#		define __BIG_ENDIAN __BIG_ENDIAN__
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 #	elif (defined(_LITTLE_ENDIAN) && !defined(_BIG_ENDIAN)) || \
 			defined(WORDS_LITTLEENDIAN)
 #		define __BYTE_ORDER 1
@@ -132,6 +139,7 @@
 #define __constant_cpu_to_le32(x) (x)
 #define __constant_cpu_to_le64(x) (x)
 
+<<<<<<< HEAD
 #define __be16_to_cpu(x) bswap_16(x)
 #define __be32_to_cpu(x) bswap_32(x)
 #define __be64_to_cpu(x) bswap_64(x)
@@ -148,6 +156,8 @@
 #define __constant_cpu_to_be32(x) __ntfs_bswap_constant_32((u32)(x))
 #define __constant_cpu_to_be64(x) __ntfs_bswap_constant_64((u64)(x))
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 #elif defined(__BIG_ENDIAN) && (__BYTE_ORDER == __BIG_ENDIAN)
 
 #define __le16_to_cpu(x) bswap_16(x)
@@ -166,6 +176,7 @@
 #define __constant_cpu_to_le32(x) __ntfs_bswap_constant_32((u32)(x))
 #define __constant_cpu_to_le64(x) __ntfs_bswap_constant_64((u64)(x))
 
+<<<<<<< HEAD
 #define __be16_to_cpu(x) (x)
 #define __be32_to_cpu(x) (x)
 #define __be64_to_cpu(x) (x)
@@ -182,6 +193,8 @@
 #define __constant_cpu_to_be32(x) (x)
 #define __constant_cpu_to_be64(x) (x)
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 #else
 
 #error "You must define __BYTE_ORDER to be __LITTLE_ENDIAN or __BIG_ENDIAN."
@@ -228,6 +241,7 @@
 #define cpu_to_sle32p(x)	(s32)__cpu_to_le32(*(s32*)(x))
 #define cpu_to_sle64p(x)	(s64)__cpu_to_le64(*(s64*)(x))
 
+<<<<<<< HEAD
 /* Unsigned from BE to CPU conversion. */
 
 #define be16_to_cpu(x)		(u16)__be16_to_cpu((u16)(x))
@@ -301,5 +315,16 @@
 #define const_cpu_to_sbe16(x)	((sbe16) __constant_cpu_to_be16((u16) x))
 #define const_cpu_to_sbe32(x)	((sbe32) __constant_cpu_to_be32((u32) x))
 #define const_cpu_to_sbe64(x)	((sbe64) __constant_cpu_to_be64((u64) x))
+=======
+/* Constant endianness conversion defines. */
+
+#define const_le16_to_cpu(x)	__constant_le16_to_cpu(x)
+#define const_le32_to_cpu(x)	__constant_le32_to_cpu(x)
+#define const_le64_to_cpu(x)	__constant_le64_to_cpu(x)
+
+#define const_cpu_to_le16(x)	__constant_cpu_to_le16(x)
+#define const_cpu_to_le32(x)	__constant_cpu_to_le32(x)
+#define const_cpu_to_le64(x)	__constant_cpu_to_le64(x)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 #endif /* defined _NTFS_ENDIANS_H */

@@ -5,7 +5,10 @@
  * Copyright (c) 2003-2006 Anton Altaparmakov
  * Copyright (c) 2003 Lode Leroy
  * Copyright (c) 2005-2007 Yura Pakhuchiy
+<<<<<<< HEAD
  * Copyright (c) 2014      Jean-Pierre Andre
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *
  * A set of shared functions for ntfs utilities
  *
@@ -209,7 +212,11 @@ int utils_valid_device(const char *name, int force)
 	unsigned long mnt_flags = 0;
 	struct stat st;
 
+<<<<<<< HEAD
 #if defined(HAVE_WINDOWS_H) | defined(__CYGWIN32__) 
+=======
+#ifdef __CYGWIN32__
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	/* FIXME: This doesn't work for Cygwin, so just return success. */
 	return 1;
 #endif
@@ -420,8 +427,12 @@ int utils_parse_range(const char *string, s64 *start, s64 *finish, BOOL scale)
 	if (middle) {
 		if (middle[1] == 0) {
 			b = LONG_MAX;		// XXX ULLONG_MAX
+<<<<<<< HEAD
 			ntfs_log_debug("Range has no end, defaulting to "
 					"%lld.\n", (long long)b);
+=======
+			ntfs_log_debug("Range has no end, defaulting to %lld.\n", b);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		} else {
 			if (!utils_parse_size(middle+1, &b, scale))
 				return 0;
@@ -430,8 +441,12 @@ int utils_parse_range(const char *string, s64 *start, s64 *finish, BOOL scale)
 		b = a;
 	}
 
+<<<<<<< HEAD
 	ntfs_log_debug("Range '%s' = %lld - %lld\n", string, (long long)a,
 			(long long)b);
+=======
+	ntfs_log_debug("Range '%s' = %lld - %lld\n", string, a, b);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	*start  = a;
 	*finish = b;
@@ -460,11 +475,19 @@ ATTR_RECORD * find_attribute(const ATTR_TYPES type, ntfs_attr_search_ctx *ctx)
 	}
 
 	if (ntfs_attr_lookup(type, NULL, 0, 0, 0, NULL, 0, ctx) != 0) {
+<<<<<<< HEAD
 		ntfs_log_debug("find_attribute didn't find an attribute of type: 0x%02x.\n", le32_to_cpu(type));
 		return NULL;	/* None / no more of that type */
 	}
 
 	ntfs_log_debug("find_attribute found an attribute of type: 0x%02x.\n", le32_to_cpu(type));
+=======
+		ntfs_log_debug("find_attribute didn't find an attribute of type: 0x%02x.\n", type);
+		return NULL;	/* None / no more of that type */
+	}
+
+	ntfs_log_debug("find_attribute found an attribute of type: 0x%02x.\n", type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	return ctx->attr;
 }
 
@@ -501,9 +524,15 @@ ATTR_RECORD * find_first_attribute(const ATTR_TYPES type, MFT_RECORD *mft)
 	rec = find_attribute(type, ctx);
 	ntfs_attr_put_search_ctx(ctx);
 	if (rec)
+<<<<<<< HEAD
 		ntfs_log_debug("find_first_attribute: found attr of type 0x%02x.\n", le32_to_cpu(type));
 	else
 		ntfs_log_debug("find_first_attribute: didn't find attr of type 0x%02x.\n", le32_to_cpu(type));
+=======
+		ntfs_log_debug("find_first_attribute: found attr of type 0x%02x.\n", type);
+	else
+		ntfs_log_debug("find_first_attribute: didn't find attr of type 0x%02x.\n", type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	return rec;
 }
 
@@ -661,7 +690,11 @@ int utils_attr_get_name(ntfs_volume *vol, ATTR_RECORD *attr, char *buffer, int b
 		}
 		len = snprintf(buffer, bufsize, "%s", name);
 	} else {
+<<<<<<< HEAD
 		ntfs_log_error("Unknown attribute type 0x%02x\n", le32_to_cpu(attr->type));
+=======
+		ntfs_log_error("Unknown attribute type 0x%02x\n", attr->type);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		len = snprintf(buffer, bufsize, "<UNKNOWN>");
 	}
 
@@ -679,8 +712,12 @@ int utils_attr_get_name(ntfs_volume *vol, ATTR_RECORD *attr, char *buffer, int b
 
 	name    = NULL;
 	namelen = attr->name_length;
+<<<<<<< HEAD
 	if (ntfs_ucstombs((ntfschar *)((char *)attr
 					+ le16_to_cpu(attr->name_offset)),
+=======
+	if (ntfs_ucstombs((ntfschar *)((char *)attr + attr->name_offset),
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				namelen, &name, 0) < 0) {
 		ntfs_log_error("Couldn't translate attribute name to current "
 				"locale.\n");
@@ -815,9 +852,13 @@ int utils_mftrec_in_use(ntfs_volume *vol, MFT_REF mref)
 
 	bit  = 1 << (mref & 7);
 	byte = (mref >> 3) & (sizeof(buffer) - 1);
+<<<<<<< HEAD
 	ntfs_log_debug("cluster = %lld, bmpmref = %lld, byte = %d, bit = %d, "
 			"in use %d\n", (long long) mref, (long long) bmpmref,
 			byte, bit, buffer[byte] & bit);
+=======
+	ntfs_log_debug("cluster = %lld, bmpmref = %lld, byte = %d, bit = %d, in use %d\n", mref, bmpmref, byte, bit, buffer[byte] & bit);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	return (buffer[byte] & bit);
 }
@@ -1030,6 +1071,7 @@ int mft_next_record(struct mft_search_ctx *ctx)
 
 			ctx->inode = ntfs_inode_open(ctx->vol, (MFT_REF) ctx->mft_num);
 			if (ctx->inode == NULL) {
+<<<<<<< HEAD
 				MFT_RECORD *mrec;
 				int r;
 				MFT_REF base_inode;
@@ -1050,6 +1092,10 @@ int mft_next_record(struct mft_search_ctx *ctx)
 						(long long)MREF(base_inode));
 				}
 				free (mrec);
+=======
+				ntfs_log_error("Error reading inode %llu.\n", (unsigned
+						long long) ctx->mft_num);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				continue;
 			}
 
@@ -1144,6 +1190,7 @@ int mft_next_record(struct mft_search_ctx *ctx)
 	return (ctx->inode == NULL);
 }
 
+<<<<<<< HEAD
 #ifdef HAVE_WINDOWS_H
 
 /*
@@ -1230,3 +1277,6 @@ char *ntfs_utils_unix_path(const char *in)
 }
 
 #endif
+=======
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13

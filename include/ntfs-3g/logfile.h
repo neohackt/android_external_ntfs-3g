@@ -308,6 +308,7 @@ typedef struct {
 typedef struct {
 /*  0	NTFS_RECORD; -- Unfolded here as gcc doesn't like unnamed structs. */
 	NTFS_RECORD_TYPES magic;/* Usually the magic is "RCRD". */
+<<<<<<< HEAD
 	le16 usa_ofs;		/* See NTFS_RECORD definition in layout.h.
 				   When creating, set this to be immediately
 				   after this header structure (without any
@@ -326,6 +327,26 @@ typedef struct {
 			le16 next_record_offset;
 			u8 reserved[6];
 			leLSN last_end_lsn;
+=======
+	u16 usa_ofs;		/* See NTFS_RECORD definition in layout.h.
+				   When creating, set this to be immediately
+				   after this header structure (without any
+				   alignment). */
+	u16 usa_count;		/* See NTFS_RECORD definition in layout.h. */
+
+	union {
+		LSN last_lsn;
+		s64 file_offset;
+	} __attribute__((__packed__)) copy;
+	u32 flags;
+	u16 page_count;
+	u16 page_position;
+	union {
+		struct {
+			u16 next_record_offset;
+			u8 reserved[6];
+			LSN last_end_lsn;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		} __attribute__((__packed__)) packed;
 	} __attribute__((__packed__)) header;
 } __attribute__((__packed__)) RECORD_PAGE_HEADER;
@@ -346,8 +367,13 @@ typedef enum {
  * struct LOG_CLIENT_ID - The log client id structure identifying a log client.
  */
 typedef struct {
+<<<<<<< HEAD
 	le16 seq_number;
 	le16 client_index;
+=======
+	u16 seq_number;
+	u16 client_index;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 } __attribute__((__packed__)) LOG_CLIENT_ID;
 
 /**
@@ -356,6 +382,7 @@ typedef struct {
  * Each log record seems to have a constant size of 0x70 bytes.
  */
 typedef struct {
+<<<<<<< HEAD
 	leLSN this_lsn;
 	leLSN client_previous_lsn;
 	leLSN client_undo_next_lsn;
@@ -384,6 +411,36 @@ typedef struct {
 	struct {			   /* Only present if lcns_to_follow
 					      is not 0. */
 		leLCN lcn;
+=======
+	LSN this_lsn;
+	LSN client_previous_lsn;
+	LSN client_undo_next_lsn;
+	u32 client_data_length;
+	LOG_CLIENT_ID client_id;
+	u32 record_type;
+	u32 transaction_id;
+	u16 flags;
+	u16 reserved_or_alignment[3];
+/* Now are at ofs 0x30 into struct. */
+	u16 redo_operation;
+	u16 undo_operation;
+	u16 redo_offset;
+	u16 redo_length;
+	u16 undo_offset;
+	u16 undo_length;
+	u16 target_attribute;
+	u16 lcns_to_follow;		   /* Number of lcn_list entries
+					      following this entry. */
+/* Now at ofs 0x40. */
+	u16 record_offset;
+	u16 attribute_offset;
+	u32 alignment_or_reserved;
+	VCN target_vcn;
+/* Now at ofs 0x50. */
+	struct {			   /* Only present if lcns_to_follow
+					      is not 0. */
+		LCN lcn;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	} __attribute__((__packed__)) lcn_list[0];
 } __attribute__((__packed__)) LOG_RECORD;
 

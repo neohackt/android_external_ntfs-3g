@@ -29,12 +29,30 @@
 #include "layout.h"
 #include "inode.h"
 #include "dir.h"
+<<<<<<< HEAD
 #include "endians.h"
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 #ifndef POSIXACLS
 #define POSIXACLS 0
 #endif
 
+<<<<<<< HEAD
+=======
+typedef u16 be16;
+typedef u32 be32;
+
+#if __BYTE_ORDER == __LITTLE_ENDIAN
+#define const_cpu_to_be16(x) ((((x) & 255L) << 8) + (((x) >> 8) & 255L))
+#define const_cpu_to_be32(x) ((((x) & 255L) << 24) + (((x) & 0xff00L) << 8) \
+			+ (((x) >> 8) & 0xff00L) + (((x) >> 24) & 255L))
+#else
+#define const_cpu_to_be16(x) (x)
+#define const_cpu_to_be32(x) (x)
+#endif
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /*
  *          item in the mapping list
  */
@@ -211,6 +229,25 @@ enum {
 extern BOOL ntfs_guid_is_zero(const GUID *guid);
 extern char *ntfs_guid_to_mbs(const GUID *guid, char *guid_str);
 
+<<<<<<< HEAD
+=======
+/**
+ * ntfs_sid_is_valid - determine if a SID is valid
+ * @sid:	SID for which to determine if it is valid
+ *
+ * Determine if the SID pointed to by @sid is valid.
+ *
+ * Return TRUE if it is valid and FALSE otherwise.
+ */
+static __inline__ BOOL ntfs_sid_is_valid(const SID *sid)
+{
+	if (!sid || sid->revision != SID_REVISION ||
+			sid->sub_authority_count > SID_MAX_SUB_AUTHORITIES)
+		return FALSE;
+	return TRUE;
+}
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 extern int ntfs_sid_to_mbs_size(const SID *sid);
 extern char *ntfs_sid_to_mbs(const SID *sid, char *sid_str,
 		size_t sid_str_size);

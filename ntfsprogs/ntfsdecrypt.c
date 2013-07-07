@@ -4,7 +4,10 @@
  * Copyright (c) 2005 Yuval Fledel
  * Copyright (c) 2005-2007 Anton Altaparmakov
  * Copyright (c) 2007 Yura Pakhuchiy
+<<<<<<< HEAD
  * Copyright (c) 2014-2015 Jean-Pierre Andre
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *
  * This utility will decrypt files and print the decrypted data on the standard
  * output.
@@ -65,7 +68,10 @@
 #include "dir.h"
 #include "layout.h"
 /* #include "version.h" */
+<<<<<<< HEAD
 #include "misc.h"
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 typedef gcry_sexp_t ntfs_rsa_private_key;
 
@@ -73,6 +79,7 @@ typedef gcry_sexp_t ntfs_rsa_private_key;
 
 #define NTFS_CRED_TYPE_CERT_THUMBPRINT const_cpu_to_le32(3)
 
+<<<<<<< HEAD
 #define NTFS_EFS_CERT_PURPOSE_OID_DDF "1.3.6.1.4.1.311.10.3.4" /* decryption */
 #define NTFS_EFS_CERT_PURPOSE_OID_DRF "1.3.6.1.4.1.311.10.3.4.1" /* recovery */
 
@@ -80,6 +87,15 @@ typedef enum {
 	DF_TYPE_UNKNOWN,
 	DF_TYPE_DDF, /* decryption */
 	DF_TYPE_DRF, /* recovery */
+=======
+#define NTFS_EFS_CERT_PURPOSE_OID_DDF "1.3.6.1.4.1.311.10.3.4"
+#define NTFS_EFS_CERT_PURPOSE_OID_DRF "1.3.6.1.4.1.311.10.3.4.1"
+
+typedef enum {
+	DF_TYPE_UNKNOWN,
+	DF_TYPE_DDF,
+	DF_TYPE_DRF,
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 } NTFS_DF_TYPES;
 
 /**
@@ -104,6 +120,7 @@ typedef enum {
 	CALG_AES_256	= const_cpu_to_le32(0x6610),
 } NTFS_CRYPTO_ALGORITHMS;
 
+<<<<<<< HEAD
 typedef struct {
 	u64 in_whitening, out_whitening;
 	u8 des_key[8];
@@ -114,14 +131,33 @@ typedef struct {
  * struct ntfs_fek - Decrypted, in-memory file encryption key.
  */
 
+=======
+/**
+ * struct ntfs_fek - Decrypted, in-memory file encryption key.
+ */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 typedef struct {
 	gcry_cipher_hd_t gcry_cipher_hd;
 	le32 alg_id;
 	u8 *key_data;
 	gcry_cipher_hd_t *des_gcry_cipher_hd_ptr;
+<<<<<<< HEAD
 	ntfs_desx_ctx desx_ctx;
 } ntfs_fek;
 
+=======
+} ntfs_fek;
+
+/* DESX-MS128 implementation for libgcrypt. */
+static gcry_module_t ntfs_desx_module;
+static int ntfs_desx_algorithm_id = -1;
+
+typedef struct {
+	u64 in_whitening, out_whitening;
+	gcry_cipher_hd_t gcry_cipher_hd;
+} ntfs_desx_ctx;
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 struct options {
 	char *keyfile;	/* .pfx file containing the user's private key. */
 	char *device;		/* Device/File to work with */
@@ -131,7 +167,10 @@ struct options {
 	int force;		/* Override common sense */
 	int quiet;		/* Less output */
 	int verbose;		/* Extra output */
+<<<<<<< HEAD
 	int encrypt;		/* Encrypt */
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 };
 
 static const char *EXEC_NAME = "ntfsdecrypt";
@@ -155,7 +194,10 @@ static void version(void)
 			"standard output.\n\n", EXEC_NAME, VERSION);
 	ntfs_log_info("Copyright (c) 2005 Yuval Fledel\n");
 	ntfs_log_info("Copyright (c) 2005 Anton Altaparmakov\n");
+<<<<<<< HEAD
 	ntfs_log_info("Copyright (c) 2014-2015 Jean-Pierre Andre\n");
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ntfs_log_info("\n%s\n%s%s\n", ntfs_gpl, ntfs_bugs, ntfs_home);
 }
 
@@ -171,7 +213,10 @@ static void usage(void)
 	ntfs_log_info("\nUsage: %s [options] -k name.pfx device [file]\n\n"
 	       "    -i, --inode num         Display this inode\n\n"
 	       "    -k  --keyfile name.pfx  Use file name as the user's private key file.\n"
+<<<<<<< HEAD
 	       "    -e  --encrypt           Update an encrypted file\n"
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	       "    -f  --force             Use less caution\n"
 	       "    -h  --help              Print this help\n"
 	       "    -q  --quiet             Less output\n"
@@ -192,9 +237,14 @@ static void usage(void)
  */
 static int parse_options(int argc, char **argv)
 {
+<<<<<<< HEAD
 	static const char *sopt = "-fh?ei:k:qVv";
 	static const struct option lopt[] = {
 		{"encrypt", no_argument, NULL, 'e'},
+=======
+	static const char *sopt = "-fh?i:k:qVv";
+	static const struct option lopt[] = {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		{"force", no_argument, NULL, 'f'},
 		{"help", no_argument, NULL, 'h'},
 		{"inode", required_argument, NULL, 'i'},
@@ -227,13 +277,20 @@ static int parse_options(int argc, char **argv)
 				err++;
 			}
 			break;
+<<<<<<< HEAD
 		case 'e':
 			opts.encrypt++;
 			break;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		case 'f':
 			opts.force++;
 			break;
 		case 'h':
+<<<<<<< HEAD
+=======
+		case '?':
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			help++;
 			break;
 		case 'k':
@@ -266,7 +323,10 @@ static int parse_options(int argc, char **argv)
 			opts.verbose++;
 			ntfs_log_set_levels(NTFS_LOG_LEVEL_VERBOSE);
 			break;
+<<<<<<< HEAD
 		case '?':
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		default:
 			ntfs_log_error("Unknown option '%s'.\n",
 				argv[optind - 1]);
@@ -306,8 +366,12 @@ static int parse_options(int argc, char **argv)
 	if (help || err)
 		usage();
 
+<<<<<<< HEAD
 		/* tri-state 0 : done, 1 : error, -1 : proceed */
 	return (err ? 1 : (help || ver ? 0 : -1));
+=======
+	return (!err && !help && !ver);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -402,6 +466,14 @@ static int ntfs_crypto_init(void)
 static void ntfs_crypto_deinit(void)
 {
 	gnutls_global_deinit();
+<<<<<<< HEAD
+=======
+	if (ntfs_desx_module) {
+		gcry_cipher_unregister(ntfs_desx_module);
+		ntfs_desx_module = NULL;
+		ntfs_desx_algorithm_id = -1;
+	}
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -480,7 +552,10 @@ static ntfs_rsa_private_key ntfs_pkcs12_extract_rsa_key(u8 *pfx, int pfx_size,
 	ntfs_rsa_private_key rsa_key = NULL;
 	char purpose_oid[100];
 	size_t purpose_oid_size = sizeof(purpose_oid);
+<<<<<<< HEAD
 	int oid_index;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	size_t tp_size = thumbprint_size;
 	BOOL have_thumbprint = FALSE;
 
@@ -640,6 +715,7 @@ check_again:
 						"%s\n", gnutls_strerror(err));
 				goto err;
 			}
+<<<<<<< HEAD
 			oid_index = 0;
 				/*
 				 * Search in the key purposes for an EFS
@@ -674,6 +750,28 @@ check_again:
 					ntfs_log_error("Failed to get a key "
 							"purpose OID : %s ",
 							gnutls_strerror(err));
+=======
+			err = gnutls_x509_crt_get_key_purpose_oid(crt, 0,
+					purpose_oid, &purpose_oid_size, NULL);
+			if (err) {
+				ntfs_log_error("Failed to get key purpose "
+						"OID: %s\n",
+						gnutls_strerror(err));
+				goto err;
+			}
+			purpose_oid[purpose_oid_size - 1] = '\0';
+			if (!strcmp(purpose_oid,
+					NTFS_EFS_CERT_PURPOSE_OID_DRF))
+				*df_type = DF_TYPE_DRF;
+			else if (!strcmp(purpose_oid,
+					NTFS_EFS_CERT_PURPOSE_OID_DDF))
+				*df_type = DF_TYPE_DDF;
+			else {
+				ntfs_log_error("Certificate has unknown "
+						"purpose OID %s.\n",
+						purpose_oid);
+				err = EINVAL;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				goto err;
 			}
 			/* Return the thumbprint to the caller. */
@@ -884,6 +982,7 @@ out:
 }
 
 /**
+<<<<<<< HEAD
  * ntfs_desx_decrypt
  */
 static gcry_error_t ntfs_desx_decrypt(ntfs_fek *fek, u8 *outbuf,
@@ -921,6 +1020,84 @@ static gcry_error_t ntfs_desx_encrypt(ntfs_fek *fek, u8 *outbuf,
 	return (err);
 }
 
+=======
+ * ntfs_desx_setkey - libgcrypt set_key implementation for DES-X-MS128
+ * @context:	pointer to a variable of type ntfs_desx_ctx
+ * @key:	the 128 bit DES-X-MS128 key, concated with the DES handle
+ * @keylen:	must always be 16
+ *
+ * This is the libgcrypt set_key implementation for DES-X-MS128.
+ */
+static gcry_err_code_t ntfs_desx_setkey(void *context, const u8 *key,
+		unsigned keylen)
+{
+	ntfs_desx_ctx *ctx = context;
+	gcry_error_t err;
+	u8 des_key[8];
+
+	if (keylen != 16) {
+		ntfs_log_error("Key length for desx must be 16.\n");
+		return GPG_ERR_INV_KEYLEN;
+	}
+	err = gcry_cipher_open(&ctx->gcry_cipher_hd, GCRY_CIPHER_DES,
+			GCRY_CIPHER_MODE_ECB, 0);
+	if (err != GPG_ERR_NO_ERROR) {
+		ntfs_log_error("Failed to open des cipher (error 0x%x).\n",
+				err);
+		return err;
+	}
+	err = ntfs_desx_key_expand(key, (u32*)des_key, &ctx->out_whitening,
+			&ctx->in_whitening);
+	if (err != GPG_ERR_NO_ERROR) {
+		ntfs_log_error("Failed to expand desx key (error 0x%x).\n",
+				err);
+		gcry_cipher_close(ctx->gcry_cipher_hd);
+		return err;
+	}
+	err = gcry_cipher_setkey(ctx->gcry_cipher_hd, des_key, sizeof(des_key));
+	if (err != GPG_ERR_NO_ERROR) {
+		ntfs_log_error("Failed to set des key (error 0x%x).\n", err);
+		gcry_cipher_close(ctx->gcry_cipher_hd);
+		return err;
+	}
+	/*
+	 * Take a note of the ctx->gcry_cipher_hd since we need to close it at
+	 * ntfs_decrypt_data_key_close() time.
+	 */
+	**(gcry_cipher_hd_t***)(key + ((keylen + 7) & ~7)) =
+			&ctx->gcry_cipher_hd;
+	return GPG_ERR_NO_ERROR;
+}
+
+/**
+ * ntfs_desx_decrypt
+ */
+static void ntfs_desx_decrypt(void *context, u8 *outbuf, const u8 *inbuf)
+{
+	ntfs_desx_ctx *ctx = context;
+	gcry_error_t err;
+
+	err = gcry_cipher_reset(ctx->gcry_cipher_hd);
+	if (err != GPG_ERR_NO_ERROR)
+		ntfs_log_error("Failed to reset des cipher (error 0x%x).\n",
+				err);
+	*(u64*)outbuf = *(const u64*)inbuf ^ ctx->out_whitening;
+	err = gcry_cipher_encrypt(ctx->gcry_cipher_hd, outbuf, 8, NULL, 0);
+	if (err != GPG_ERR_NO_ERROR)
+		ntfs_log_error("Des decryption failed (error 0x%x).\n", err);
+	*(u64*)outbuf ^= ctx->in_whitening;
+}
+
+static gcry_cipher_spec_t ntfs_desx_cipher = {
+	.name = "DES-X-MS128",
+	.blocksize = 8,
+	.keylen = 128,
+	.contextsize = sizeof(ntfs_desx_ctx),
+	.setkey = ntfs_desx_setkey,
+	.decrypt = ntfs_desx_decrypt,
+};
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 //#define DO_CRYPTO_TESTS 1
 
 #ifdef DO_CRYPTO_TESTS
@@ -1046,11 +1223,17 @@ static ntfs_fek *ntfs_fek_import_from_raw(u8 *fek_buf, unsigned fek_size)
 {
 	ntfs_fek *fek;
 	u32 key_size, wanted_key_size, gcry_algo;
+<<<<<<< HEAD
 	int gcry_mode;
 	gcry_error_t err;
 	ntfs_desx_ctx *ctx;
 
 	key_size = le32_to_cpup((le32*) fek_buf);
+=======
+	gcry_error_t err;
+
+	key_size = le32_to_cpup(fek_buf);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ntfs_log_debug("key_size 0x%x\n", key_size);
 	if (key_size + 16 > fek_size) {
 		ntfs_log_debug("Invalid FEK.  It was probably decrypted with "
@@ -1064,7 +1247,10 @@ static ntfs_fek *ntfs_fek_import_from_raw(u8 *fek_buf, unsigned fek_size)
 		errno = ENOMEM;
 		return NULL;
 	}
+<<<<<<< HEAD
 	ctx = &fek->desx_ctx;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	fek->alg_id = *(le32*)(fek_buf + 8);
 	//ntfs_log_debug("alg_id 0x%x\n", le32_to_cpu(fek->alg_id));
 	fek->key_data = (u8*)fek + ((sizeof(*fek) + 7) & ~7);
@@ -1074,24 +1260,54 @@ static ntfs_fek *ntfs_fek_import_from_raw(u8 *fek_buf, unsigned fek_size)
 			&fek->des_gcry_cipher_hd_ptr;
 	switch (fek->alg_id) {
 	case CALG_DESX:
+<<<<<<< HEAD
 		wanted_key_size = 16;
 		gcry_algo = GCRY_CIPHER_DES;
 		gcry_mode = GCRY_CIPHER_MODE_ECB;
+=======
+		if (!ntfs_desx_module) {
+			if (!ntfs_desx_key_expand_test() || !ntfs_des_test()) {
+				err = EINVAL;
+				goto out;
+			}
+			err = gcry_cipher_register(&ntfs_desx_cipher,
+					&ntfs_desx_algorithm_id,
+					&ntfs_desx_module);
+			if (err != GPG_ERR_NO_ERROR) {
+				ntfs_log_error("Failed to register desx "
+						"cipher: %s\n",
+						gcry_strerror(err));
+				err = EINVAL;
+				goto out;
+			}
+		}
+		wanted_key_size = 16;
+		gcry_algo = ntfs_desx_algorithm_id;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		break;
 	case CALG_3DES:
 		wanted_key_size = 24;
 		gcry_algo = GCRY_CIPHER_3DES;
+<<<<<<< HEAD
 		gcry_mode = GCRY_CIPHER_MODE_CBC;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		break;
 	case CALG_AES_256:
 		wanted_key_size = 32;
 		gcry_algo = GCRY_CIPHER_AES256;
+<<<<<<< HEAD
 		gcry_mode = GCRY_CIPHER_MODE_CBC;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		break;
 	default:
 		wanted_key_size = 8;
 		gcry_algo = GCRY_CIPHER_DES;
+<<<<<<< HEAD
 		gcry_mode = GCRY_CIPHER_MODE_CBC;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (fek->alg_id == CALG_DES)
 			ntfs_log_error("DES is not supported at present\n");
 		else
@@ -1113,14 +1329,19 @@ static ntfs_fek *ntfs_fek_import_from_raw(u8 *fek_buf, unsigned fek_size)
 		goto out;
 	}
 	err = gcry_cipher_open(&fek->gcry_cipher_hd, gcry_algo,
+<<<<<<< HEAD
 				gcry_mode, 0);
 
+=======
+			GCRY_CIPHER_MODE_CBC, 0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (err != GPG_ERR_NO_ERROR) {
 		ntfs_log_error("gcry_cipher_open() failed: %s\n",
 				gcry_strerror(err));
 		err = EINVAL;
 		goto out;
 	}
+<<<<<<< HEAD
 	if (fek->alg_id == CALG_DESX) {
 		err = ntfs_desx_key_expand(fek->key_data, (u32*)ctx->des_key,
 				&ctx->out_whitening, &ctx->in_whitening);
@@ -1131,6 +1352,9 @@ static ntfs_fek *ntfs_fek_import_from_raw(u8 *fek_buf, unsigned fek_size)
 		err = gcry_cipher_setkey(fek->gcry_cipher_hd, fek->key_data,
 							key_size);
 	}
+=======
+	err = gcry_cipher_setkey(fek->gcry_cipher_hd, fek->key_data, key_size);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (err != GPG_ERR_NO_ERROR) {
 		ntfs_log_error("gcry_cipher_setkey() failed: %s\n",
 				gcry_strerror(err));
@@ -1187,8 +1411,12 @@ static ntfs_fek *ntfs_df_array_fek_get(EFS_DF_ARRAY_HEADER *df_array,
 		df_cert = (EFS_DF_CERT_THUMBPRINT_HEADER*)((u8*)df_cred +
 				le32_to_cpu(
 				df_cred->cert_thumbprint_header_offset));
+<<<<<<< HEAD
 		if ((int)le32_to_cpu(df_cert->thumbprint_size)
 						!= thumbprint_size) {
+=======
+		if (le32_to_cpu(df_cert->thumbprint_size) != thumbprint_size) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			ntfs_log_error("Thumbprint size %d is not valid "
 					"(should be %d), skipping this DF "
 					"entry.\n",
@@ -1288,6 +1516,7 @@ static int ntfs_fek_decrypt_sector(ntfs_fek *fek, u8 *data, const u64 offset)
 	 * that gcry_cipher_setiv() wants an iv of length 8 bytes but we give
 	 * it a length of 16 for AES256 so it does not like it.
 	 */
+<<<<<<< HEAD
 	if (fek->alg_id == CALG_DESX) {
 		int k;
 
@@ -1297,6 +1526,9 @@ static int ntfs_fek_decrypt_sector(ntfs_fek *fek, u8 *data, const u64 offset)
 		}
 	} else
 		err = gcry_cipher_decrypt(fek->gcry_cipher_hd, data, 512, NULL, 0);
+=======
+	err = gcry_cipher_decrypt(fek->gcry_cipher_hd, data, 512, NULL, 0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (err != GPG_ERR_NO_ERROR) {
 		ntfs_log_error("Decryption failed: %s\n", gcry_strerror(err));
 		return -1;
@@ -1313,6 +1545,7 @@ static int ntfs_fek_decrypt_sector(ntfs_fek *fek, u8 *data, const u64 offset)
 }
 
 /**
+<<<<<<< HEAD
  * ntfs_fek_encrypt_sector
  */
 static int ntfs_fek_encrypt_sector(ntfs_fek *fek, u8 *data, const u64 offset)
@@ -1356,6 +1589,8 @@ static int ntfs_fek_encrypt_sector(ntfs_fek *fek, u8 *data, const u64 offset)
 }
 
 /**
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  * ntfs_cat_decrypt - Decrypt the contents of an encrypted file to stdout.
  * @inode:	An encrypted file's inode structure, as obtained by
  * 		ntfs_inode_open().
@@ -1425,6 +1660,7 @@ static int ntfs_cat_decrypt(ntfs_inode *inode, ntfs_fek *fek)
 }
 
 /**
+<<<<<<< HEAD
  * ntfs_feed_encrypt - Encrypt the contents of stdin to an encrypted file
  * @inode:	An encrypted file's inode structure, as obtained by
  * 		ntfs_inode_open().
@@ -1523,6 +1759,8 @@ rejected :
 }
 
 /**
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  * main - Begin here
  *
  * Start from here.
@@ -1545,9 +1783,14 @@ int main(int argc, char *argv[])
 
 	ntfs_log_set_handler(ntfs_log_handler_stderr);
 
+<<<<<<< HEAD
 	res = parse_options(argc, argv);
 	if (res >= 0)
 		return (res);
+=======
+	if (!parse_options(argc, argv))
+		return 1;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	utils_set_locale();
 
 	/* Initialize crypto in ntfs. */
@@ -1583,8 +1826,12 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 	/* Mount the ntfs volume. */
+<<<<<<< HEAD
 	vol = utils_mount_volume(opts.device,
 			(opts.encrypt ? 0 :  NTFS_MNT_RDONLY) |
+=======
+	vol = utils_mount_volume(opts.device, NTFS_MNT_RDONLY |
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			(opts.force ? NTFS_MNT_RECOVER : 0));
 	if (!vol) {
 		ntfs_log_error("Failed to mount ntfs volume.  Aborting.\n");
@@ -1609,10 +1856,14 @@ int main(int argc, char *argv[])
 			sizeof(thumbprint), df_type);
 	ntfs_rsa_private_key_release(rsa_key);
 	if (fek) {
+<<<<<<< HEAD
 		if (opts.encrypt)
 			res = ntfs_feed_encrypt(inode, fek);
 		else
 			res = ntfs_cat_decrypt(inode, fek);
+=======
+		res = ntfs_cat_decrypt(inode, fek);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		ntfs_fek_release(fek);
 	} else {
 		ntfs_log_error("Failed to obtain file encryption key.  "

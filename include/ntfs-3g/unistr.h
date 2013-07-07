@@ -69,8 +69,11 @@ extern ntfschar *ntfs_str2ucs(const char *s, int *len);
 extern void ntfs_ucsfree(ntfschar *ucs);
 
 extern BOOL ntfs_forbidden_chars(const ntfschar *name, int len);
+<<<<<<< HEAD
 extern BOOL ntfs_forbidden_names(ntfs_volume *vol,
 				const ntfschar *name, int len);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 extern BOOL ntfs_collapsible_chars(ntfs_volume *vol,
 				const ntfschar *shortname, int shortlen,
 				const ntfschar *longname, int longlen);

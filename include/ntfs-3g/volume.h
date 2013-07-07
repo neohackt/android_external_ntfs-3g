@@ -36,7 +36,13 @@
 #ifdef HAVE_SYS_PARAM_H
 #include <sys/param.h>
 #endif
+<<<<<<< HEAD
 	/* Do not #include <sys/mount.h> here : conflicts with <linux/fs.h> */
+=======
+#ifdef HAVE_SYS_MOUNT_H
+#include <sys/mount.h>
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 #ifdef HAVE_MNTENT_H
 #include <mntent.h>
 #endif

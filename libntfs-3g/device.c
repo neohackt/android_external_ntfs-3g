@@ -1,10 +1,16 @@
 /**
  * device.c - Low level device io functions. Originated from the Linux-NTFS project.
  *
+<<<<<<< HEAD
  * Copyright (c) 2004-2013 Anton Altaparmakov
  * Copyright (c) 2004-2006 Szabolcs Szakacsits
  * Copyright (c) 2010      Jean-Pierre Andre
  * Copyright (c) 2008-2013 Tuxera Inc.
+=======
+ * Copyright (c) 2004-2006 Anton Altaparmakov
+ * Copyright (c) 2004-2006 Szabolcs Szakacsits
+ * Copyright (c) 2010      Jean-Pierre Andre
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *
  * This program/include file is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License as published
@@ -68,9 +74,12 @@
 #ifdef HAVE_LINUX_HDREG_H
 #include <linux/hdreg.h>
 #endif
+<<<<<<< HEAD
 #ifdef ENABLE_HD
 #include <hd.h>
 #endif
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 #include "types.h"
 #include "mst.h"
@@ -132,8 +141,11 @@ struct ntfs_device *ntfs_device_alloc(const char *name, const long state,
 		dev->d_ops = dops;
 		dev->d_state = state;
 		dev->d_private = priv_data;
+<<<<<<< HEAD
 		dev->d_heads = -1;
 		dev->d_sectors_per_track = -1;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 	return dev;
 }
@@ -648,6 +660,7 @@ s64 ntfs_device_partition_start_sector_get(struct ntfs_device *dev)
 	return -1;
 }
 
+<<<<<<< HEAD
 static int ntfs_device_get_geo(struct ntfs_device *dev)
 {
 	int err;
@@ -774,6 +787,8 @@ skip_hd:
 	return -1;
 }
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /**
  * ntfs_device_heads_get - get number of heads of device
  * @dev:		open device
@@ -785,7 +800,10 @@ skip_hd:
  *	EINVAL		Input parameter error
  *	EOPNOTSUPP	System does not support HDIO_GETGEO ioctl
  *	ENOTTY		@dev is a file or a device not supporting HDIO_GETGEO
+<<<<<<< HEAD
  *	ENOMEM		Not enough memory to complete the request
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  */
 int ntfs_device_heads_get(struct ntfs_device *dev)
 {
@@ -793,6 +811,7 @@ int ntfs_device_heads_get(struct ntfs_device *dev)
 		errno = EINVAL;
 		return -1;
 	}
+<<<<<<< HEAD
 	if (dev->d_heads == -1) {
 		if (ntfs_device_get_geo(dev) == -1)
 			return -1;
@@ -802,6 +821,22 @@ int ntfs_device_heads_get(struct ntfs_device *dev)
 		}
 	}
 	return dev->d_heads;
+=======
+#ifdef HDIO_GETGEO
+	{	struct hd_geometry geo;
+
+		if (!dev->d_ops->ioctl(dev, HDIO_GETGEO, &geo)) {
+			ntfs_log_debug("HDIO_GETGEO heads = %u (0x%x)\n",
+					(unsigned)geo.heads,
+					(unsigned)geo.heads);
+			return geo.heads;
+		}
+	}
+#else
+	errno = EOPNOTSUPP;
+#endif
+	return -1;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -815,7 +850,10 @@ int ntfs_device_heads_get(struct ntfs_device *dev)
  *	EINVAL		Input parameter error
  *	EOPNOTSUPP	System does not support HDIO_GETGEO ioctl
  *	ENOTTY		@dev is a file or a device not supporting HDIO_GETGEO
+<<<<<<< HEAD
  *	ENOMEM		Not enough memory to complete the request
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  */
 int ntfs_device_sectors_per_track_get(struct ntfs_device *dev)
 {
@@ -823,6 +861,7 @@ int ntfs_device_sectors_per_track_get(struct ntfs_device *dev)
 		errno = EINVAL;
 		return -1;
 	}
+<<<<<<< HEAD
 	if (dev->d_sectors_per_track == -1) {
 		if (ntfs_device_get_geo(dev) == -1)
 			return -1;
@@ -832,6 +871,22 @@ int ntfs_device_sectors_per_track_get(struct ntfs_device *dev)
 		}
 	}
 	return dev->d_sectors_per_track;
+=======
+#ifdef HDIO_GETGEO
+	{	struct hd_geometry geo;
+
+		if (!dev->d_ops->ioctl(dev, HDIO_GETGEO, &geo)) {
+			ntfs_log_debug("HDIO_GETGEO sectors_per_track = %u (0x%x)\n",
+					(unsigned)geo.sectors,
+					(unsigned)geo.sectors);
+			return geo.sectors;
+		}
+	}
+#else
+	errno = EOPNOTSUPP;
+#endif
+	return -1;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**

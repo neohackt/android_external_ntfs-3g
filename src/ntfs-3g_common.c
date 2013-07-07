@@ -1,7 +1,11 @@
 /**
  * ntfs-3g_common.c - Common definitions for ntfs-3g and lowntfs-3g.
  *
+<<<<<<< HEAD
  * Copyright (c) 2010-2015 Jean-Pierre Andre
+=======
+ * Copyright (c) 2010-2012 Jean-Pierre Andre
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  * Copyright (c) 2010      Erik Larsson
  *
  * This program/include file is free software; you can redistribute it and/or
@@ -531,10 +535,15 @@ char *parse_mount_options(ntfs_fuse_context_t *ctx,
 		ctx->secure_flags |= (1 << SECURITY_ACL);
 	if (want_permissions)
 		ctx->secure_flags |= (1 << SECURITY_WANTED);
+<<<<<<< HEAD
 	if (ctx->ro) {
 		ctx->secure_flags &= ~(1 << SECURITY_ADDSECURIDS);
 		ctx->hiberfile = FALSE;
 	}
+=======
+	if (ctx->ro)
+		ctx->secure_flags &= ~(1 << SECURITY_ADDSECURIDS);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 exit:
 	free(options);
 	return ret;
@@ -555,7 +564,11 @@ int ntfs_parse_options(struct ntfs_options *popts, void (*usage)(void),
 {
 	int c;
 
+<<<<<<< HEAD
 	static const char *sopt = "-o:hnsvV";
+=======
+	static const char *sopt = "-o:hnvV";
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	static const struct option lopt[] = {
 		{ "options",	 required_argument,	NULL, 'o' },
 		{ "help",	 no_argument,		NULL, 'h' },
@@ -609,11 +622,14 @@ int ntfs_parse_options(struct ntfs_options *popts, void (*usage)(void),
 			 * no effect - automount passes it, meaning 'no-mtab'
 			 */
 			break;
+<<<<<<< HEAD
 		case 's':
 			/*
 			 * no effect - automount passes it, meaning sloppy
 			 */
 			break;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		case 'v':
 			/*
 			 * We must handle the 'verbose' option even if

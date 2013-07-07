@@ -1,7 +1,11 @@
 /*
  *		 Display and audit security attributes in an NTFS volume
  *
+<<<<<<< HEAD
  * Copyright (c) 2007-2015 Jean-Pierre Andre
+=======
+ * Copyright (c) 2007-2012 Jean-Pierre Andre
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  * 
  *	Options :
  *		-a auditing security data
@@ -203,6 +207,7 @@
  *
  *  Aug 2012, version 1.4.0
  *     - added an option for user mapping proposal
+<<<<<<< HEAD
  *
  *  Sep 2013, version 1.4.1
  *     - silenced an aliasing warning by gcc >= 4.8
@@ -221,6 +226,8 @@
  *
  *  May 2015, version 1.4.6
  *     - made to load shared library based on generic name
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  */
 
 /*
@@ -244,7 +251,11 @@
  *		General parameters which may have to be adapted to needs
  */
 
+<<<<<<< HEAD
 #define AUDT_VERSION "1.4.6"
+=======
+#define AUDT_VERSION "1.4.0"
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 #define GET_FILE_SECURITY "ntfs_get_file_security"
 #define SET_FILE_SECURITY "ntfs_set_file_security"
@@ -437,8 +448,11 @@ type_leave_file_security ntfs_leave_file_security;
 #endif /* USESTUBS | defined(STSC) */
 #endif /* WIN32 */
 
+<<<<<<< HEAD
 #define ACCOUNTSIZE 256  /* maximum size of an account name */
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /*
  *		Prototypes for local functions
  */
@@ -469,7 +483,10 @@ BOOL guess_dir(const char*);
 void showsid(const char*, int, const char*, int);
 void showusid(const char*, int);
 void showgsid(const char*, int);
+<<<<<<< HEAD
 void showownership(const char*);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 void showheader(const char*, int);
 void showace(const char*, int, int, int);
 void showacl(const char*, int, int, int);
@@ -1465,6 +1482,7 @@ void showsid(const char *attr, int off, const char *prefix, int level)
 				break;
 			case 5 :
 				switch (first) {
+<<<<<<< HEAD
 				case 1 :
 					known = TRUE;
 					printf("%*cDialup SID\n",-level,marker);
@@ -1485,6 +1503,8 @@ void showsid(const char *attr, int off, const char *prefix, int level)
 					known = TRUE;
 					printf("%*cService SID\n",-level,marker);
 					break;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				case 7 :
 					known = TRUE;
 					printf("%*cAnonymous logon SID\n",-level,marker);
@@ -1539,6 +1559,7 @@ void showsid(const char *attr, int off, const char *prefix, int level)
 			case 5 :
 				if (first == 21) {
 					known = TRUE;
+<<<<<<< HEAD
 					switch (last) {
 						case 500 :
 							printf("%*cSystem admin SID\n",-level,marker);
@@ -1546,6 +1567,10 @@ void showsid(const char *attr, int off, const char *prefix, int level)
 						case 501 :
 							printf("%*cGuest SID\n",-level,marker);
 							break;
+=======
+					switch (last)
+						{
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 						case 512 :
 							printf("%*cLocal admins SID\n",-level,marker);
 							break;
@@ -1609,6 +1634,7 @@ void showgsid(const char *attr, int level)
 	showsid(attr,off,"G:",level+4);
 }
 
+<<<<<<< HEAD
 void showownership(const char *attr)
 {
 #ifdef WIN32
@@ -1677,6 +1703,8 @@ void showownership(const char *attr)
 	}
 }
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 void showheader(const char *attr, int level)
 {
 	int flags;
@@ -2408,7 +2436,11 @@ int local_build_mapping(struct MAPPING *mapping[], const char *usermap_path)
 #ifdef WIN32
 /* TODO : check whether the device can store acls */
 		strcpy(mapfile,"x:\\" MAPDIR "\\" MAPFILE);
+<<<<<<< HEAD
 		if (((const le16*)usermap_path)[1] == ':')
+=======
+		if (((le16*)usermap_path)[1] == ':')
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
   			mapfile[0] = usermap_path[0];
 		else {
 			GetModuleFileName(NULL, currpath, 261);
@@ -2594,7 +2626,10 @@ void showhex(FILE *fd)
 	int mode;
 	unsigned int off;
 	int i;
+<<<<<<< HEAD
 	le32 *pattr;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	BOOL isdump;
 	BOOL done;
 
@@ -2631,7 +2666,10 @@ void showhex(FILE *fd)
 			showgsid(attr,4);
 			showdacl(attr,isdir,4);
 			showsacl(attr,isdir,4);
+<<<<<<< HEAD
 			showownership(attr);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			mode = linux_permissions(attr,isdir);
 			printf("Interpreted Unix mode 0%03o\n",mode);
 #if POSIXACLS
@@ -2655,9 +2693,14 @@ void showhex(FILE *fd)
 			/* decode it into attribute */
 		if (isdump && (off == pos)) {
 			for (i=first+8; i<lth; i+=9) {
+<<<<<<< HEAD
 				pattr = (le32*)&attr[pos];
 				v = getlsbhex(&line[i]);
 				*pattr = cpu_to_le32(v);
+=======
+				v = getlsbhex(&line[i]);
+				*(le32*)&attr[pos] = cpu_to_le32(v);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				pos += 4;
 			}
 		}
@@ -2756,9 +2799,14 @@ BOOL applyattr(const char *fullname, const char *attr,
 				}
 			}
 		}
+<<<<<<< HEAD
 		/* const missing from stupid prototype */
 		bad = !SetFileSecurityW((LPCWSTR)fullname,
 			selection, (PSECURITY_DESCRIPTOR)(LONG_PTR)curattr);
+=======
+		bad = !SetFileSecurityW((LPCWSTR)fullname,
+			selection, (char*)curattr);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (bad)
 			switch (GetLastError()) {
 			case 1307 :
@@ -2767,12 +2815,18 @@ BOOL applyattr(const char *fullname, const char *attr,
 				printname(stdout,fullname);
 				printf(", retrying with no owner or SACL setting\n");
 				warnings++;
+<<<<<<< HEAD
 				/* const missing from stupid prototype */
 				bad = !SetFileSecurityW((LPCWSTR)fullname,
 					selection & ~OWNER_SECURITY_INFORMATION
 					& ~SACL_SECURITY_INFORMATION,
 					(PSECURITY_DESCRIPTOR)
 							(LONG_PTR)curattr);
+=======
+				bad = !SetFileSecurityW((LPCWSTR)fullname,
+					selection & ~OWNER_SECURITY_INFORMATION
+					& ~SACL_SECURITY_INFORMATION, (char*)curattr);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				break;
 			default :
 				break;
@@ -2839,7 +2893,10 @@ BOOL restore(FILE *fd)
 	int i;
 	int count;
 	int attrib;
+<<<<<<< HEAD
 	le32 *pattr;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	BOOL withattr;
 	BOOL done;
 
@@ -2886,7 +2943,10 @@ BOOL restore(FILE *fd)
 				showdacl(attr,isdir,4);
 				showsacl(attr,isdir,4);
 				mode = linux_permissions(attr,isdir);
+<<<<<<< HEAD
 				showownership(attr);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				printf("Interpreted Unix mode 0%03o\n",mode);
 			}
 			pos = 0;
@@ -2897,9 +2957,14 @@ BOOL restore(FILE *fd)
 			/* decode it into attribute */
 		if (isdump && (off == pos)) {
 			for (i=first+8; i<lth; i+=9) {
+<<<<<<< HEAD
 				pattr = (le32*)&attr[pos];
 				v = getlsbhex(&line[i]);
 				*pattr = cpu_to_le32(v);
+=======
+				v = getlsbhex(&line[i]);
+				*(le32*)&attr[pos] = cpu_to_le32(v);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				pos += 4;
 			}
 		}
@@ -3081,6 +3146,7 @@ void tryposix(struct POSIX_SECURITY *pxdesc)
 {
 	le32 owner_sid[] = /* S-1-5-21-3141592653-589793238-462843383-1016 */
 		{
+<<<<<<< HEAD
 		const_cpu_to_le32(0x501), const_cpu_to_le32(0x05000000),
 		const_cpu_to_le32(21), const_cpu_to_le32(DEFSECAUTH1),
 		const_cpu_to_le32(DEFSECAUTH2), const_cpu_to_le32(DEFSECAUTH3),
@@ -3092,6 +3158,17 @@ void tryposix(struct POSIX_SECURITY *pxdesc)
 		const_cpu_to_le32(21), const_cpu_to_le32(DEFSECAUTH1),
 		const_cpu_to_le32(DEFSECAUTH2), const_cpu_to_le32(DEFSECAUTH3),
 		const_cpu_to_le32(513)
+=======
+		cpu_to_le32(0x501), cpu_to_le32(0x05000000), cpu_to_le32(21),
+		cpu_to_le32(DEFSECAUTH1), cpu_to_le32(DEFSECAUTH2),
+		cpu_to_le32(DEFSECAUTH3), cpu_to_le32(1016)
+		} ;
+	le32 group_sid[] = /* S-1-5-21-3141592653-589793238-462843383-513 */
+		{
+		cpu_to_le32(0x501), cpu_to_le32(0x05000000), cpu_to_le32(21),
+		cpu_to_le32(DEFSECAUTH1), cpu_to_le32(DEFSECAUTH2),
+		cpu_to_le32(DEFSECAUTH3), cpu_to_le32(513)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		} ;
 
 	char *attr;
@@ -3239,9 +3316,15 @@ static char *build_dummy_descr(BOOL isdir __attribute__((unused)),
 		pacl = (ACL*)&attr[pos];
 		pacl->revision = ACL_REVISION;
 		pacl->alignment1 = 0;
+<<<<<<< HEAD
 		pacl->size = const_cpu_to_le16(0); /* fixed later */
 		pacl->ace_count = cpu_to_le16(cnt);
 		pacl->alignment2 = const_cpu_to_le16(0);
+=======
+		pacl->size = cpu_to_le16(0); /* fixed later */
+		pacl->ace_count = cpu_to_le16(cnt);
+		pacl->alignment2 = cpu_to_le16(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 		/* enter the ACEs */
 
@@ -3268,8 +3351,13 @@ static char *build_dummy_descr(BOOL isdir __attribute__((unused)),
 
 		/* append usid and gsid if defined */
 		/* positions of ACL, USID and GSID into header */
+<<<<<<< HEAD
 		pnhead->owner = const_cpu_to_le32(0);
 		pnhead->group = const_cpu_to_le32(0);
+=======
+		pnhead->owner = cpu_to_le32(0);
+		pnhead->group = cpu_to_le32(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (usid) {
 			memcpy(&attr[pos], usid, usidsz);
 			pnhead->owner = cpu_to_le32(pos);
@@ -3279,6 +3367,7 @@ static char *build_dummy_descr(BOOL isdir __attribute__((unused)),
 			pnhead->group = cpu_to_le32(pos + usidsz);
 		}
 		/* positions of DACL and SACL into header */
+<<<<<<< HEAD
 		pnhead->sacl = const_cpu_to_le32(0);
 		if (cnt) {
 			pacl->size = cpu_to_le16(aclsz);
@@ -3287,6 +3376,15 @@ static char *build_dummy_descr(BOOL isdir __attribute__((unused)),
 				SECURITY_DESCRIPTOR_RELATIVE));
 		} else
 			pnhead->dacl = const_cpu_to_le32(0);
+=======
+		pnhead->sacl = cpu_to_le32(0);
+		if (cnt) {
+			pacl->size = cpu_to_le16(aclsz);
+			pnhead->dacl =
+			    cpu_to_le32(sizeof(SECURITY_DESCRIPTOR_RELATIVE));
+		} else
+			pnhead->dacl = cpu_to_le32(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (!ntfs_valid_descr(attr,pos+usidsz+gsidsz)) {
 			printf("** Bad sample descriptor\n");
 			free(attr);
@@ -3321,6 +3419,7 @@ void check_samples()
 #endif
 	le32 owner1[] = /* S-1-5-21-1833069642-4243175381-1340018762-1003 */
 		{
+<<<<<<< HEAD
 		const_cpu_to_le32(0x501), const_cpu_to_le32(0x05000000),
 		const_cpu_to_le32(21), const_cpu_to_le32(1833069642),
 		const_cpu_to_le32(4243175381), const_cpu_to_le32(1340018762),
@@ -3353,6 +3452,35 @@ void check_samples()
 		const_cpu_to_le32(21), const_cpu_to_le32(DEFSECAUTH1),
 		const_cpu_to_le32(DEFSECAUTH2), const_cpu_to_le32(DEFSECAUTH3),
 		const_cpu_to_le32(513)
+=======
+		cpu_to_le32(0x501), cpu_to_le32(0x05000000), cpu_to_le32(21),
+		cpu_to_le32(1833069642), cpu_to_le32(4243175381),
+		cpu_to_le32(1340018762), cpu_to_le32(1003)
+		} ;
+	le32 group1[] = /* S-1-5-21-1833069642-4243175381-1340018762-513 */
+		{
+		cpu_to_le32(0x501), cpu_to_le32(0x05000000), cpu_to_le32(21),
+		cpu_to_le32(1833069642), cpu_to_le32(4243175381),
+		cpu_to_le32(1340018762), cpu_to_le32(513)
+		} ;
+	le32 group2[] = /* S-1-5-21-1607551490-981732888-1819828000-513 */
+		{
+		cpu_to_le32(0x501), cpu_to_le32(0x05000000), cpu_to_le32(21),
+		cpu_to_le32(1607551490), cpu_to_le32(981732888),
+		cpu_to_le32(1819828000), cpu_to_le32(513)
+		} ;
+	le32 owner3[] = /* S-1-5-21-3141592653-589793238-462843383-1016 */
+		{
+		cpu_to_le32(0x501), cpu_to_le32(0x05000000), cpu_to_le32(21),
+		cpu_to_le32(DEFSECAUTH1), cpu_to_le32(DEFSECAUTH2),
+		cpu_to_le32(DEFSECAUTH3), cpu_to_le32(1016)
+		} ;
+	le32 group3[] = /* S-1-5-21-3141592653-589793238-462843383-513 */
+		{
+		cpu_to_le32(0x501), cpu_to_le32(0x05000000), cpu_to_le32(21),
+		cpu_to_le32(DEFSECAUTH1), cpu_to_le32(DEFSECAUTH2),
+		cpu_to_le32(DEFSECAUTH3), cpu_to_le32(513)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		} ;
 
 #if POSIXACLS
@@ -3746,14 +3874,22 @@ void basictest(int kind, BOOL isdir, const SID *owner, const SID *group)
 		24064, 28160,
 		24064, 28160,
 		24064, 28160,
+<<<<<<< HEAD
 		24904, 29000
+=======
+		25416, 29512
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	} ;
 	u32 expecthash[] = {
 		0x8f80865b, 0x7bc7960,
 		0x8fd9ecfe, 0xddd4db0,
 		0xa8b07400, 0xa189c20,
 		0xc5689a00, 0xb6c09000,
+<<<<<<< HEAD
 		0xb040e509, 0x4f4db7f7
+=======
+		0x94bfb419, 0xa4311791
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	} ;
 #if POSIXACLS
 	struct POSIX_SECURITY *pxdesc;
@@ -3895,8 +4031,12 @@ void basictest(int kind, BOOL isdir, const SID *owner, const SID *group)
 		(unsigned long)count,(unsigned long)acecount,
 		(unsigned long)acecount/count,acecount*100L/count%100L);
 	if (acecount != expectcnt[kind]) {
+<<<<<<< HEAD
 		printf("** Error : ACE count %lu instead of %lu\n",
 			(unsigned long)acecount,
+=======
+		printf("** Error : expected ACE count %lu\n",
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			(unsigned long)expectcnt[kind]);
 		errors++;
 	}
@@ -3910,8 +4050,12 @@ void basictest(int kind, BOOL isdir, const SID *owner, const SID *group)
 		(unsigned long)pxcount,(unsigned long)pxacecount,
 		(unsigned long)pxacecount/pxcount,pxacecount*100L/pxcount%100L);
 	if (pxacecount != expectcnt[kind]) {
+<<<<<<< HEAD
 		printf("** Error : ACE count %lu instead of %lu\n",
 			(unsigned long)pxacecount,
+=======
+		printf("** Error : expected ACE count %lu\n",
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			(unsigned long)expectcnt[kind]);
 		errors++;
 	}
@@ -4188,6 +4332,7 @@ void selftests(void)
 {
 	le32 owner_sid[] = /* S-1-5-21-3141592653-589793238-462843383-1016 */
 		{
+<<<<<<< HEAD
 		const_cpu_to_le32(0x501), const_cpu_to_le32(0x05000000),
 		const_cpu_to_le32(21), const_cpu_to_le32(DEFSECAUTH1),
 		const_cpu_to_le32(DEFSECAUTH2), const_cpu_to_le32(DEFSECAUTH3),
@@ -4199,6 +4344,17 @@ void selftests(void)
 		const_cpu_to_le32(21), const_cpu_to_le32(DEFSECAUTH1),
 		const_cpu_to_le32(DEFSECAUTH2), const_cpu_to_le32(DEFSECAUTH3),
 		const_cpu_to_le32(513)
+=======
+		cpu_to_le32(0x501), cpu_to_le32(0x05000000), cpu_to_le32(21),
+		cpu_to_le32(DEFSECAUTH1), cpu_to_le32(DEFSECAUTH2),
+		cpu_to_le32(DEFSECAUTH3), cpu_to_le32(1016)
+		} ;
+	le32 group_sid[] = /* S-1-5-21-3141592653-589793238-462843383-513 */
+		{
+		cpu_to_le32(0x501), cpu_to_le32(0x05000000), cpu_to_le32(21),
+		cpu_to_le32(DEFSECAUTH1), cpu_to_le32(DEFSECAUTH2),
+		cpu_to_le32(DEFSECAUTH3), cpu_to_le32(513)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		} ;
 #if POSIXACLS
 #ifdef STSC
@@ -4795,19 +4951,25 @@ BOOL setfull(const char *fullname, int mode, BOOL isdir)
 
 BOOL proposal(const char *name, const char *attr)
 {
+<<<<<<< HEAD
 	char fullname[MAXFILENAME];
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	int uoff, goff;
 	int i;
 	u64 uauth, gauth;
 	int ucnt, gcnt;
 	int uid, gid;
 	BOOL err;
+<<<<<<< HEAD
 #ifdef WIN32
 	char driveletter;
 #else
 	struct stat st;
 	char *p,*q;
 #endif
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	err = FALSE;
 #ifdef WIN32
@@ -4826,8 +4988,12 @@ BOOL proposal(const char *name, const char *attr)
 	if ((ucnt == 5) && (gcnt == 5)
 	    && (uauth == 5) && (gauth == 5)
 	    && (get4l(attr,uoff+8) == 21) && (get4l(attr,goff+8) == 21)) {
+<<<<<<< HEAD
 		printf("# User mapping proposal :\n");
 		printf("# -------------------- cut here -------------------\n");
+=======
+		printf("# User mapping proposal\n");
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (uid)
 			printf("%d::",uid);
 		else
@@ -4849,6 +5015,7 @@ BOOL proposal(const char *name, const char *attr)
 		for (i=0; i<gcnt-1; i++)
 			printf("-%lu",get4l(attr,goff+8+4*i));
 		printf("-10000\n");
+<<<<<<< HEAD
 		printf("# -------------------- cut here -------------------\n");
 		if (!uid || !gid) {
 			printf("# Please replace \"user\" and \"group\" above by the uid\n");
@@ -4905,6 +5072,14 @@ BOOL proposal(const char *name, const char *attr)
 			printf("/.NTFS-3G/UserMapping\n");
 		}
 #endif
+=======
+		if (!uid || !gid) {
+			printf("# Please replace \"user\" and \"group\" by the uid and gid\n");
+			printf("# of the Linux owner and group of ");
+			printname(stdout,name);
+			printf("\n");
+		}
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	} else {
 		printf("** Not possible : ");
 		printname(stdout,name);
@@ -5071,11 +5246,17 @@ void showfull(const char *fullname, BOOL isdir)
 				uid = linux_owner(attr);
 				gid = linux_group(attr);
 				if (opt_b) {
+<<<<<<< HEAD
 				        showownership(attr);
 					printf("# Interpreted Unix owner %d, group %d, mode 0%03o\n",
 						(int)uid,(int)gid,mode);
 				} else {
 				        showownership(attr);
+=======
+					printf("# Interpreted Unix owner %d, group %d, mode 0%03o\n",
+						(int)uid,(int)gid,mode);
+				} else {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					printf("Interpreted Unix owner %d, group %d, mode 0%03o\n",
 						(int)uid,(int)gid,mode);
 				}
@@ -5419,11 +5600,17 @@ void showfull(const char *fullname, BOOL isdir)
 				uid = linux_owner(attr);
 				gid = linux_group(attr);
 				if (opt_b) {
+<<<<<<< HEAD
 				        showownership(attr);
 					printf("# Interpreted Unix owner %d, group %d, mode 0%03o\n",
 						(int)uid,(int)gid,mode);
 				} else {
 				        showownership(attr);
+=======
+					printf("# Interpreted Unix owner %d, group %d, mode 0%03o\n",
+						(int)uid,(int)gid,mode);
+				} else {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					printf("Interpreted Unix owner %d, group %d, mode 0%03o\n",
 						(int)uid,(int)gid,mode);
 				}
@@ -5631,7 +5818,10 @@ BOOL showmounted(const char *fullname)
 					showdacl(attr,isdir,level);
 					showsacl(attr,isdir,level);
 				}
+<<<<<<< HEAD
 			        showownership(attr);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				if (mapped) {
 					uid = linux_owner(attr);
 					gid = linux_group(attr);
@@ -6298,7 +6488,10 @@ int audit_sds(BOOL second)
 						showgsid(&attr[20],0);
 						showdacl(&attr[20],isdir,0);
 						showsacl(&attr[20],isdir,0);
+<<<<<<< HEAD
 						showownership(&attr[20]);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 						mode = linux_permissions(
 						    &attr[20],isdir);
 						printf("Interpreted Unix mode 0%03o\n",mode);
@@ -7293,6 +7486,7 @@ void dumpalloc(const char *txt)
 	if (firstalloc) {
 		printf("alloc table at %s\n",txt);
 		for (q=firstalloc; q; q=q->next)
+<<<<<<< HEAD
 #ifdef __x86_64__
 			printf("%08llx : %u bytes at %08llx allocated at %s line %d\n",
 				(long long)q,(unsigned int)q->size,
@@ -7302,6 +7496,11 @@ void dumpalloc(const char *txt)
 				(long)q,(unsigned int)q->size,
 				(long)q->alloc,q->file,q->line);
 #endif
+=======
+			printf("%08lx : %u bytes at %08lx allocated at %s line %d\n",
+				(long)q,(unsigned int)q->size,
+				(long)q->alloc,q->file,q->line);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 }
 
@@ -7391,6 +7590,7 @@ BOOL chkisalloc(void *p, const char *file, int line)
 	} else
 		q = (struct CHKALLOC*)NULL;
 	if (!p || !q) {
+<<<<<<< HEAD
 #ifdef __x86_64__
 		printf("error in %s %d : 0x%llx not allocated\n",file,line,
 					(long long)p);
@@ -7398,6 +7598,9 @@ BOOL chkisalloc(void *p, const char *file, int line)
 		printf("error in %s %d : 0x%lx not allocated\n",file,line,
 					(long)p);
 #endif
+=======
+		printf("error in %s %d : 0x%lx not allocated\n",file,line,(long)p);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 	return (p && q);
 }

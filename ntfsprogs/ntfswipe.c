@@ -53,9 +53,12 @@
 #ifdef HAVE_TIME_H
 #include <time.h>
 #endif
+<<<<<<< HEAD
 #ifdef HAVE_LIMITS_H
 #include <limits.h>
 #endif
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 #include "ntfswipe.h"
 #include "types.h"
@@ -172,7 +175,10 @@ static void usage(void)
 		"    -p       --pagefile    Wipe pagefile (swap space)\n"
 		"    -t       --tails       Wipe file tails\n"
 		"    -u       --unused      Wipe unused clusters\n"
+<<<<<<< HEAD
 		"    -U       --unused-fast Wipe unused clusters (fast)\n"
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		"    -s       --undel       Wipe undelete data\n"
 		"\n"
 		"    -a       --all         Wipe all unused space\n"
@@ -266,7 +272,11 @@ static int parse_list(char *list, int **result)
  */
 static int parse_options(int argc, char *argv[])
 {
+<<<<<<< HEAD
 	static const char *sopt = "-ab:c:dfh?ilmnpqtuUvVs";
+=======
+	static const char *sopt = "-ab:c:dfh?ilmnpqtuvVs";
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	static struct option lopt[] = {
 		{ "all",	no_argument,		NULL, 'a' },
 		{ "bytes",	required_argument,	NULL, 'b' },
@@ -283,7 +293,10 @@ static int parse_options(int argc, char *argv[])
 		{ "quiet",	no_argument,		NULL, 'q' },
 		{ "tails",	no_argument,		NULL, 't' },
 		{ "unused",	no_argument,		NULL, 'u' },
+<<<<<<< HEAD
 		{ "unused-fast",no_argument,		NULL, 'U' },
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		{ "undel",	no_argument,		NULL, 's' },
 		{ "verbose",	no_argument,		NULL, 'v' },
 		{ "version",	no_argument,		NULL, 'V' },
@@ -348,6 +361,15 @@ static int parse_options(int argc, char *argv[])
 			opts.force++;
 			break;
 		case 'h':
+<<<<<<< HEAD
+=======
+		case '?':
+			if (strncmp (argv[optind-1], "--log-", 6) == 0) {
+				if (!ntfs_log_parse_option (argv[optind-1]))
+					err++;
+				break;
+			}
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			help++;
 			break;
 		case 'l':
@@ -375,9 +397,12 @@ static int parse_options(int argc, char *argv[])
 		case 'u':
 			opts.unused++;
 			break;
+<<<<<<< HEAD
 		case 'U':
 			opts.unused_fast++;
 			break;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		case 'v':
 			opts.verbose++;
 			ntfs_log_set_levels(NTFS_LOG_LEVEL_VERBOSE);
@@ -385,6 +410,7 @@ static int parse_options(int argc, char *argv[])
 		case 'V':
 			ver++;
 			break;
+<<<<<<< HEAD
 		case '?':
 			if (strncmp (argv[optind-1], "--log-", 6) == 0) {
 				if (!ntfs_log_parse_option (argv[optind-1]))
@@ -392,6 +418,8 @@ static int parse_options(int argc, char *argv[])
 				break;
 			}
 			/* fall through */
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		default:
 			if ((optopt == 'b') || (optopt == 'c')) {
 				ntfs_log_error("Option '%s' requires an argument.\n", argv[optind-1]);
@@ -450,7 +478,11 @@ static int parse_options(int argc, char *argv[])
 
 		if (!opts.directory && !opts.logfile && !opts.mft &&
 		    !opts.pagefile && !opts.tails && !opts.unused &&
+<<<<<<< HEAD
 		    !opts.unused_fast && !opts.undel) {
+=======
+		    !opts.undel) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			opts.info = 1;
 		}
 	}
@@ -460,8 +492,12 @@ static int parse_options(int argc, char *argv[])
 	if (help || err)
 		usage();
 
+<<<<<<< HEAD
 		/* tri-state 0 : done, 1 : error, -1 : proceed */
 	return (err ? 1 : (help || ver ? 0 : -1));
+=======
+	return (!err && !help && !ver);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -520,6 +556,7 @@ free:
 }
 
 /**
+<<<<<<< HEAD
  * wipe_unused_fast - Faster wipe unused clusters
  * @vol:   An ntfs volume obtained from ntfs_mount
  * @byte:  Overwrite with this value
@@ -634,6 +671,8 @@ free:
 }
 
 /**
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  * wipe_compressed_attribute - Wipe compressed $DATA attribute
  * @vol:	An ntfs volume obtained from ntfs_mount
  * @byte:	Overwrite with this value
@@ -876,9 +915,12 @@ static s64 wipe_tails(ntfs_volume *vol, int byte, enum action act)
 	nr_mft_records = vol->mft_na->initialized_size >>
 			vol->mft_record_size_bits;
 
+<<<<<<< HEAD
 		/* Avoid getting fixup warnings on unitialized inodes */
 	NVolSetNoFixupWarn(vol);
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	for (inode_num = FILE_first_user; inode_num < nr_mft_records;
 							inode_num++) {
 		s64 attr_wiped;
@@ -887,10 +929,14 @@ static s64 wipe_tails(ntfs_volume *vol, int byte, enum action act)
 		ntfs_log_verbose("Inode %lld - ", (long long)inode_num);
 		ni = ntfs_inode_open(vol, inode_num);
 		if (!ni) {
+<<<<<<< HEAD
 			if (opts.verbose)
 				ntfs_log_verbose("Could not open inode\n");
 			else
 				ntfs_log_verbose("\r");
+=======
+			ntfs_log_verbose("Could not open inode\n");
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			continue;
 		}
 
@@ -929,7 +975,10 @@ close_inode:
 		ntfs_inode_close(ni);
 	}
 close_abort :
+<<<<<<< HEAD
 	NVolClearNoFixupWarn(vol);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ntfs_log_quiet("wipe_tails 0x%02x, %lld bytes\n", byte,
 				(long long)total);
 	return total;
@@ -984,12 +1033,15 @@ static s64 wipe_mft(ntfs_volume *vol, int byte, enum action act)
 			// We know that the end marker will only take 4 bytes
 			size = le32_to_cpu(rec->bytes_in_use) - 4;
 
+<<<<<<< HEAD
 			if ((size <= 0) || (size > (int)vol->mft_record_size)) {
 				ntfs_log_error("Bad mft record %lld\n",
 						(long long)i);
 				total = -1;
 				goto free;
 			}
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (act == act_info) {
 				//ntfs_log_info("mft %d\n", size);
 				total += size;
@@ -1027,6 +1079,7 @@ static s64 wipe_mft(ntfs_volume *vol, int byte, enum action act)
 			rec->magic = magic_FILE;
 			rec->usa_ofs = cpu_to_le16(usa_offset);
 			rec->usa_count = cpu_to_le16((u16) usa_size);
+<<<<<<< HEAD
 			rec->sequence_number = const_cpu_to_le16(0x0001);
 			rec->attrs_offset = cpu_to_le16(attrs_offset);
 			rec->bytes_in_use = cpu_to_le32(bytes_in_use);
@@ -1035,6 +1088,16 @@ static s64 wipe_mft(ntfs_volume *vol, int byte, enum action act)
 
 			// End marker.
 			*((le32*) (((u8*) rec) + attrs_offset)) = const_cpu_to_le32(0xFFFFFFFF);
+=======
+			rec->sequence_number = cpu_to_le16(0x0001);
+			rec->attrs_offset = cpu_to_le16(attrs_offset);
+			rec->bytes_in_use = cpu_to_le32(bytes_in_use);
+			rec->bytes_allocated = cpu_to_le32(vol->mft_record_size);
+			rec->next_attr_instance = cpu_to_le16(0x0001);
+
+			// End marker.
+			*((le32*) (((u8*) rec) + attrs_offset)) = cpu_to_le32(0xFFFFFFFF);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		}
 
 		result = ntfs_attr_mst_pwrite(vol->mft_na, vol->mft_record_size * i,
@@ -1249,9 +1312,12 @@ static s64 wipe_directory(ntfs_volume *vol, int byte, enum action act)
 	nr_mft_records = vol->mft_na->initialized_size >>
 			vol->mft_record_size_bits;
 
+<<<<<<< HEAD
 		/* Avoid getting fixup warnings on unitialized inodes */
 	NVolSetNoFixupWarn(vol);
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	for (inode_num = 5; inode_num < nr_mft_records; inode_num++) {
 		u32 indx_record_size;
 		s64 wiped;
@@ -1352,7 +1418,10 @@ close_inode:
 		ntfs_inode_close(ni);
 	}
 
+<<<<<<< HEAD
 	NVolClearNoFixupWarn(vol);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ntfs_log_quiet("wipe_directory 0x%02x, %lld bytes\n", byte,
 			(long long)total);
 	return total;
@@ -1740,18 +1809,27 @@ static int destroy_record(ntfs_volume *nv, const s64 record,
 		return -2;
 	}
 
+<<<<<<< HEAD
 		/* Avoid getting fixup warnings on unitialized inodes */
 	NVolSetNoFixupWarn(nv);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	/* Read the MFT reocrd of the i-node */
 	if (ntfs_attr_mst_pread(mft, nv->mft_record_size * record, 1LL,
 		nv->mft_record_size, file->mft) < 1) {
 
+<<<<<<< HEAD
 		NVolClearNoFixupWarn(nv);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		ntfs_attr_close(mft);
 		free_file(file);
 		return -3;
 	}
+<<<<<<< HEAD
 	NVolClearNoFixupWarn(nv);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ntfs_attr_close(mft);
 	mft = NULL;
 
@@ -1819,7 +1897,11 @@ static int destroy_record(ntfs_volume *nv, const s64 record,
 				}
 			}
 		}
+<<<<<<< HEAD
 		ctx->attr->value_length = const_cpu_to_le32(0);
+=======
+		ctx->attr->value_length = cpu_to_le32(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		if (!opts.noaction) {
 			if (ntfs_mft_records_write(nv, MK_MREF(record, 0),
 					1LL, ctx->mrec) != 0) {
@@ -1887,7 +1969,11 @@ static int destroy_record(ntfs_volume *nv, const s64 record,
 					}
 				}
 			}
+<<<<<<< HEAD
 			ctx->attr->value_length = const_cpu_to_le32(0);
+=======
+			ctx->attr->value_length = cpu_to_le32(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if ( !opts.noaction ) {
 				if (ntfs_mft_records_write(nv,
 					MK_MREF(record, 0),
@@ -1977,12 +2063,21 @@ static int destroy_record(ntfs_volume *nv, const s64 record,
 					}
 				}
 			}
+<<<<<<< HEAD
 			ctx->attr->lowest_vcn = const_cpu_to_sle64(0);
 			ctx->attr->highest_vcn = const_cpu_to_sle64(0);
 			ctx->attr->allocated_size = const_cpu_to_sle64(0);
 			ctx->attr->data_size = const_cpu_to_sle64(0);
 			ctx->attr->initialized_size = const_cpu_to_sle64(0);
 			ctx->attr->compressed_size = const_cpu_to_sle64(0);
+=======
+			ctx->attr->lowest_vcn = cpu_to_le64(0);
+			ctx->attr->highest_vcn = cpu_to_le64(0);
+			ctx->attr->allocated_size = cpu_to_le64(0);
+			ctx->attr->data_size = cpu_to_le64(0);
+			ctx->attr->initialized_size = cpu_to_le64(0);
+			ctx->attr->compressed_size = cpu_to_le64(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (!opts.noaction) {
 				if (ntfs_mft_records_write(nv,
 					MK_MREF (record, 0),
@@ -2102,8 +2197,11 @@ static void print_summary(void)
 	ntfs_log_quiet("%s is about to wipe:\n", EXEC_NAME);
 	if (opts.unused)
 		ntfs_log_quiet("\tunused disk space\n");
+<<<<<<< HEAD
 	if (opts.unused_fast)
 		ntfs_log_quiet("\tunused disk space (fast)\n");
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (opts.tails)
 		ntfs_log_quiet("\tfile tails\n");
 	if (opts.mft)
@@ -2142,15 +2240,23 @@ int main(int argc, char *argv[])
 	ntfs_volume *vol;
 	int result = 1;
 	int flags = 0;
+<<<<<<< HEAD
 	int res;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	int i, j;
 	enum action act = act_info;
 
 	ntfs_log_set_handler(ntfs_log_handler_outerr);
 
+<<<<<<< HEAD
 	res = parse_options(argc, argv);
 	if (res >= 0)
 		return (res);
+=======
+	if (!parse_options(argc, argv))
+		return 1;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	utils_set_locale();
 
@@ -2244,12 +2350,17 @@ int main(int argc, char *argv[])
 					total += wiped;
 			}
 
+<<<<<<< HEAD
 			if (opts.unused || opts.unused_fast) {
 				if (opts.unused_fast)
 					wiped = wipe_unused_fast(vol, byte,
 								act);
 				else
 					wiped = wipe_unused(vol, byte, act);
+=======
+			if (opts.unused) {
+				wiped = wipe_unused(vol, byte, act);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				if (wiped < 0)
 					goto umount;
 				else
@@ -2270,6 +2381,7 @@ int main(int argc, char *argv[])
 				break;
 		}
 
+<<<<<<< HEAD
 		if (opts.noaction || opts.info)
 			ntfs_log_info("%lld bytes would be wiped"
 					" (excluding undelete data)\n",
@@ -2278,6 +2390,11 @@ int main(int argc, char *argv[])
 			ntfs_log_info("%lld bytes were wiped"
 					" (excluding undelete data)\n",
 					(long long)total);
+=======
+		ntfs_log_info(
+			"%lld bytes were wiped (excluding undelete data)\n",
+			(long long)total);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 	result = 0;
 umount:

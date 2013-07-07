@@ -4,7 +4,11 @@
  * Copyright (c) 2002 Matthew J. Fanto
  * Copyright (c) 2002-2005 Anton Altaparmakov
  * Copyright (c) 2002-2003 Richard Russon
+<<<<<<< HEAD
  * Copyright (c) 2012-2014 Jean-Pierre Andre
+=======
+ * Copyright (c) 2012      Jean-Pierre Andre
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *
  * This utility will display/change the label on an NTFS partition.
  *
@@ -64,7 +68,11 @@ static struct options {
 	int	 verbose;	/* Extra output */
 	int	 force;		/* Override common sense */
 	int	 new_serial;	/* Change the serial number */
+<<<<<<< HEAD
 	unsigned long long serial;	/* Forced serial number value */
+=======
+	long long serial;	/* Forced serial number value */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	int	 noaction;	/* Do not write to disk */
 } opts;
 
@@ -83,7 +91,11 @@ static void version(void)
 	ntfs_log_info("    2002      Matthew J. Fanto\n");
 	ntfs_log_info("    2002-2005 Anton Altaparmakov\n");
 	ntfs_log_info("    2002-2003 Richard Russon\n");
+<<<<<<< HEAD
 	ntfs_log_info("    2012-2014 Jean-Pierre Andre\n");
+=======
+	ntfs_log_info("    2012      Jean-Pierre Andre\n");
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ntfs_log_info("\n%s\n%s%s\n", ntfs_gpl, ntfs_bugs, ntfs_home);
 }
 
@@ -156,11 +168,24 @@ static int parse_options(int argc, char *argv[])
 			opts.force++;
 			break;
 		case 'h':
+<<<<<<< HEAD
+=======
+		case '?':
+			if (strncmp (argv[optind-1], "--log-", 6) == 0) {
+				if (!ntfs_log_parse_option (argv[optind-1]))
+					err++;
+				break;
+			}
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			help++;
 			break;
 		case 'I' :	/* not proposed as a short option letter */
 			if (optarg) {
+<<<<<<< HEAD
 				opts.serial = strtoull(optarg, &endserial, 16);
+=======
+				opts.serial = strtoll(optarg, &endserial, 16);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				if (*endserial)
 					ntfs_log_error("Bad hexadecimal serial number.\n");
 			}
@@ -168,7 +193,11 @@ static int parse_options(int argc, char *argv[])
 			break;
 		case 'i' :	/* not proposed as a short option letter */
 			if (optarg) {
+<<<<<<< HEAD
 				opts.serial = strtoull(optarg, &endserial, 16)
+=======
+				opts.serial = strtoll(optarg, &endserial, 16)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 							<< 32;
 				if (*endserial)
 					ntfs_log_error("Bad hexadecimal serial number.\n");
@@ -189,6 +218,7 @@ static int parse_options(int argc, char *argv[])
 		case 'V':
 			ver++;
 			break;
+<<<<<<< HEAD
 		case '?':
 			if (strncmp (argv[optind-1], "--log-", 6) == 0) {
 				if (!ntfs_log_parse_option (argv[optind-1]))
@@ -196,6 +226,8 @@ static int parse_options(int argc, char *argv[])
 				break;
 			}
 			/* fall through */
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		default:
 			ntfs_log_error("Unknown option '%s'.\n", argv[optind-1]);
 			err++;
@@ -231,8 +263,12 @@ static int parse_options(int argc, char *argv[])
 	if (help || err)
 		usage();
 
+<<<<<<< HEAD
 		/* tri-state 0 : done, 1 : error, -1 : proceed */
 	return (err ? 1 : (help || ver ? 0 : -1));
+=======
+	return (!err && !help && !ver);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 static int change_serial(ntfs_volume *vol, u64 sector, le64 serial_number,
@@ -299,7 +335,11 @@ static int set_new_serial(ntfs_volume *vol)
 			serial_number = cpu_to_le64(sn);
 		}
 		if (!change_serial(vol, 0, serial_number, bs, oldbs)) {
+<<<<<<< HEAD
 			number_of_sectors = sle64_to_cpu(bs->number_of_sectors);
+=======
+			number_of_sectors = le64_to_cpu(bs->number_of_sectors);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (!change_serial(vol, number_of_sectors,
 						serial_number, bs, oldbs)) {
 				ntfs_log_info("New serial number : %016llx\n",
@@ -389,7 +429,11 @@ static int change_label(ntfs_volume *vol, char *label)
 				(unsigned)(label_len -
 				(0x100 / sizeof(ntfschar))));
 		label_len = 0x100 / sizeof(ntfschar);
+<<<<<<< HEAD
 		new_label[label_len] = const_cpu_to_le16(0);
+=======
+		label[label_len] = const_cpu_to_le16(0);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 
 	if(!opts.noaction)
@@ -415,11 +459,17 @@ int main(int argc, char **argv)
 
 	ntfs_log_set_handler(ntfs_log_handler_outerr);
 
+<<<<<<< HEAD
 	result = parse_options(argc, argv);
 	if (result >= 0)
 		return (result);
 
 	result = 0;
+=======
+	if (!parse_options(argc, argv))
+		return 1;
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	utils_set_locale();
 
 	if ((opts.label || opts.new_serial)
@@ -457,7 +507,11 @@ int main(int argc, char **argv)
 unmount :
 	ntfs_umount(vol, FALSE);
 abort :
+<<<<<<< HEAD
 		/* "result" may be a negative reply of a library function */
 	return (result ? 1 : 0);
+=======
+	return result;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 

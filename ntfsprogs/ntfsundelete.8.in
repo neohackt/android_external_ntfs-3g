@@ -187,8 +187,13 @@ options, respectively.
 The output of scan will be:
 .sp
 .nf
+<<<<<<< HEAD
 Inode  Flags  %age     Date    Time    Size  Filename
  6038  FN..    93%  2002\-07\-17 13:42  26629  thesis.doc
+=======
+Inode  Flags  %age     Date      Size  Filename
+ 6038  FN..    93%  2002\-07\-17  26629  thesis.doc
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 .fi
 .TS
 box;
@@ -283,11 +288,19 @@ Undelete inodes 2, 5 and 100 to 131 of device /dev/sda1
 .B ntfsundelete /dev/sda1 \-u \-i 2,5,100\-131
 .sp
 .RE
+<<<<<<< HEAD
 Undelete inode number 3689, call the file 'work.doc', set it to recovered
 size and put it in the user's home directory.
 .RS
 .sp
 .B ntfsundelete /dev/hda1 \-u \-T \-i 3689 \-o work.doc \-d ~
+=======
+Undelete inode number 3689, call the file 'work.doc' and put it in the user's
+home directory.
+.RS
+.sp
+.B ntfsundelete /dev/hda1 \-u \-i 3689 \-o work.doc \-d ~
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 .sp
 .RE
 Save MFT Records 3689 to 3690 to a file 'debug'

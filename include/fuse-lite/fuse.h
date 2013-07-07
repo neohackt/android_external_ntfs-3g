@@ -420,6 +420,7 @@ struct fuse_operations {
 	 * Introduced in version 2.6
 	 */
 	int (*bmap) (const char *, size_t blocksize, uint64_t *idx);
+<<<<<<< HEAD
  
 	/**
 	 * Ioctl
@@ -440,6 +441,16 @@ struct fuse_operations {
 	 * The flags below have been discarded, they should not be used
 	 */
  	unsigned int flag_nullpath_ok : 1;
+=======
+ 	unsigned int flag_nullpath_ok : 1;
+ 
+ 	/**
+	 * Flag indicating that the filesystem accepts special
+	 * UTIME_NOW and UTIME_OMIT values in its utimens operation.
+	 */
+	unsigned int flag_utime_omit_ok : 1;
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	/**
  	 * Reserved flags, don't set
  	 */
@@ -468,8 +479,15 @@ struct fuse_context {
 	/** Private filesystem data */
 	void *private_data;
 
+<<<<<<< HEAD
 	/** Umask of the calling process (introduced in version 2.8) */
 	mode_t umask;
+=======
+#ifdef POSIXACLS
+	/** Umask of the calling process (introduced in version 2.8) */
+	mode_t umask;
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 };
 
 /* ----------------------------------------------------------- *
@@ -617,8 +635,11 @@ int fuse_fs_removexattr(struct fuse_fs *fs, const char *path,
 			const char *name);
 int fuse_fs_bmap(struct fuse_fs *fs, const char *path, size_t blocksize,
 		 uint64_t *idx);
+<<<<<<< HEAD
 int fuse_fs_ioctl(struct fuse_fs *fs, const char *path, int cmd, void *arg,
 		  struct fuse_file_info *fi, unsigned int flags, void *data);
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 void fuse_fs_init(struct fuse_fs *fs, struct fuse_conn_info *conn);
 void fuse_fs_destroy(struct fuse_fs *fs);
 

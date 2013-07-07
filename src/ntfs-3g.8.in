@@ -1,10 +1,17 @@
 .\" Copyright (c) 2005-2006 Yura Pakhuchiy.
 .\" Copyright (c) 2005 Richard Russon.
 .\" Copyright (c) 2006-2009 Szabolcs Szakacsits.
+<<<<<<< HEAD
 .\" Copyright (c) 2009-2014 Jean-Pierre Andre
 .\" This file may be copied under the terms of the GNU Public License.
 .\"
 .TH NTFS-3G 8 "Mar 2014" "ntfs-3g @VERSION@"
+=======
+.\" Copyright (c) 2009-2012 Jean-Pierre Andre
+.\" This file may be copied under the terms of the GNU Public License.
+.\"
+.TH NTFS-3G 8 "May 2012" "ntfs-3g @VERSION@"
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 .SH NAME
 ntfs-3g \- Third Generation Read/Write NTFS Driver
 .SH SYNOPSIS
@@ -155,7 +162,11 @@ mount option is not set.
 When creating a new file, set its initial protections
 according to inheritance rules defined in parent directory. These rules
 deviate from Posix specifications, but yield a better Windows
+<<<<<<< HEAD
 compatibility. The \fBpermissions\fR option or a valid user mapping file
+=======
+compatibility. The \fBcompression\fR option or a valid user mapping file
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 is required for this option to be effective.
 .TP
 .B ro
@@ -250,6 +261,7 @@ adjusted to the latest name.
 .TP
 .B windows_names
 This option prevents files, directories and extended attributes to be
+<<<<<<< HEAD
 created with a name not allowed by windows, because
 .RS
 .RS
@@ -268,6 +280,12 @@ with no suffix or followed by a dot.
 .sp
 Existing such files can still be read (and renamed).
 .RE
+=======
+created with a name not allowed by windows, either because it contains
+some not allowed character (which are the nine characters " * / : < > ? \\ | and
+those whose code is less than 0x20) or because the last character is a space
+or a dot. Existing such files can still be read (and renamed).
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 .TP
 .B allow_other
 This option overrides the security measure restricting file access
@@ -281,6 +299,7 @@ The default is infinite.  Note that the size of read requests is
 limited anyway to 32 pages (which is 128kbyte on i386).
 .TP
 .B silent
+<<<<<<< HEAD
 Do nothing, without returning any error, on chmod and chown operations
 and on permission checking errors,
 when the \fBpermissions\fR option is not set and no user mapping file
@@ -290,6 +309,14 @@ is defined. This option is on by default, and when set off (through option
 .B no_def_opts
 By default ntfs-3g acts as if "silent" (ignore permission errors when
 permissions are not enabled),
+=======
+Do nothing, without returning any error, on chmod and chown operations,
+when the \fBpermissions\fR option is not set and no user mapping file
+is defined. This option is on by default.
+.TP
+.B no_def_opts
+By default ntfs-3g acts as if "silent" (ignore errors on chmod and chown),
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 "allow_other" (allow any user to access files) and "nonempty"
 (allow mounting on non-empty directories) were set, and "no_def_opts"
 cancels these default options.
@@ -320,12 +347,20 @@ directories marked for compression. A directory is marked for compression by
 setting the bit 11 (value 0x00000800) in its Windows attribute. In such a
 directory, new files are created compressed and new subdirectories are
 themselves marked for compression. The option and the flag have no effect
+<<<<<<< HEAD
 on existing files. Currently this is the default option.
+=======
+on existing files.
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 .TP
 .B nocompression
 This option disables creating new transparently compressed files in directories
 marked for compression. Existing compressed files can still be read and
+<<<<<<< HEAD
 updated.
+=======
+updated. Currently this is the default option.
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 .TP
 .B big_writes
 This option prevents fuse from splitting write buffers into 4K chunks,

@@ -66,7 +66,10 @@ int fuse_mnt_add_mount(const char *progname, const char *fsname,
         return -1;
     }
     if (res == 0) {
+<<<<<<< HEAD
         char *env = NULL;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
         char templ[] = "/tmp/fusermountXXXXXX";
         char *tmp;
 
@@ -88,8 +91,13 @@ int fuse_mnt_add_mount(const char *progname, const char *fsname,
             exit(1);
         }
         rmdir(tmp);
+<<<<<<< HEAD
         execle("/sbin/mount", "/sbin/mount", "-F", type, "-o", opts,
               fsname, mnt, NULL, &env);
+=======
+        execl("/sbin/mount", "/sbin/mount", "-F", type, "-o", opts,
+              fsname, mnt, NULL);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
         fprintf(stderr, "%s: failed to execute /sbin/mount: %s\n", progname,
                 strerror(errno));
         exit(1);
@@ -121,6 +129,7 @@ int fuse_mnt_umount(const char *progname, const char *mnt, int lazy)
         return -1;
     }
     if (res == 0) {
+<<<<<<< HEAD
         char *env = NULL;
 
         setuid(geteuid());
@@ -131,6 +140,11 @@ int fuse_mnt_umount(const char *progname, const char *mnt, int lazy)
             execle("/sbin/umount", "/sbin/umount", "-f", mnt,
                    NULL, &env);
         }
+=======
+        setuid(geteuid());
+        execl("/sbin/umount", "/sbin/umount", !lazy ? "-f" : NULL, mnt,
+              NULL);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
         fprintf(stderr, "%s: failed to execute /sbin/umount: %s\n", progname,
                 strerror(errno));
         exit(1);
@@ -310,6 +324,7 @@ int fuse_mnt_add_mount(const char *progname, const char *fsname,
         return 0;
     }
     if (res == 0) {
+<<<<<<< HEAD
         char *env = NULL;
         char templ[] = "/tmp/fusermountXXXXXX";
         char *tmp;
@@ -317,6 +332,12 @@ int fuse_mnt_add_mount(const char *progname, const char *fsname,
         if (setuid(geteuid()))
             fprintf(stderr, "%s: failed to setuid : %s\n", progname,
                              strerror(errno));
+=======
+        char templ[] = "/tmp/fusermountXXXXXX";
+        char *tmp;
+
+        setuid(geteuid());
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
         /* 
          * hide in a directory, where mount isn't able to resolve
@@ -334,8 +355,13 @@ int fuse_mnt_add_mount(const char *progname, const char *fsname,
             exit(1);
         }
         rmdir(tmp);
+<<<<<<< HEAD
         execle("/bin/mount", "/bin/mount", "-i", "-f", "-t", type, "-o", opts,
                fsname, mnt, NULL, &env);
+=======
+        execl("/bin/mount", "/bin/mount", "-i", "-f", "-t", type, "-o", opts,
+              fsname, mnt, NULL);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
         fprintf(stderr, "%s: failed to execute /bin/mount: %s\n", progname,
                 strerror(errno));
         exit(1);
@@ -362,6 +388,7 @@ int fuse_mnt_umount(const char *progname, const char *mnt, int lazy)
         return -1;
     }
     if (res == 0) {
+<<<<<<< HEAD
         char *env = NULL;
 
         if (setuid(geteuid()))
@@ -374,6 +401,11 @@ int fuse_mnt_umount(const char *progname, const char *mnt, int lazy)
             execle("/bin/umount", "/bin/umount", "-i", mnt,
                    NULL, &env);
         }
+=======
+        setuid(geteuid());
+        execl("/bin/umount", "/bin/umount", "-i", mnt, lazy ? "-l" : NULL,
+              NULL);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
         fprintf(stderr, "%s: failed to execute /bin/umount: %s\n", progname,
                 strerror(errno));
         exit(1);

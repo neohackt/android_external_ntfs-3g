@@ -77,6 +77,7 @@ enum {
 #define PARTIAL_RUNLIST_UPDATING 1
 
 /*
+<<<<<<< HEAD
  *		Parameters for upper-case table
  */
 
@@ -85,6 +86,8 @@ enum {
 #define UPCASE_MINOR 1
 
 /*
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *		Parameters for user and xattr mappings
  */
 
@@ -110,14 +113,21 @@ enum {
  *	Possible values for high level :
  *		1 : no cache, kernel control (recommended)
  *		4 : no cache, file system control
+<<<<<<< HEAD
  *		6 : kernel/fuse cache, file system control (OpenIndiana only)
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *		7 : no cache, kernel control for ACLs
  *
  *	Possible values for low level :
  *		2 : no cache, kernel control
  *		3 : use kernel/fuse cache, kernel control (external fuse >= 2.8)
+<<<<<<< HEAD
  *		5 : no cache, file system control (recommended on Linux)
  *		6 : kernel/fuse cache, file system control (OpenIndiana only)
+=======
+ *		5 : no cache, file system control (recommended)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *		8 : no cache, kernel control for ACLs
  *
  *	Use of options 7 and 8 requires a patch to fuse
@@ -126,6 +136,7 @@ enum {
  */
 
 #if defined(__sun) && defined(__SVR4)
+<<<<<<< HEAD
 /*
  *	Access control by kernel is not implemented on OpenIndiana,
  *	however care is taken of cacheing hard-linked files.
@@ -134,11 +145,20 @@ enum {
 #define LPERMSCONFIG 6
 #else
 #define HPERMSCONFIG 1
+=======
+#define HPERMSCONFIG 4 /* access control by kernel is broken on OpenIndiana */
+#else
+#define HPERMSCONFIG 1
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 #if defined(FUSE_INTERNAL) || !defined(FUSE_VERSION) || (FUSE_VERSION < 28)
 #define LPERMSCONFIG 5
 #else
 #define LPERMSCONFIG 3
 #endif
+<<<<<<< HEAD
 #endif /* defined(__sun) && defined(__SVR4) */
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 #endif /* defined _NTFS_PARAM_H */

@@ -47,7 +47,10 @@ struct options {
 	int	 pagefile;	/* Wipe pagefile (swap space) */
 	int	 tails;		/* Wipe file tails */
 	int	 unused;	/* Wipe unused clusters */
+<<<<<<< HEAD
 	int	 unused_fast;	/* Wipe unused clusters (fast) */
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	int	 undel;		/* Wipe undelete data */
 };
 

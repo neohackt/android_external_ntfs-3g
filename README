@@ -27,6 +27,7 @@ web site at
 
 	http://www.tuxera.com/community/
 
+<<<<<<< HEAD
 LICENSES
 ========
 
@@ -38,6 +39,8 @@ version. See the included file COPYING.
 
 The fuse-lite library is distributed under the terms of the GNU LGPLv2.
 See the included file COPYING.LIB.
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 QUICK INSTALLATION
 ==================

@@ -48,6 +48,7 @@ typedef u16 le16;
 typedef u32 le32;
 typedef u64 le64;
 
+<<<<<<< HEAD
 typedef u16 be16;
 typedef u32 be32;
 typedef u64 be64;
@@ -55,16 +56,25 @@ typedef u64 be64;
 /*
  * Declare s{l,b}e{16,32,64} to be unsigned because we do not want sign
  * extension on BE architectures.
+=======
+/*
+ * Declare sle{16,32,64} to be unsigned because we do not want sign extension
+ * on BE architectures.
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  */
 typedef u16 sle16;
 typedef u32 sle32;
 typedef u64 sle64;
 
+<<<<<<< HEAD
 typedef u16 sbe16;
 typedef u32 sbe32;
 typedef u64 sbe64;
 
 typedef le16 ntfschar;			/* 2-byte Unicode character type. */
+=======
+typedef u16 ntfschar;			/* 2-byte Unicode character type. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 #define UCHAR_T_SIZE_BITS 1
 
 /*

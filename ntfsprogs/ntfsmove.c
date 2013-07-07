@@ -36,9 +36,12 @@
 #ifdef HAVE_STRING_H
 #include <string.h>
 #endif
+<<<<<<< HEAD
 #ifdef HAVE_LIMITS_H
 #include <limits.h>
 #endif
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 #include "types.h"
 #include "attrib.h"
@@ -322,10 +325,17 @@ static int resize_nonres_attr(MFT_RECORD *m, ATTR_RECORD *a, const u32 new_size)
 	int old_size;
 	u8 *ptr;
 
+<<<<<<< HEAD
 	old_size  = le32_to_cpu(a->length);
 	file_size = le32_to_cpu(m->bytes_in_use);
 	this_attr = p2n(a)-p2n(m);
 	next_attr = this_attr + le32_to_cpu(a->length);
+=======
+	old_size  = a->length;
+	file_size = m->bytes_in_use;
+	this_attr = p2n(a)-p2n(m);
+	next_attr = this_attr + a->length;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	tail_size = file_size - next_attr;
 	ptr = (u8*) m;
 
@@ -340,8 +350,13 @@ static int resize_nonres_attr(MFT_RECORD *m, ATTR_RECORD *a, const u32 new_size)
 
 	memmove(ptr + this_attr + new_size, ptr + next_attr, tail_size);
 
+<<<<<<< HEAD
 	a->length = cpu_to_le32(new_size);
 	m->bytes_in_use = cpu_to_le32(le32_to_cpu(m->bytes_in_use) + (new_size - old_size));
+=======
+	a->length = new_size;
+	m->bytes_in_use += new_size - old_size;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	return 0;
 }
@@ -358,7 +373,11 @@ static int calc_attr_length(ATTR_RECORD *rec, int runlength)
 	if (!rec->non_resident)
 		return -1;
 
+<<<<<<< HEAD
 	size = le16_to_cpu(rec->mapping_pairs_offset) + runlength + 7;
+=======
+	size = rec->mapping_pairs_offset + runlength + 7;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	size &= 0xFFF8;
 	return size;
 }
@@ -495,7 +514,11 @@ static int dont_move(ntfs_inode *ino)
 		return 1;
 	}
 
+<<<<<<< HEAD
 	name = (FILE_NAME_ATTR*) ((u8*)rec + le16_to_cpu(rec->value_offset));
+=======
+	name = (FILE_NAME_ATTR*) ((u8*)rec + rec->value_offset);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (ntfs_names_are_equal(ntldr, 5, name->file_name, name->file_name_length,
 		IGNORE_CASE, ino->vol->upcase, ino->vol->upcase_len)) {
 		ntfs_log_error("ntldr\n");
@@ -730,10 +753,17 @@ static s64 move_datarun(ntfs_volume *vol, ntfs_inode *ino, ATTR_RECORD *rec,
 	}
 
 	// wipe orig runs
+<<<<<<< HEAD
 	memset(((u8*)rec) + le16_to_cpu(rec->mapping_pairs_offset), 0, need_to - le16_to_cpu(rec->mapping_pairs_offset));
 
 	// update data runs
 	ntfs_mapping_pairs_build(vol, ((u8*)rec) + le16_to_cpu(rec->mapping_pairs_offset),
+=======
+	memset(((u8*)rec) +rec->mapping_pairs_offset, 0, need_to - rec->mapping_pairs_offset);
+
+	// update data runs
+	ntfs_mapping_pairs_build(vol, ((u8*)rec) + rec->mapping_pairs_offset,
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			need_to, from, 0, NULL);
 
 	// commit
@@ -833,7 +863,11 @@ static s64 move_file(ntfs_volume *vol, ntfs_inode *ino, u64 loc, int flags)
 
 	while ((rec = find_attribute(AT_UNUSED, ctx))) {
 		utils_attr_get_name(vol, rec, buffer, MAX_PATH);
+<<<<<<< HEAD
 		ntfs_log_info("\tAttribute 0x%02x %s is ", le32_to_cpu(rec->type), buffer);
+=======
+		ntfs_log_info("\tAttribute 0x%02x %s is ", rec->type, buffer);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 		if (rec->non_resident) {
 			ntfs_log_info("non-resident.   Moving it.\n");

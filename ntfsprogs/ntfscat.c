@@ -183,7 +183,11 @@ static int parse_options(int argc, char **argv)
 	opterr = 0; /* We'll handle the errors, thank you. */
 
 	opts.inode = -1;
+<<<<<<< HEAD
 	opts.attr = const_cpu_to_le32(-1);
+=======
+	opts.attr = cpu_to_le32(-1);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	opts.attr_name = NULL;
 	opts.attr_name_len = 0;
 
@@ -201,7 +205,11 @@ static int parse_options(int argc, char **argv)
 			}
 			break;
 		case 'a':
+<<<<<<< HEAD
 			if (opts.attr != const_cpu_to_le32(-1)) {
+=======
+			if (opts.attr != cpu_to_le32(-1)) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				ntfs_log_error("You must specify exactly one "
 						"attribute.\n");
 			} else if (parse_attribute(optarg, &attr) > 0) {
@@ -216,6 +224,15 @@ static int parse_options(int argc, char **argv)
 			opts.force++;
 			break;
 		case 'h':
+<<<<<<< HEAD
+=======
+		case '?':
+			if (strncmp (argv[optind-1], "--log-", 6) == 0) {
+				if (!ntfs_log_parse_option (argv[optind-1]))
+					err++;
+				break;
+			}
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			help++;
 			break;
 		case 'i':
@@ -251,6 +268,7 @@ static int parse_options(int argc, char **argv)
 		case 'r':
 			opts.raw = TRUE;
 			break;
+<<<<<<< HEAD
 		case '?':
 			if (strncmp (argv[optind-1], "--log-", 6) == 0) {
 				if (!ntfs_log_parse_option (argv[optind-1]))
@@ -258,6 +276,8 @@ static int parse_options(int argc, char **argv)
 				break;
 			}
 			/* fall through */
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		default:
 			ntfs_log_error("Unknown option '%s'.\n", argv[optind-1]);
 			err++;
@@ -301,8 +321,12 @@ static int parse_options(int argc, char **argv)
 	if (help || err)
 		usage();
 
+<<<<<<< HEAD
 		/* tri-state 0 : done, 1 : error, -1 : proceed */
 	return (err ? 1 : (help || ver ? 0 : -1));
+=======
+	return (!err && !help && !ver);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -403,14 +427,22 @@ int main(int argc, char *argv[])
 	ntfs_volume *vol;
 	ntfs_inode *inode;
 	ATTR_TYPES attr;
+<<<<<<< HEAD
 	int res;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	int result = 1;
 
 	ntfs_log_set_handler(ntfs_log_handler_stderr);
 
+<<<<<<< HEAD
 	res = parse_options(argc, argv);
 	if (res >= 0)
 		return (res);
+=======
+	if (!parse_options(argc, argv))
+		return 1;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	utils_set_locale();
 
@@ -423,6 +455,7 @@ int main(int argc, char *argv[])
 
 	if (opts.inode != -1)
 		inode = ntfs_inode_open(vol, opts.inode);
+<<<<<<< HEAD
 	else {
 #ifdef HAVE_WINDOWS_H
 		char *unix_name;
@@ -438,6 +471,10 @@ int main(int argc, char *argv[])
 		inode = ntfs_pathname_to_inode(vol, NULL, opts.file);
 #endif
 	}
+=======
+	else
+		inode = ntfs_pathname_to_inode(vol, NULL, opts.file);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (!inode) {
 		ntfs_log_perror("ERROR: Couldn't open inode");
@@ -445,7 +482,11 @@ int main(int argc, char *argv[])
 	}
 
 	attr = AT_DATA;
+<<<<<<< HEAD
 	if (opts.attr != const_cpu_to_le32(-1))
+=======
+	if (opts.attr != cpu_to_le32(-1))
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		attr = opts.attr;
 
 	result = cat(vol, inode, attr, opts.attr_name, opts.attr_name_len);

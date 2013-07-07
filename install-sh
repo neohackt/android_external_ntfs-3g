@@ -1,7 +1,11 @@
 #!/bin/sh
 # install - install a program, script, or datafile
 
+<<<<<<< HEAD
 scriptversion=2011-11-20.07; # UTC
+=======
+scriptversion=2006-12-25.00
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 # This originates from X11R5 (mit/util/scripts/install.sh), which was
 # later released in X11R6 (xc/config/util/install.sh) with the
@@ -35,7 +39,11 @@ scriptversion=2011-11-20.07; # UTC
 # FSF changes to this file are in the public domain.
 #
 # Calling this script install-sh is preferred over install.sh, to prevent
+<<<<<<< HEAD
 # 'make' implicit rules from creating a file called install from it
+=======
+# `make' implicit rules from creating a file called install from it
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 # when there is no Makefile.
 #
 # This script is compatible with the BSD install script, but was written
@@ -156,10 +164,13 @@ while test $# -ne 0; do
     -s) stripcmd=$stripprog;;
 
     -t) dst_arg=$2
+<<<<<<< HEAD
 	# Protect names problematic for 'test' and other utilities.
 	case $dst_arg in
 	  -* | [=\(\)!]) dst_arg=./$dst_arg;;
 	esac
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	shift;;
 
     -T) no_target_directory=true;;
@@ -190,10 +201,13 @@ if test $# -ne 0 && test -z "$dir_arg$dst_arg"; then
     fi
     shift # arg
     dst_arg=$arg
+<<<<<<< HEAD
     # Protect names problematic for 'test' and other utilities.
     case $dst_arg in
       -* | [=\(\)!]) dst_arg=./$dst_arg;;
     esac
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
   done
 fi
 
@@ -202,17 +216,25 @@ if test $# -eq 0; then
     echo "$0: no input file specified." >&2
     exit 1
   fi
+<<<<<<< HEAD
   # It's OK to call 'install-sh -d' without argument.
+=======
+  # It's OK to call `install-sh -d' without argument.
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
   # This can happen when creating conditional directories.
   exit 0
 fi
 
 if test -z "$dir_arg"; then
+<<<<<<< HEAD
   do_exit='(exit $ret); exit $ret'
   trap "ret=129; $do_exit" 1
   trap "ret=130; $do_exit" 2
   trap "ret=141; $do_exit" 13
   trap "ret=143; $do_exit" 15
+=======
+  trap '(exit $?); exit' 1 2 13 15
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
   # Set umask so as not to create temps with too-generous modes.
   # However, 'strip' requires both read and write access to temps.
@@ -240,9 +262,15 @@ fi
 
 for src
 do
+<<<<<<< HEAD
   # Protect names problematic for 'test' and other utilities.
   case $src in
     -* | [=\(\)!]) src=./$src;;
+=======
+  # Protect names starting with `-'.
+  case $src in
+    -*) src=./$src;;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
   esac
 
   if test -n "$dir_arg"; then
@@ -264,7 +292,16 @@ do
       echo "$0: no destination specified." >&2
       exit 1
     fi
+<<<<<<< HEAD
     dst=$dst_arg
+=======
+
+    dst=$dst_arg
+    # Protect names starting with `-'.
+    case $dst in
+      -*) dst=./$dst;;
+    esac
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
     # If destination is a directory, append the input filename; won't work
     # if double slashes aren't ignored.
@@ -354,7 +391,11 @@ do
 	      if test -z "$dir_arg" || {
 		   # Check for POSIX incompatibilities with -m.
 		   # HP-UX 11.23 and IRIX 6.5 mkdir -m -p sets group- or
+<<<<<<< HEAD
 		   # other-writable bit of parent directory when it shouldn't.
+=======
+		   # other-writeable bit of parent directory when it shouldn't.
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		   # FreeBSD 6.1 mkdir -m -p sets mode of existing directory.
 		   ls_ld_tmpdir=`ls -ld "$tmpdir"`
 		   case $ls_ld_tmpdir in
@@ -392,7 +433,11 @@ do
 
       case $dstdir in
 	/*) prefix='/';;
+<<<<<<< HEAD
 	[-=\(\)!]*) prefix='./';;
+=======
+	-*) prefix='./';;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	*)  prefix='';;
       esac
 
@@ -410,7 +455,11 @@ do
 
       for d
       do
+<<<<<<< HEAD
 	test X"$d" = X && continue
+=======
+	test -z "$d" && continue
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	prefix=$prefix$d
 	if test -d "$prefix"; then
@@ -522,6 +571,10 @@ done
 # eval: (add-hook 'write-file-hooks 'time-stamp)
 # time-stamp-start: "scriptversion="
 # time-stamp-format: "%:y-%02m-%02d.%02H"
+<<<<<<< HEAD
 # time-stamp-time-zone: "UTC"
 # time-stamp-end: "; # UTC"
+=======
+# time-stamp-end: "$"
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 # End:

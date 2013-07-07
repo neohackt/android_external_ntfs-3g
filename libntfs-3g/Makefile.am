@@ -10,8 +10,12 @@ noinst_LTLIBRARIES = libntfs-3g.la
 endif
 
 libntfs_3g_la_CFLAGS  = $(AM_CFLAGS) -I$(top_srcdir)/include/ntfs-3g
+<<<<<<< HEAD
 libntfs_3g_la_CPPFLAGS= $(AM_CPPFLAGS) $(LIBNTFS_CPPFLAGS)
 libntfs_3g_la_LIBADD  = $(LIBNTFS_LIBS)
+=======
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 libntfs_3g_la_LDFLAGS = -version-info $(LIBNTFS_3G_VERSION) -no-undefined
 
 libntfs_3g_la_SOURCES =	\
@@ -27,11 +31,17 @@ libntfs_3g_la_SOURCES =	\
 	debug.c 	\
 	device.c 	\
 	dir.c 		\
+<<<<<<< HEAD
 	ea.c 		\
 	efs.c 		\
 	index.c 	\
 	inode.c 	\
 	ioctl.c 	\
+=======
+	efs.c 		\
+	index.c 	\
+	inode.c 	\
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	lcnalloc.c 	\
 	logfile.c 	\
 	logging.c 	\

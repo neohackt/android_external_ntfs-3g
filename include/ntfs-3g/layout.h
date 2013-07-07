@@ -47,6 +47,7 @@
  * struct BIOS_PARAMETER_BLOCK - BIOS parameter block (bpb) structure.
  */
 typedef struct {
+<<<<<<< HEAD
 	le16 bytes_per_sector;		/* Size of a sector in bytes. */
 	u8  sectors_per_cluster;	/* Size of a cluster in sectors. */
 	le16 reserved_sectors;		/* zero */
@@ -61,6 +62,22 @@ typedef struct {
 					   relative to the disk in sectors.
 					   Required to boot Windows. */
 /*0x15*/le32 large_sectors;		/* zero */
+=======
+	u16 bytes_per_sector;		/* Size of a sector in bytes. */
+	u8  sectors_per_cluster;	/* Size of a cluster in sectors. */
+	u16 reserved_sectors;		/* zero */
+	u8  fats;			/* zero */
+	u16 root_entries;		/* zero */
+	u16 sectors;			/* zero */
+	u8  media_type;			/* 0xf8 = hard disk */
+	u16 sectors_per_fat;		/* zero */
+/*0x0d*/u16 sectors_per_track;		/* Required to boot Windows. */
+/*0x0f*/u16 heads;			/* Required to boot Windows. */
+/*0x11*/u32 hidden_sectors;		/* Offset to the start of the partition
+					   relative to the disk in sectors.
+					   Required to boot Windows. */
+/*0x15*/u32 large_sectors;		/* zero */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /* sizeof() = 25 (0x19) bytes */
 } __attribute__((__packed__)) BIOS_PARAMETER_BLOCK;
 
@@ -69,27 +86,47 @@ typedef struct {
  */
 typedef struct {
 	u8  jump[3];			/* Irrelevant (jump to boot up code).*/
+<<<<<<< HEAD
 	le64 oem_id;			/* Magic "NTFS    ". */
+=======
+	u64 oem_id;			/* Magic "NTFS    ". */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /*0x0b*/BIOS_PARAMETER_BLOCK bpb;	/* See BIOS_PARAMETER_BLOCK. */
 	u8 physical_drive;		/* 0x00 floppy, 0x80 hard disk */
 	u8 current_head;		/* zero */
 	u8 extended_boot_signature; 	/* 0x80 */
 	u8 reserved2;			/* zero */
+<<<<<<< HEAD
 /*0x28*/sle64 number_of_sectors;		/* Number of sectors in volume. Gives
+=======
+/*0x28*/s64 number_of_sectors;		/* Number of sectors in volume. Gives
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					   maximum volume size of 2^63 sectors.
 					   Assuming standard sector size of 512
 					   bytes, the maximum byte size is
 					   approx. 4.7x10^21 bytes. (-; */
+<<<<<<< HEAD
 	sle64 mft_lcn;			/* Cluster location of mft data. */
 	sle64 mftmirr_lcn;		/* Cluster location of copy of mft. */
+=======
+	s64 mft_lcn;			/* Cluster location of mft data. */
+	s64 mftmirr_lcn;		/* Cluster location of copy of mft. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	s8  clusters_per_mft_record;	/* Mft record size in clusters. */
 	u8  reserved0[3];		/* zero */
 	s8  clusters_per_index_record;	/* Index block size in clusters. */
 	u8  reserved1[3];		/* zero */
+<<<<<<< HEAD
 	le64 volume_serial_number;	/* Irrelevant (serial number). */
 	le32 checksum;			/* Boot sector checksum. */
 /*0x54*/u8  bootstrap[426];		/* Irrelevant (boot up code). */
 	le16 end_of_sector_marker;	/* End of bootsector magic. Always is
+=======
+	u64 volume_serial_number;	/* Irrelevant (serial number). */
+	u32 checksum;			/* Boot sector checksum. */
+/*0x54*/u8  bootstrap[426];		/* Irrelevant (boot up code). */
+	u16 end_of_sector_marker;	/* End of bootsector magic. Always is
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					   0xaa55 in little endian. */
 /* sizeof() = 512 (0x200) bytes */
 } __attribute__((__packed__)) NTFS_BOOT_SECTOR;
@@ -167,27 +204,46 @@ typedef enum {
 /**
  * struct NTFS_RECORD -
  *
+<<<<<<< HEAD
  * The Update Sequence Array (usa) is an array of the le16 values which belong
+=======
+ * The Update Sequence Array (usa) is an array of the u16 values which belong
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  * to the end of each sector protected by the update sequence record in which
  * this array is contained. Note that the first entry is the Update Sequence
  * Number (usn), a cyclic counter of how many times the protected record has
  * been written to disk. The values 0 and -1 (ie. 0xffff) are not used. All
+<<<<<<< HEAD
  * last le16's of each sector have to be equal to the usn (during reading) or
+=======
+ * last u16's of each sector have to be equal to the usn (during reading) or
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  * are set to it (during writing). If they are not, an incomplete multi sector
  * transfer has occurred when the data was written.
  * The maximum size for the update sequence array is fixed to:
  *	maximum size = usa_ofs + (usa_count * 2) = 510 bytes
+<<<<<<< HEAD
  * The 510 bytes comes from the fact that the last le16 in the array has to
  * (obviously) finish before the last le16 of the first 512-byte sector.
+=======
+ * The 510 bytes comes from the fact that the last u16 in the array has to
+ * (obviously) finish before the last u16 of the first 512-byte sector.
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  * This formula can be used as a consistency check in that usa_ofs +
  * (usa_count * 2) has to be less than or equal to 510.
  */
 typedef struct {
 	NTFS_RECORD_TYPES magic;/* A four-byte magic identifying the
 				   record type and/or status. */
+<<<<<<< HEAD
 	le16 usa_ofs;		/* Offset to the Update Sequence Array (usa)
 				   from the start of the ntfs record. */
 	le16 usa_count;		/* Number of le16 sized entries in the usa
+=======
+	u16 usa_ofs;		/* Offset to the Update Sequence Array (usa)
+				   from the start of the ntfs record. */
+	u16 usa_count;		/* Number of u16 sized entries in the usa
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   including the Update Sequence Number (usn),
 				   thus the number of fixups is the usa_count
 				   minus 1. */
@@ -235,7 +291,11 @@ typedef enum {
 	FILE_reserved12	= 12,	/* Reserved for future use (records 12-15). */
 	FILE_reserved13	= 13,
 	FILE_reserved14	= 14,
+<<<<<<< HEAD
 	FILE_mft_data	= 15,	/* Reserved for first extent of $MFT:$DATA */
+=======
+	FILE_reserved15	= 15,
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	FILE_first_user	= 16,	/* First user file, used as test limit for
 				   whether to allow opening a file or not. */
 } NTFS_SYSTEM_FILES;
@@ -340,17 +400,30 @@ typedef struct {
 /*Ofs*/
 /*  0	NTFS_RECORD; -- Unfolded here as gcc doesn't like unnamed structs. */
 	NTFS_RECORD_TYPES magic;/* Usually the magic is "FILE". */
+<<<<<<< HEAD
 	le16 usa_ofs;		/* See NTFS_RECORD definition above. */
 	le16 usa_count;		/* See NTFS_RECORD definition above. */
 
 /*  8*/	leLSN lsn;		/* $LogFile sequence number for this record.
 				   Changed every time the record is modified. */
 /* 16*/	le16 sequence_number;	/* Number of times this mft record has been
+=======
+	u16 usa_ofs;		/* See NTFS_RECORD definition above. */
+	u16 usa_count;		/* See NTFS_RECORD definition above. */
+
+/*  8*/	LSN lsn;		/* $LogFile sequence number for this record.
+				   Changed every time the record is modified. */
+/* 16*/	u16 sequence_number;	/* Number of times this mft record has been
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   reused. (See description for MFT_REF
 				   above.) NOTE: The increment (skipping zero)
 				   is done when the file is deleted. NOTE: If
 				   this is zero it is left zero. */
+<<<<<<< HEAD
 /* 18*/	le16 link_count;		/* Number of hard links, i.e. the number of
+=======
+/* 18*/	u16 link_count;		/* Number of hard links, i.e. the number of
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   directory entries referencing this record.
 				   NOTE: Only used in mft base records.
 				   NOTE: When deleting a directory entry we
@@ -360,12 +433,17 @@ typedef struct {
 				   directory entry from the mft record and
 				   decrement the link_count.
 				   FIXME: Careful with Win32 + DOS names! */
+<<<<<<< HEAD
 /* 20*/	le16 attrs_offset;	/* Byte offset to the first attribute in this
+=======
+/* 20*/	u16 attrs_offset;	/* Byte offset to the first attribute in this
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   mft record from the start of the mft record.
 				   NOTE: Must be aligned to 8-byte boundary. */
 /* 22*/	MFT_RECORD_FLAGS flags;	/* Bit array of MFT_RECORD_FLAGS. When a file
 				   is deleted, the MFT_RECORD_IN_USE flag is
 				   set to zero. */
+<<<<<<< HEAD
 /* 24*/	le32 bytes_in_use;	/* Number of bytes used in this mft record.
 				   NOTE: Must be aligned to 8-byte boundary. */
 /* 28*/	le32 bytes_allocated;	/* Number of bytes allocated for this mft
@@ -373,6 +451,14 @@ typedef struct {
 				   record size. */
 /* 32*/	leMFT_REF base_mft_record;
 				/* This is zero for base mft records.
+=======
+/* 24*/	u32 bytes_in_use;	/* Number of bytes used in this mft record.
+				   NOTE: Must be aligned to 8-byte boundary. */
+/* 28*/	u32 bytes_allocated;	/* Number of bytes allocated for this mft
+				   record. This should be equal to the mft
+				   record size. */
+/* 32*/	MFT_REF base_mft_record; /* This is zero for base mft records.
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   When it is not zero it is a mft reference
 				   pointing to the base mft record to which
 				   this record belongs (this is then used to
@@ -384,7 +470,11 @@ typedef struct {
 				   attribute list also means finding the other
 				   potential extents, belonging to the non-base
 				   mft record). */
+<<<<<<< HEAD
 /* 40*/	le16 next_attr_instance; /* The instance number that will be
+=======
+/* 40*/	u16 next_attr_instance; /* The instance number that will be
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   assigned to the next attribute added to this
 				   mft record. NOTE: Incremented each time
 				   after it is used. NOTE: Every time the mft
@@ -392,8 +482,13 @@ typedef struct {
 				   NOTE: The first instance number is always 0.
 				 */
 /* The below fields are specific to NTFS 3.1+ (Windows XP and above): */
+<<<<<<< HEAD
 /* 42*/ le16 reserved;		/* Reserved/alignment. */
 /* 44*/ le32 mft_record_number;	/* Number of this mft record. */
+=======
+/* 42*/ u16 reserved;		/* Reserved/alignment. */
+/* 44*/ u32 mft_record_number;	/* Number of this mft record. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /* sizeof() = 48 bytes */
 /*
  * When (re)using the mft record, we place the update sequence array at this
@@ -415,17 +510,30 @@ typedef struct {
 /*Ofs*/
 /*  0	NTFS_RECORD; -- Unfolded here as gcc doesn't like unnamed structs. */
 	NTFS_RECORD_TYPES magic;/* Usually the magic is "FILE". */
+<<<<<<< HEAD
 	le16 usa_ofs;		/* See NTFS_RECORD definition above. */
 	le16 usa_count;		/* See NTFS_RECORD definition above. */
 
 /*  8*/	leLSN lsn;		/* $LogFile sequence number for this record.
 				   Changed every time the record is modified. */
 /* 16*/	le16 sequence_number;	/* Number of times this mft record has been
+=======
+	u16 usa_ofs;		/* See NTFS_RECORD definition above. */
+	u16 usa_count;		/* See NTFS_RECORD definition above. */
+
+/*  8*/	LSN lsn;		/* $LogFile sequence number for this record.
+				   Changed every time the record is modified. */
+/* 16*/	u16 sequence_number;	/* Number of times this mft record has been
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   reused. (See description for MFT_REF
 				   above.) NOTE: The increment (skipping zero)
 				   is done when the file is deleted. NOTE: If
 				   this is zero it is left zero. */
+<<<<<<< HEAD
 /* 18*/	le16 link_count;		/* Number of hard links, i.e. the number of
+=======
+/* 18*/	u16 link_count;		/* Number of hard links, i.e. the number of
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   directory entries referencing this record.
 				   NOTE: Only used in mft base records.
 				   NOTE: When deleting a directory entry we
@@ -435,12 +543,17 @@ typedef struct {
 				   directory entry from the mft record and
 				   decrement the link_count.
 				   FIXME: Careful with Win32 + DOS names! */
+<<<<<<< HEAD
 /* 20*/	le16 attrs_offset;	/* Byte offset to the first attribute in this
+=======
+/* 20*/	u16 attrs_offset;	/* Byte offset to the first attribute in this
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   mft record from the start of the mft record.
 				   NOTE: Must be aligned to 8-byte boundary. */
 /* 22*/	MFT_RECORD_FLAGS flags;	/* Bit array of MFT_RECORD_FLAGS. When a file
 				   is deleted, the MFT_RECORD_IN_USE flag is
 				   set to zero. */
+<<<<<<< HEAD
 /* 24*/	le32 bytes_in_use;	/* Number of bytes used in this mft record.
 				   NOTE: Must be aligned to 8-byte boundary. */
 /* 28*/	le32 bytes_allocated;	/* Number of bytes allocated for this mft
@@ -448,6 +561,14 @@ typedef struct {
 				   record size. */
 /* 32*/	leMFT_REF base_mft_record;
 				/* This is zero for base mft records.
+=======
+/* 24*/	u32 bytes_in_use;	/* Number of bytes used in this mft record.
+				   NOTE: Must be aligned to 8-byte boundary. */
+/* 28*/	u32 bytes_allocated;	/* Number of bytes allocated for this mft
+				   record. This should be equal to the mft
+				   record size. */
+/* 32*/	MFT_REF base_mft_record; /* This is zero for base mft records.
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   When it is not zero it is a mft reference
 				   pointing to the base mft record to which
 				   this record belongs (this is then used to
@@ -459,7 +580,11 @@ typedef struct {
 				   attribute list also means finding the other
 				   potential extents, belonging to the non-base
 				   mft record). */
+<<<<<<< HEAD
 /* 40*/	le16 next_attr_instance; /* The instance number that will be
+=======
+/* 40*/	u16 next_attr_instance; /* The instance number that will be
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   assigned to the next attribute added to this
 				   mft record. NOTE: Incremented each time
 				   after it is used. NOTE: Every time the mft
@@ -525,15 +650,22 @@ typedef enum {
  *	unistr.c::ntfs_collate_names() and unistr.c::legal_ansi_char_array[]
  *	for what I mean but COLLATION_UNICODE_STRING would not give any special
  *	treatment to any characters at all, but this is speculation.
+<<<<<<< HEAD
  * COLLATION_NTOFS_ULONG - Sorting is done according to ascending le32 key
  *	values. E.g. used for $SII index in FILE_Secure, which sorts by
  *	security_id (le32).
+=======
+ * COLLATION_NTOFS_ULONG - Sorting is done according to ascending u32 key
+ *	values. E.g. used for $SII index in FILE_Secure, which sorts by
+ *	security_id (u32).
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  * COLLATION_NTOFS_SID - Sorting is done according to ascending SID values.
  *	E.g. used for $O index in FILE_Extend/$Quota.
  * COLLATION_NTOFS_SECURITY_HASH - Sorting is done first by ascending hash
  *	values and second by ascending security_id values. E.g. used for $SDH
  *	index in FILE_Secure.
  * COLLATION_NTOFS_ULONGS - Sorting is done according to a sequence of ascending
+<<<<<<< HEAD
  *	le32 key values. E.g. used for $O index in FILE_Extend/$ObjId, which
  *	sorts by object_id (16-byte), by splitting up the object_id in four
  *	le32 values and using them as individual keys. E.g. take the following
@@ -547,6 +679,21 @@ typedef enum {
  *	first le32 value of the 1st object_id is less than the first le32 of
  *	the 2nd object_id. If the first le32 values of both object_ids were
  *	equal then the second le32 values would be compared, etc.
+=======
+ *	u32 key values. E.g. used for $O index in FILE_Extend/$ObjId, which
+ *	sorts by object_id (16-byte), by splitting up the object_id in four
+ *	u32 values and using them as individual keys. E.g. take the following
+ *	two security_ids, stored as follows on disk:
+ *		1st: a1 61 65 b7 65 7b d4 11 9e 3d 00 e0 81 10 42 59
+ *		2nd: 38 14 37 d2 d2 f3 d4 11 a5 21 c8 6b 79 b1 97 45
+ *	To compare them, they are split into four u32 values each, like so:
+ *		1st: 0xb76561a1 0x11d47b65 0xe0003d9e 0x59421081
+ *		2nd: 0xd2371438 0x11d4f3d2 0x6bc821a5 0x4597b179
+ *	Now, it is apparent why the 2nd object_id collates after the 1st: the
+ *	first u32 value of the 1st object_id is less than the first u32 of
+ *	the 2nd object_id. If the first u32 values of both object_ids were
+ *	equal then the second u32 values would be compared, etc.
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  */
 typedef enum {
 	COLLATION_BINARY	 = const_cpu_to_le32(0), /* Collate by binary
@@ -619,12 +766,21 @@ typedef struct {
 /*  0*/	ntfschar name[0x40];		/* Unicode name of the attribute. Zero
 					   terminated. */
 /* 80*/	ATTR_TYPES type;		/* Type of the attribute. */
+<<<<<<< HEAD
 /* 84*/	le32 display_rule;		/* Default display rule.
 					   FIXME: What does it mean? (AIA) */
 /* 88*/ COLLATION_RULES collation_rule;	/* Default collation rule. */
 /* 8c*/	ATTR_DEF_FLAGS flags;		/* Flags describing the attribute. */
 /* 90*/	sle64 min_size;			/* Optional minimum attribute size. */
 /* 98*/	sle64 max_size;			/* Maximum size of attribute. */
+=======
+/* 84*/	u32 display_rule;		/* Default display rule.
+					   FIXME: What does it mean? (AIA) */
+/* 88*/ COLLATION_RULES collation_rule;	/* Default collation rule. */
+/* 8c*/	ATTR_DEF_FLAGS flags;		/* Flags describing the attribute. */
+/* 90*/	s64 min_size;			/* Optional minimum attribute size. */
+/* 98*/	s64 max_size;			/* Maximum size of attribute. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /* sizeof() = 0xa0 or 160 bytes */
 } __attribute__((__packed__)) ATTR_DEF;
 
@@ -724,14 +880,22 @@ typedef enum {
 typedef struct {
 /*Ofs*/
 /*  0*/	ATTR_TYPES type;	/* The (32-bit) type of the attribute. */
+<<<<<<< HEAD
 /*  4*/	le32 length;		/* Byte size of the resident part of the
+=======
+/*  4*/	u32 length;		/* Byte size of the resident part of the
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   attribute (aligned to 8-byte boundary).
 				   Used to get to the next attribute. */
 /*  8*/	u8 non_resident;	/* If 0, attribute is resident.
 				   If 1, attribute is non-resident. */
 /*  9*/	u8 name_length;		/* Unicode character size of name of attribute.
 				   0 if unnamed. */
+<<<<<<< HEAD
 /* 10*/	le16 name_offset;	/* If name_length != 0, the byte offset to the
+=======
+/* 10*/	u16 name_offset;	/* If name_length != 0, the byte offset to the
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   beginning of the name from the attribute
 				   record. Note that the name is stored as a
 				   Unicode string. When creating, place offset
@@ -741,15 +905,24 @@ typedef struct {
 				   respectively, aligning to an 8-byte
 				   boundary. */
 /* 12*/	ATTR_FLAGS flags;	/* Flags describing the attribute. */
+<<<<<<< HEAD
 /* 14*/	le16 instance;		/* The instance of this attribute record. This
+=======
+/* 14*/	u16 instance;		/* The instance of this attribute record. This
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   number is unique within this mft record (see
 				   MFT_RECORD/next_attribute_instance notes
 				   above for more details). */
 /* 16*/	union {
 		/* Resident attributes. */
 		struct {
+<<<<<<< HEAD
 /* 16 */		le32 value_length; /* Byte size of attribute value. */
 /* 20 */		le16 value_offset; /* Byte offset of the attribute
+=======
+/* 16 */		u32 value_length; /* Byte size of attribute value. */
+/* 20 */		u16 value_offset; /* Byte offset of the attribute
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					       value from the start of the
 					       attribute record. When creating,
 					       align to 8-byte boundary if we
@@ -765,18 +938,30 @@ typedef struct {
 		} __attribute__((__packed__));
 		/* Non-resident attributes. */
 		struct {
+<<<<<<< HEAD
 /* 16*/			leVCN lowest_vcn;	/* Lowest valid virtual cluster number
+=======
+/* 16*/			VCN lowest_vcn;	/* Lowest valid virtual cluster number
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				for this portion of the attribute value or
 				0 if this is the only extent (usually the
 				case). - Only when an attribute list is used
 				does lowest_vcn != 0 ever occur. */
+<<<<<<< HEAD
 /* 24*/			leVCN highest_vcn; /* Highest valid vcn of this extent of
+=======
+/* 24*/			VCN highest_vcn; /* Highest valid vcn of this extent of
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				the attribute value. - Usually there is only one
 				portion, so this usually equals the attribute
 				value size in clusters minus 1. Can be -1 for
 				zero length files. Can be 0 for "single extent"
 				attributes. */
+<<<<<<< HEAD
 /* 32*/			le16 mapping_pairs_offset; /* Byte offset from the
+=======
+/* 32*/			u16 mapping_pairs_offset; /* Byte offset from the
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				beginning of the structure to the mapping pairs
 				array which contains the mappings between the
 				vcns and the logical cluster numbers (lcns).
@@ -791,7 +976,11 @@ typedef struct {
 /* 35*/			u8 reserved1[5];	/* Align to 8-byte boundary. */
 /* The sizes below are only used when lowest_vcn is zero, as otherwise it would
    be difficult to keep them up-to-date.*/
+<<<<<<< HEAD
 /* 40*/			sle64 allocated_size;	/* Byte size of disk space
+=======
+/* 40*/			s64 allocated_size;	/* Byte size of disk space
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				allocated to hold the attribute value. Always
 				is a multiple of the cluster size. When a file
 				is compressed, this field is a multiple of the
@@ -799,10 +988,17 @@ typedef struct {
 				it represents the logically allocated space
 				rather than the actual on disk usage. For this
 				use the compressed_size (see below). */
+<<<<<<< HEAD
 /* 48*/			sle64 data_size;	/* Byte size of the attribute
 				value. Can be larger than allocated_size if
 				attribute value is compressed or sparse. */
 /* 56*/			sle64 initialized_size;	/* Byte size of initialized
+=======
+/* 48*/			s64 data_size;	/* Byte size of the attribute
+				value. Can be larger than allocated_size if
+				attribute value is compressed or sparse. */
+/* 56*/			s64 initialized_size;	/* Byte size of initialized
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				portion of the attribute value. Usually equals
 				data_size. */
 /* 64 */		void *non_resident_end[0]; /* Use offsetof(ATTR_RECORD,
@@ -810,7 +1006,11 @@ typedef struct {
 						      size of a non resident
 						      attribute. */
 /* sizeof(uncompressed attr) = 64*/
+<<<<<<< HEAD
 /* 64*/			sle64 compressed_size;	/* Byte size of the attribute
+=======
+/* 64*/			s64 compressed_size;	/* Byte size of the attribute
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				value after compression. Only present when
 				compressed. Always is a multiple of the
 				cluster size. Represents the actual amount of
@@ -836,7 +1036,11 @@ typedef enum {
 	FILE_ATTR_READONLY		= const_cpu_to_le32(0x00000001),
 	FILE_ATTR_HIDDEN		= const_cpu_to_le32(0x00000002),
 	FILE_ATTR_SYSTEM		= const_cpu_to_le32(0x00000004),
+<<<<<<< HEAD
 	/* Old DOS volid. Unused in NT.	= const_cpu_to_le32(0x00000008), */
+=======
+	/* Old DOS volid. Unused in NT.	= cpu_to_le32(0x00000008), */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	FILE_ATTR_DIRECTORY		= const_cpu_to_le32(0x00000010),
 	/* FILE_ATTR_DIRECTORY is not considered valid in NT. It is reserved
@@ -910,6 +1114,7 @@ typedef enum {
  */
 typedef struct {
 /*Ofs*/
+<<<<<<< HEAD
 /*  0*/	sle64 creation_time;		/* Time file was created. Updated when
 					   a filename is changed(?). */
 /*  8*/	sle64 last_data_change_time;	/* Time the data attribute was last
@@ -917,6 +1122,15 @@ typedef struct {
 /* 16*/	sle64 last_mft_change_time;	/* Time this mft record was last
 					   modified. */
 /* 24*/	sle64 last_access_time;		/* Approximate time when the file was
+=======
+/*  0*/	s64 creation_time;		/* Time file was created. Updated when
+					   a filename is changed(?). */
+/*  8*/	s64 last_data_change_time;	/* Time the data attribute was last
+					   modified. */
+/* 16*/	s64 last_mft_change_time;	/* Time this mft record was last
+					   modified. */
+/* 24*/	s64 last_access_time;		/* Approximate time when the file was
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					   last accessed (obviously this is not
 					   updated on read-only volumes). In
 					   Windows this is only updated when
@@ -954,6 +1168,7 @@ typedef struct {
  * views that as a corruption, assuming that it behaves like this for all
  * attributes.
  */
+<<<<<<< HEAD
 		/* 36*/	le32 maximum_versions;	/* Maximum allowed versions for
 				file. Zero if version numbering is disabled. */
 		/* 40*/	le32 version_number;	/* This file's version (if any).
@@ -971,6 +1186,25 @@ typedef struct {
 				the quota for all streams of the file. Note: Is
 				zero if quotas are disabled. */
 		/* 64*/	le64 usn;		/* Last update sequence number
+=======
+		/* 36*/	u32 maximum_versions;	/* Maximum allowed versions for
+				file. Zero if version numbering is disabled. */
+		/* 40*/	u32 version_number;	/* This file's version (if any).
+				Set to zero if maximum_versions is zero. */
+		/* 44*/	u32 class_id;		/* Class id from bidirectional
+				class id index (?). */
+		/* 48*/	u32 owner_id;		/* Owner_id of the user owning
+				the file. Translate via $Q index in FILE_Extend
+				/$Quota to the quota control entry for the user
+				owning the file. Zero if quotas are disabled. */
+		/* 52*/	u32 security_id;	/* Security_id for the file.
+				Translate via $SII index and $SDS data stream
+				in FILE_Secure to the security descriptor. */
+		/* 56*/	u64 quota_charged;	/* Byte size of the charge to
+				the quota for all streams of the file. Note: Is
+				zero if quotas are disabled. */
+		/* 64*/	u64 usn;		/* Last update sequence number
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				of the file. This is a direct index into the
 				change (aka usn) journal file. It is zero if
 				the usn journal is disabled.
@@ -1022,13 +1256,21 @@ typedef struct {
 typedef struct {
 /*Ofs*/
 /*  0*/	ATTR_TYPES type;	/* Type of referenced attribute. */
+<<<<<<< HEAD
 /*  4*/	le16 length;		/* Byte size of this entry. */
+=======
+/*  4*/	u16 length;		/* Byte size of this entry. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /*  6*/	u8 name_length;		/* Size in Unicode chars of the name of the
 				   attribute or 0 if unnamed. */
 /*  7*/	u8 name_offset;		/* Byte offset to beginning of attribute name
 				   (always set this to where the name would
 				   start even if unnamed). */
+<<<<<<< HEAD
 /*  8*/	leVCN lowest_vcn;	/* Lowest virtual cluster number of this portion
+=======
+/*  8*/	VCN lowest_vcn;		/* Lowest virtual cluster number of this portion
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   of the attribute value. This is usually 0. It
 				   is non-zero for the case where one attribute
 				   does not fit into one mft record and thus
@@ -1040,10 +1282,17 @@ typedef struct {
 				   value! The windows driver uses cmp, followed
 				   by jg when comparing this, thus it treats it
 				   as signed. */
+<<<<<<< HEAD
 /* 16*/	leMFT_REF mft_reference;/* The reference of the mft record holding
 				   the ATTR_RECORD for this portion of the
 				   attribute value. */
 /* 24*/	le16 instance;		/* If lowest_vcn = 0, the instance of the
+=======
+/* 16*/	MFT_REF mft_reference;	/* The reference of the mft record holding
+				   the ATTR_RECORD for this portion of the
+				   attribute value. */
+/* 24*/	u16 instance;		/* If lowest_vcn = 0, the instance of the
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   attribute being referenced; otherwise 0. */
 /* 26*/	ntfschar name[0];	/* Use when creating only. When reading use
 				   name_offset to determine the location of the
@@ -1098,6 +1347,7 @@ typedef enum {
  */
 typedef struct {
 /*hex ofs*/
+<<<<<<< HEAD
 /*  0*/	leMFT_REF parent_directory;	/* Directory this filename is
 					   referenced from. */
 /*  8*/	sle64 creation_time;		/* Time file was created. */
@@ -1108,6 +1358,18 @@ typedef struct {
 /* 20*/	sle64 last_access_time;		/* Last time this mft record was
 					   accessed. */
 /* 28*/	sle64 allocated_size;		/* Byte size of on-disk allocated space
+=======
+/*  0*/	MFT_REF parent_directory;	/* Directory this filename is
+					   referenced from. */
+/*  8*/	s64 creation_time;		/* Time file was created. */
+/* 10*/	s64 last_data_change_time;	/* Time the data attribute was last
+					   modified. */
+/* 18*/	s64 last_mft_change_time;	/* Time this mft record was last
+					   modified. */
+/* 20*/	s64 last_access_time;		/* Last time this mft record was
+					   accessed. */
+/* 28*/	s64 allocated_size;		/* Byte size of on-disk allocated space
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					   for the data attribute.  So for
 					   normal $DATA, this is the
 					   allocated_size from the unnamed
@@ -1116,17 +1378,30 @@ typedef struct {
 					   compressed_size from the unnamed
 					   $DATA attribute.  NOTE: This is a
 					   multiple of the cluster size. */
+<<<<<<< HEAD
 /* 30*/	sle64 data_size;			/* Byte size of actual data in data
+=======
+/* 30*/	s64 data_size;			/* Byte size of actual data in data
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					   attribute. */
 /* 38*/	FILE_ATTR_FLAGS file_attributes;	/* Flags describing the file. */
 /* 3c*/	union {
 	/* 3c*/	struct {
+<<<<<<< HEAD
 		/* 3c*/	le16 packed_ea_size;	/* Size of the buffer needed to
 						   pack the extended attributes
 						   (EAs), if such are present.*/
 		/* 3e*/	le16 reserved;		/* Reserved for alignment. */
 		} __attribute__((__packed__));
 	/* 3c*/	le32 reparse_point_tag;		/* Type of reparse point,
+=======
+		/* 3c*/	u16 packed_ea_size;	/* Size of the buffer needed to
+						   pack the extended attributes
+						   (EAs), if such are present.*/
+		/* 3e*/	u16 reserved;		/* Reserved for alignment. */
+		} __attribute__((__packed__));
+	/* 3c*/	u32 reparse_point_tag;		/* Type of reparse point,
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 						   present only in reparse
 						   points and only if there are
 						   no EAs. */
@@ -1150,9 +1425,15 @@ typedef struct {
  *	1F010768-5A73-BC91-0010-A52216A7227B
  */
 typedef struct {
+<<<<<<< HEAD
 	le32 data1;	/* The first eight hexadecimal digits of the GUID. */
 	le16 data2;	/* The first group of four hexadecimal digits. */
 	le16 data3;	/* The second group of four hexadecimal digits. */
+=======
+	u32 data1;	/* The first eight hexadecimal digits of the GUID. */
+	u16 data2;	/* The first group of four hexadecimal digits. */
+	u16 data3;	/* The second group of four hexadecimal digits. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	u8 data4[8];	/* The first two bytes are the third group of four
 			   hexadecimal digits. The remaining six bytes are the
 			   final 12 hexadecimal digits. */
@@ -1172,8 +1453,13 @@ typedef struct {
  *	domain_id	- Reserved (always zero).
  */
 typedef struct {
+<<<<<<< HEAD
 	leMFT_REF mft_reference;	/* Mft record containing the object_id
 					   in the index entry key. */
+=======
+	MFT_REF mft_reference;	/* Mft record containing the object_id in
+				   the index entry key. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	union {
 		struct {
 			GUID birth_volume_id;
@@ -1354,8 +1640,13 @@ typedef enum {					/* Identifier authority. */
  */
 typedef union {
 	struct {
+<<<<<<< HEAD
 		be16 high_part;		/* High 16-bits. */
 		be32 low_part;		/* Low 32-bits. */
+=======
+		u16 high_part;		/* High 16-bits. */
+		u32 low_part;		/* Low 32-bits. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	} __attribute__((__packed__));
 	u8 value[6];			/* Value as individual bytes. */
 } __attribute__((__packed__)) SID_IDENTIFIER_AUTHORITY;
@@ -1392,7 +1683,11 @@ typedef struct {
 	u8 revision;
 	u8 sub_authority_count;
 	SID_IDENTIFIER_AUTHORITY identifier_authority;
+<<<<<<< HEAD
 	le32 sub_authority[1];		/* At least one sub_authority. */
+=======
+	u32 sub_authority[1];		/* At least one sub_authority. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 } __attribute__((__packed__)) SID;
 
 /**
@@ -1473,7 +1768,11 @@ typedef enum {
 typedef struct {
 	ACE_TYPES type;		/* Type of the ACE. */
 	ACE_FLAGS flags;	/* Flags describing the ACE. */
+<<<<<<< HEAD
 	le16 size;		/* Size in bytes of the ACE. */
+=======
+	u16 size;		/* Size in bytes of the ACE. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 } __attribute__((__packed__)) ACE_HEADER;
 
 /**
@@ -1639,7 +1938,11 @@ typedef struct {
 /*  0	ACE_HEADER; -- Unfolded here as gcc doesn't like unnamed structs. */
 	ACE_TYPES type;		/* Type of the ACE. */
 	ACE_FLAGS flags;	/* Flags describing the ACE. */
+<<<<<<< HEAD
 	le16 size;		/* Size in bytes of the ACE. */
+=======
+	u16 size;		/* Size in bytes of the ACE. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 /*  4*/	ACCESS_MASK mask;	/* Access mask associated with the ACE. */
 /*  8*/	SID sid;		/* The SID associated with the ACE. */
@@ -1661,7 +1964,11 @@ typedef struct {
 /*  0	ACE_HEADER; -- Unfolded here as gcc doesn't like unnamed structs. */
 	ACE_TYPES type;		/* Type of the ACE. */
 	ACE_FLAGS flags;	/* Flags describing the ACE. */
+<<<<<<< HEAD
 	le16 size;		/* Size in bytes of the ACE. */
+=======
+	u16 size;		/* Size in bytes of the ACE. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 /*  4*/	ACCESS_MASK mask;	/* Access mask associated with the ACE. */
 /*  8*/	OBJECT_ACE_FLAGS object_flags;	/* Flags describing the object ACE. */
@@ -1684,10 +1991,17 @@ typedef struct {
 typedef struct {
 	u8 revision;	/* Revision of this ACL. */
 	u8 alignment1;
+<<<<<<< HEAD
 	le16 size;	/* Allocated space in bytes for ACL. Includes this
 			   header, the ACEs and the remaining free space. */
 	le16 ace_count;	/* Number of ACEs in the ACL. */
 	le16 alignment2;
+=======
+	u16 size;	/* Allocated space in bytes for ACL. Includes this
+			   header, the ACEs and the remaining free space. */
+	u16 ace_count;	/* Number of ACEs in the ACL. */
+	u16 alignment2;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /* sizeof() = 8 bytes */
 } __attribute__((__packed__)) ACL;
 
@@ -1785,6 +2099,7 @@ typedef struct {
 	u8 alignment;
 	SECURITY_DESCRIPTOR_CONTROL control; /* Flags qualifying the type of
 			   the descriptor as well as the following fields. */
+<<<<<<< HEAD
 	le32 owner;	/* Byte offset to a SID representing an object's
 			   owner. If this is NULL, no owner SID is present in
 			   the descriptor. */
@@ -1796,6 +2111,19 @@ typedef struct {
 			   SE_SACL_PRESENT is set but sacl is NULL, a NULL ACL
 			   is specified. */
 	le32 dacl;	/* Byte offset to a discretionary ACL. Only valid, if
+=======
+	u32 owner;	/* Byte offset to a SID representing an object's
+			   owner. If this is NULL, no owner SID is present in
+			   the descriptor. */
+	u32 group;	/* Byte offset to a SID representing an object's
+			   primary group. If this is NULL, no primary group
+			   SID is present in the descriptor. */
+	u32 sacl;	/* Byte offset to a system ACL. Only valid, if
+			   SE_SACL_PRESENT is set in the control field. If
+			   SE_SACL_PRESENT is set but sacl is NULL, a NULL ACL
+			   is specified. */
+	u32 dacl;	/* Byte offset to a discretionary ACL. Only valid, if
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			   SE_DACL_PRESENT is set in the control field. If
 			   SE_DACL_PRESENT is set but dacl is NULL, a NULL ACL
 			   (unconditionally granting access) is specified. */
@@ -1906,21 +2234,36 @@ typedef SECURITY_DESCRIPTOR_RELATIVE SECURITY_DESCRIPTOR_ATTR;
  * This is also the index entry data part of both the $SII and $SDH indexes.
  */
 typedef struct {
+<<<<<<< HEAD
 	le32 hash;	   /* Hash of the security descriptor. */
 	le32 security_id;   /* The security_id assigned to the descriptor. */
 	le64 offset;	   /* Byte offset of this entry in the $SDS stream. */
 	le32 length;	   /* Size in bytes of this entry in $SDS stream. */
+=======
+	u32 hash;	   /* Hash of the security descriptor. */
+	u32 security_id;   /* The security_id assigned to the descriptor. */
+	u64 offset;	   /* Byte offset of this entry in the $SDS stream. */
+	u32 length;	   /* Size in bytes of this entry in $SDS stream. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 } __attribute__((__packed__)) SECURITY_DESCRIPTOR_HEADER;
 
 /**
  * struct SDH_INDEX_DATA -
  */
 typedef struct {
+<<<<<<< HEAD
 	le32 hash;          /* Hash of the security descriptor. */
 	le32 security_id;   /* The security_id assigned to the descriptor. */
 	le64 offset;	   /* Byte offset of this entry in the $SDS stream. */
 	le32 length;	   /* Size in bytes of this entry in $SDS stream. */
 	le32 reserved_II;   /* Padding - always unicode "II" or zero. This field
+=======
+	u32 hash;          /* Hash of the security descriptor. */
+	u32 security_id;   /* The security_id assigned to the descriptor. */
+	u64 offset;	   /* Byte offset of this entry in the $SDS stream. */
+	u32 length;	   /* Size in bytes of this entry in $SDS stream. */
+	u32 reserved_II;   /* Padding - always unicode "II" or zero. This field
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			      isn't counted in INDEX_ENTRY's data_length. */
 } __attribute__((__packed__)) SDH_INDEX_DATA;
 
@@ -1945,10 +2288,17 @@ typedef SECURITY_DESCRIPTOR_HEADER SII_INDEX_DATA;
 typedef struct {
 /*  0	SECURITY_DESCRIPTOR_HEADER; -- Unfolded here as gcc doesn't like
 				       unnamed structs. */
+<<<<<<< HEAD
 	le32 hash;	   /* Hash of the security descriptor. */
 	le32 security_id;   /* The security_id assigned to the descriptor. */
 	le64 offset;	   /* Byte offset of this entry in the $SDS stream. */
 	le32 length;	   /* Size in bytes of this entry in $SDS stream. */
+=======
+	u32 hash;	   /* Hash of the security descriptor. */
+	u32 security_id;   /* The security_id assigned to the descriptor. */
+	u64 offset;	   /* Byte offset of this entry in the $SDS stream. */
+	u32 length;	   /* Size in bytes of this entry in $SDS stream. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /* 20*/	SECURITY_DESCRIPTOR_RELATIVE sid; /* The self-relative security
 					     descriptor. */
 } __attribute__((__packed__)) SDS_ENTRY;
@@ -1959,7 +2309,11 @@ typedef struct {
  * The collation type is COLLATION_NTOFS_ULONG.
  */
 typedef struct {
+<<<<<<< HEAD
 	le32 security_id;   /* The security_id assigned to the descriptor. */
+=======
+	u32 security_id;   /* The security_id assigned to the descriptor. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 } __attribute__((__packed__)) SII_INDEX_KEY;
 
 /**
@@ -1969,8 +2323,13 @@ typedef struct {
  * The collation rule is COLLATION_NTOFS_SECURITY_HASH.
  */
 typedef struct {
+<<<<<<< HEAD
 	le32 hash;	   /* Hash of the security descriptor. */
 	le32 security_id;   /* The security_id assigned to the descriptor. */
+=======
+	u32 hash;	   /* Hash of the security descriptor. */
+	u32 security_id;   /* The security_id assigned to the descriptor. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 } __attribute__((__packed__)) SDH_INDEX_KEY;
 
 /**
@@ -2007,7 +2366,11 @@ typedef enum {
  *	 NTFS 1.2. I haven't personally seen other values yet.
  */
 typedef struct {
+<<<<<<< HEAD
 	le64 reserved;		/* Not used (yet?). */
+=======
+	u64 reserved;		/* Not used (yet?). */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	u8 major_ver;		/* Major version of the ntfs format. */
 	u8 minor_ver;		/* Minor version of the ntfs format. */
 	VOLUME_FLAGS flags;	/* Bit array of VOLUME_* flags. */
@@ -2058,11 +2421,19 @@ typedef enum {
  * start of the index root or index allocation structures themselves.
  */
 typedef struct {
+<<<<<<< HEAD
 /*  0*/	le32 entries_offset;	/* Byte offset from the INDEX_HEADER to first
 				   INDEX_ENTRY, aligned to 8-byte boundary.  */
 /*  4*/	le32 index_length;	/* Data size in byte of the INDEX_ENTRY's,
 				   including the INDEX_HEADER, aligned to 8. */
 /*  8*/	le32 allocated_size;	/* Allocated byte size of this index (block),
+=======
+/*  0*/	u32 entries_offset;	/* Byte offset from the INDEX_HEADER to first
+				   INDEX_ENTRY, aligned to 8-byte boundary.  */
+/*  4*/	u32 index_length;	/* Data size in byte of the INDEX_ENTRY's,
+				   including the INDEX_HEADER, aligned to 8. */
+/*  8*/	u32 allocated_size;	/* Allocated byte size of this index (block),
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   multiple of 8 bytes. See more below.      */
 	/* 
 	   For the index root attribute, the above two numbers are always
@@ -2105,7 +2476,11 @@ typedef struct {
 /*  4*/	COLLATION_RULES collation_rule;	/* Collation rule used to sort the
 					   index entries. If type is $FILE_NAME,
 					   this must be COLLATION_FILE_NAME. */
+<<<<<<< HEAD
 /*  8*/	le32 index_block_size;		/* Size of index block in bytes (in
+=======
+/*  8*/	u32 index_block_size;		/* Size of index block in bytes (in
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					   the index allocation attribute). */
 /* 12*/	s8 clusters_per_index_block;	/* Size of index block in clusters (in
 					   the index allocation attribute), when
@@ -2129,12 +2504,21 @@ typedef struct {
 typedef struct {
 /*  0	NTFS_RECORD; -- Unfolded here as gcc doesn't like unnamed structs. */
 	NTFS_RECORD_TYPES magic;/* Magic is "INDX". */
+<<<<<<< HEAD
 	le16 usa_ofs;		/* See NTFS_RECORD definition. */
 	le16 usa_count;		/* See NTFS_RECORD definition. */
 
 /*  8*/	leLSN lsn;		/* $LogFile sequence number of the last
 				   modification of this index block. */
 /* 16*/	leVCN index_block_vcn;	/* Virtual cluster number of the index block. */
+=======
+	u16 usa_ofs;		/* See NTFS_RECORD definition. */
+	u16 usa_count;		/* See NTFS_RECORD definition. */
+
+/*  8*/	LSN lsn;		/* $LogFile sequence number of the last
+				   modification of this index block. */
+/* 16*/	VCN index_block_vcn;	/* Virtual cluster number of the index block. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /* 24*/	INDEX_HEADER index;	/* Describes the following index entries. */
 /* sizeof()= 40 (0x28) bytes */
 /*
@@ -2162,8 +2546,13 @@ typedef INDEX_BLOCK INDEX_ALLOCATION;
  * primary key / is not a key at all. (AIA)
  */
 typedef struct {
+<<<<<<< HEAD
 	le32 reparse_tag;	/* Reparse point type (inc. flags). */
 	leMFT_REF file_id;	/* Mft record of the file containing the
+=======
+	u32 reparse_tag;	/* Reparse point type (inc. flags). */
+	MFT_REF file_id;	/* Mft record of the file containing the
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   reparse point attribute. */
 } __attribute__((__packed__)) REPARSE_INDEX_KEY;
 
@@ -2215,6 +2604,7 @@ typedef enum {
  * The $Q index entry data is the quota control entry and is defined below.
  */
 typedef struct {
+<<<<<<< HEAD
 	le32 version;		/* Currently equals 2. */
 	QUOTA_FLAGS flags;	/* Flags describing this quota entry. */
 	le64 bytes_used;		/* How many bytes of the quota are in use. */
@@ -2222,6 +2612,15 @@ typedef struct {
 	sle64 threshold;		/* Soft quota (-1 if not limited). */
 	sle64 limit;		/* Hard quota (-1 if not limited). */
 	sle64 exceeded_time;	/* How long the soft quota has been exceeded. */
+=======
+	u32 version;		/* Currently equals 2. */
+	QUOTA_FLAGS flags;	/* Flags describing this quota entry. */
+	u64 bytes_used;		/* How many bytes of the quota are in use. */
+	s64 change_time;	/* Last time this quota entry was changed. */
+	s64 threshold;		/* Soft quota (-1 if not limited). */
+	s64 limit;		/* Hard quota (-1 if not limited). */
+	s64 exceeded_time;	/* How long the soft quota has been exceeded. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /* The below field is NOT present for the quota defaults entry. */
 	SID sid;		/* The SID of the user/object associated with
 				   this quota entry. If this field is missing
@@ -2237,8 +2636,13 @@ typedef struct {
  * struct QUOTA_O_INDEX_DATA -
  */
 typedef struct {
+<<<<<<< HEAD
 	le32 owner_id;
 	le32 unknown;		/* Always 32. Seems to be padding and it's not
+=======
+	u32 owner_id;
+	u32 unknown;		/* Always 32. Seems to be padding and it's not
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   counted in the INDEX_ENTRY's data_length.
 				   This field shouldn't be really here. */
 } __attribute__((__packed__)) QUOTA_O_INDEX_DATA;
@@ -2276,6 +2680,7 @@ typedef enum {
  */
 typedef struct {
 /*  0*/	union {
+<<<<<<< HEAD
 		leMFT_REF indexed_file;
 		struct {
 			le16 data_offset;
@@ -2287,6 +2692,19 @@ typedef struct {
 /* 10*/	le16 key_length;
 /* 12*/	INDEX_ENTRY_FLAGS flags;
 /* 14*/	le16 reserved;
+=======
+		MFT_REF indexed_file;
+		struct {
+			u16 data_offset;
+			u16 data_length;
+			u32 reservedV;
+		} __attribute__((__packed__));
+	} __attribute__((__packed__));
+/*  8*/	u16 length;
+/* 10*/	u16 key_length;
+/* 12*/	INDEX_ENTRY_FLAGS flags;
+/* 14*/	u16 reserved;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /* sizeof() = 16 bytes */
 } __attribute__((__packed__)) INDEX_ENTRY_HEADER;
 
@@ -2302,11 +2720,16 @@ typedef struct {
 typedef struct {
 /*  0	INDEX_ENTRY_HEADER; -- Unfolded here as gcc dislikes unnamed structs. */
 	union {		/* Only valid when INDEX_ENTRY_END is not set. */
+<<<<<<< HEAD
 		leMFT_REF indexed_file;		/* The mft reference of the file
+=======
+		MFT_REF indexed_file;		/* The mft reference of the file
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 						   described by this index
 						   entry. Used for directory
 						   indexes. */
 		struct { /* Used for views/indexes to find the entry's data. */
+<<<<<<< HEAD
 			le16 data_offset;	/* Data byte offset from this
 						   INDEX_ENTRY. Follows the
 						   index key. */
@@ -2322,6 +2745,23 @@ typedef struct {
 				    multiple of 8-bytes. */
 /* 12*/	INDEX_ENTRY_FLAGS ie_flags; /* Bit field of INDEX_ENTRY_* flags. */
 /* 14*/	le16 reserved;		 /* Reserved/align to 8-byte boundary. */
+=======
+			u16 data_offset;	/* Data byte offset from this
+						   INDEX_ENTRY. Follows the
+						   index key. */
+			u16 data_length;	/* Data length in bytes. */
+			u32 reservedV;		/* Reserved (zero). */
+		} __attribute__((__packed__));
+	} __attribute__((__packed__));
+/*  8*/ u16 length;		 /* Byte size of this index entry, multiple of
+				    8-bytes. Size includes INDEX_ENTRY_HEADER
+				    and the optional subnode VCN. See below. */
+/* 10*/ u16 key_length;		 /* Byte size of the key value, which is in the
+				    index entry. It follows field reserved. Not
+				    multiple of 8-bytes. */
+/* 12*/	INDEX_ENTRY_FLAGS ie_flags; /* Bit field of INDEX_ENTRY_* flags. */
+/* 14*/	u16 reserved;		 /* Reserved/align to 8-byte boundary. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /*	End of INDEX_ENTRY_HEADER */
 /* 16*/	union {		/* The key of the indexed attribute. NOTE: Only present
 			   if INDEX_ENTRY_END bit in flags is not set. NOTE: On
@@ -2338,13 +2778,21 @@ typedef struct {
 						   FILE_Extend/$Reparse. */
 		SID sid;		/* $O index in FILE_Extend/$Quota:
 					   SID of the owner of the user_id. */
+<<<<<<< HEAD
 		le32 owner_id;		/* $Q index in FILE_Extend/$Quota:
+=======
+		u32 owner_id;		/* $Q index in FILE_Extend/$Quota:
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					   user_id of the owner of the quota
 					   control entry in the data part of
 					   the index. */
 	} __attribute__((__packed__)) key;
 	/* The (optional) index data is inserted here when creating.
+<<<<<<< HEAD
 	leVCN vcn;	   If INDEX_ENTRY_NODE bit in ie_flags is set, the last
+=======
+	VCN vcn;	   If INDEX_ENTRY_NODE bit in ie_flags is set, the last
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			   eight bytes of this index entry contain the virtual
 			   cluster number of the index block that holds the
 			   entries immediately preceding the current entry. 
@@ -2411,7 +2859,10 @@ typedef enum {
 	IO_REPARSE_TAG_SIS		= const_cpu_to_le32(0x80000007),
 	IO_REPARSE_TAG_SYMLINK		= const_cpu_to_le32(0xA000000C),
 	IO_REPARSE_TAG_WIM		= const_cpu_to_le32(0x80000008),
+<<<<<<< HEAD
 	IO_REPARSE_TAG_WOF		= const_cpu_to_le32(0x80000017),
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	IO_REPARSE_TAG_VALID_VALUES	= const_cpu_to_le32(0xf000ffff),
 } PREDEFINED_REPARSE_TAGS;
@@ -2422,9 +2873,15 @@ typedef enum {
  * NOTE: Can be resident or non-resident.
  */
 typedef struct {
+<<<<<<< HEAD
 	le32 reparse_tag;		/* Reparse point type (inc. flags). */
 	le16 reparse_data_length;	/* Byte size of reparse data. */
 	le16 reserved;			/* Align to 8-byte boundary. */
+=======
+	u32 reparse_tag;		/* Reparse point type (inc. flags). */
+	u16 reparse_data_length;	/* Byte size of reparse data. */
+	u16 reserved;			/* Align to 8-byte boundary. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	u8 reparse_data[0];		/* Meaning depends on reparse_tag. */
 } __attribute__((__packed__)) REPARSE_POINT;
 
@@ -2434,11 +2891,19 @@ typedef struct {
  * NOTE: Always resident.
  */
 typedef struct {
+<<<<<<< HEAD
 	le16 ea_length;		/* Byte size of the packed extended
 				   attributes. */
 	le16 need_ea_count;	/* The number of extended attributes which have
 				   the NEED_EA bit set. */
 	le32 ea_query_length;	/* Byte size of the buffer required to query
+=======
+	u16 ea_length;		/* Byte size of the packed extended
+				   attributes. */
+	u16 need_ea_count;	/* The number of extended attributes which have
+				   the NEED_EA bit set. */
+	u32 ea_query_length;	/* Byte size of the buffer required to query
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   the extended attributes when calling
 				   ZwQueryEaFile() in Windows NT/2k. I.e. the
 				   byte size of the unpacked extended
@@ -2465,11 +2930,19 @@ typedef enum {
  * FIXME: It seems that name is always uppercased. Is it true?
  */
 typedef struct {
+<<<<<<< HEAD
 	le32 next_entry_offset;	/* Offset to the next EA_ATTR. */
 	EA_FLAGS flags;		/* Flags describing the EA. */
 	u8 name_length;		/* Length of the name of the extended
 				   attribute in bytes. */
 	le16 value_length;	/* Byte size of the EA's value. */
+=======
+	u32 next_entry_offset;	/* Offset to the next EA_ATTR. */
+	EA_FLAGS flags;		/* Flags describing the EA. */
+	u8 name_length;		/* Length of the name of the extended
+				   attribute in bytes. */
+	u16 value_length;	/* Byte size of the EA's value. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	u8 name[0];		/* Name of the EA. */
 	u8 value[0];		/* The value of the EA. Immediately
 				   follows the name. */
@@ -2533,10 +3006,17 @@ typedef struct {
  * The header of the Logged utility stream (0x100) attribute named "$EFS".
  */
 typedef struct {
+<<<<<<< HEAD
 /*  0*/	le32 length;		/* Length of EFS attribute in bytes. */
 	le32 state;		/* Always 0? */
 	le32 version;		/* Efs version.  Always 2? */
 	le32 crypto_api_version;	/* Always 0? */
+=======
+/*  0*/	u32 length;		/* Length of EFS attribute in bytes. */
+	u32 state;		/* Always 0? */
+	u32 version;		/* Efs version.  Always 2? */
+	u32 crypto_api_version;	/* Always 0? */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /* 16*/	u8 unknown4[16];	/* MD5 hash of decrypted FEK?  This field is
 				   created with a call to UuidCreate() so is
 				   unlikely to be an MD5 hash and is more
@@ -2544,6 +3024,7 @@ typedef struct {
 				   or something like that. */
 /* 32*/	u8 unknown5[16];	/* MD5 hash of DDFs? */
 /* 48*/	u8 unknown6[16];	/* MD5 hash of DRFs? */
+<<<<<<< HEAD
 /* 64*/	le32 offset_to_ddf_array;/* Offset in bytes to the array of data
 				   decryption fields (DDF), see below.  Zero if
 				   no DDFs are present. */
@@ -2551,13 +3032,26 @@ typedef struct {
 				   recovery fields (DRF), see below.  Zero if
 				   no DRFs are present. */
 	le32 reserved;		/* Reserved. */
+=======
+/* 64*/	u32 offset_to_ddf_array;/* Offset in bytes to the array of data
+				   decryption fields (DDF), see below.  Zero if
+				   no DDFs are present. */
+	u32 offset_to_drf_array;/* Offset in bytes to the array of data
+				   recovery fields (DRF), see below.  Zero if
+				   no DRFs are present. */
+	u32 reserved;		/* Reserved. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 } __attribute__((__packed__)) EFS_ATTR_HEADER;
 
 /**
  * struct EFS_DF_ARRAY_HEADER -
  */
 typedef struct {
+<<<<<<< HEAD
 	le32 df_count;		/* Number of data decryption/recovery fields in
+=======
+	u32 df_count;		/* Number of data decryption/recovery fields in
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   the array. */
 } __attribute__((__packed__)) EFS_DF_ARRAY_HEADER;
 
@@ -2565,6 +3059,7 @@ typedef struct {
  * struct EFS_DF_HEADER -
  */
 typedef struct {
+<<<<<<< HEAD
 /*  0*/	le32 df_length;		/* Length of this data decryption/recovery
 				   field in bytes. */
 	le32 cred_header_offset;	/* Offset in bytes to the credential header. */
@@ -2573,17 +3068,35 @@ typedef struct {
 	le32 fek_offset;		/* Offset in bytes to the FEK from the start of
 				   the data decryption/recovery field. */
 /* 16*/	le32 unknown1;		/* always 0?  Might be just padding. */
+=======
+/*  0*/	u32 df_length;		/* Length of this data decryption/recovery
+				   field in bytes. */
+	u32 cred_header_offset;	/* Offset in bytes to the credential header. */
+	u32 fek_size;		/* Size in bytes of the encrypted file
+				   encryption key (FEK). */
+	u32 fek_offset;		/* Offset in bytes to the FEK from the start of
+				   the data decryption/recovery field. */
+/* 16*/	u32 unknown1;		/* always 0?  Might be just padding. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 } __attribute__((__packed__)) EFS_DF_HEADER;
 
 /**
  * struct EFS_DF_CREDENTIAL_HEADER -
  */
 typedef struct {
+<<<<<<< HEAD
 /*  0*/	le32 cred_length;	/* Length of this credential in bytes. */
 	le32 sid_offset;		/* Offset in bytes to the user's sid from start
 				   of this structure.  Zero if no sid is
 				   present. */
 /*  8*/	le32 type;		/* Type of this credential:
+=======
+/*  0*/	u32 cred_length;	/* Length of this credential in bytes. */
+	u32 sid_offset;		/* Offset in bytes to the user's sid from start
+				   of this structure.  Zero if no sid is
+				   present. */
+/*  8*/	u32 type;		/* Type of this credential:
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					1 = CryptoAPI container.
 					2 = Unexpected type.
 					3 = Certificate thumbprint.
@@ -2591,6 +3104,7 @@ typedef struct {
 	union {
 		/* CryptoAPI container. */
 		struct {
+<<<<<<< HEAD
 /* 12*/			le32 container_name_offset;	/* Offset in bytes to
 				   the name of the container from start of this
 				   structure (may not be zero). */
@@ -2601,10 +3115,23 @@ typedef struct {
 				   the public key blob from start of this
 				   structure. */
 /* 24*/			le32 public_key_blob_size;	/* Size in bytes of
+=======
+/* 12*/			u32 container_name_offset;	/* Offset in bytes to
+				   the name of the container from start of this
+				   structure (may not be zero). */
+/* 16*/			u32 provider_name_offset;	/* Offset in bytes to
+				   the name of the provider from start of this
+				   structure (may not be zero). */
+			u32 public_key_blob_offset;	/* Offset in bytes to
+				   the public key blob from start of this
+				   structure. */
+/* 24*/			u32 public_key_blob_size;	/* Size in bytes of
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				   public key blob. */
 		} __attribute__((__packed__));
 		/* Certificate thumbprint. */
 		struct {
+<<<<<<< HEAD
 /* 12*/			le32 cert_thumbprint_header_size;	/* Size in
 				   bytes of the header of the certificate
 				   thumbprint. */
@@ -2613,6 +3140,16 @@ typedef struct {
 				   thumbprint from start of this structure. */
 			le32 unknown1;	/* Always 0?  Might be padding... */
 			le32 unknown2;	/* Always 0?  Might be padding... */
+=======
+/* 12*/			u32 cert_thumbprint_header_size;	/* Size in
+				   bytes of the header of the certificate
+				   thumbprint. */
+/* 16*/			u32 cert_thumbprint_header_offset;	/* Offset in
+				   bytes to the header of the certificate
+				   thumbprint from start of this structure. */
+			u32 unknown1;	/* Always 0?  Might be padding... */
+			u32 unknown2;	/* Always 0?  Might be padding... */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		} __attribute__((__packed__));
 	} __attribute__((__packed__));
 } __attribute__((__packed__)) EFS_DF_CREDENTIAL_HEADER;
@@ -2623,6 +3160,7 @@ typedef EFS_DF_CREDENTIAL_HEADER EFS_DF_CRED_HEADER;
  * struct EFS_DF_CERTIFICATE_THUMBPRINT_HEADER -
  */
 typedef struct {
+<<<<<<< HEAD
 /*  0*/	le32 thumbprint_offset;		/* Offset in bytes to the thumbprint. */
 	le32 thumbprint_size;		/* Size of thumbprint in bytes. */
 /*  8*/	le32 container_name_offset;	/* Offset in bytes to the name of the
@@ -2633,6 +3171,18 @@ typedef struct {
 					   this structure or 0 if no name
 					   present. */
 /* 16*/	le32 user_name_offset;		/* Offset in bytes to the user name
+=======
+/*  0*/	u32 thumbprint_offset;		/* Offset in bytes to the thumbprint. */
+	u32 thumbprint_size;		/* Size of thumbprint in bytes. */
+/*  8*/	u32 container_name_offset;	/* Offset in bytes to the name of the
+					   container from start of this
+					   structure or 0 if no name present. */
+	u32 provider_name_offset;	/* Offset in bytes to the name of the
+					   cryptographic provider from start of
+					   this structure or 0 if no name
+					   present. */
+/* 16*/	u32 user_name_offset;		/* Offset in bytes to the user name
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					   from start of this structure or 0 if
 					   no user name present.  (This is also
 					   known as lpDisplayInformation.) */
@@ -2654,8 +3204,13 @@ typedef struct {
 	union {
 		/* For character and block devices. */
 		struct {
+<<<<<<< HEAD
 			le64 major;		/* Major device number. */
 			le64 minor;		/* Minor device number. */
+=======
+			u64 major;		/* Major device number. */
+			u64 minor;		/* Minor device number. */
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			void *device_end[0];	/* Marker for offsetof(). */
 		} __attribute__((__packed__));
 		/* For symbolic links. */

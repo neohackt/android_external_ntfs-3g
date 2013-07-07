@@ -56,6 +56,7 @@
 #else
 #define USESTUBS 0 /* direct calls to API, based on following definitions */
 #define ENVNTFS3G "NTFS3G"
+<<<<<<< HEAD
 #if defined(__SVR4)
 #define LIBFILE64 "/usr/lib/amd64/libntfs-3g.so"
 #define LIBFILE "/usr/lib/libntfs-3g.so"
@@ -63,6 +64,10 @@
 #define LIBFILE64 "/lib64/libntfs-3g.so"
 #define LIBFILE "/lib/libntfs-3g.so"
 #endif
+=======
+#define LIBFILE64 "/lib64/libntfs-3g.so.4921"
+#define LIBFILE "/lib/libntfs-3g.so.4921"
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 #endif
 
 #define MAPDIR ".NTFS-3G"
@@ -221,8 +226,13 @@ typedef DWORD *LPDWORD;
 #define SE_SACL_PROTECTED   const_cpu_to_le16(0x2000)
 #define SE_DACL_AUTO_INHERITED   const_cpu_to_le16(0x400)
 #define SE_SACL_AUTO_INHERITED   const_cpu_to_le16(0x800)
+<<<<<<< HEAD
 #define SE_DACL_AUTO_INHERIT_REQ   const_cpu_to_le16(0x100)
 #define SE_SACL_AUTO_INHERIT_REQ   const_cpu_to_le16(0x200)
+=======
+#define SE_DACL_AUTO_INHERIT_REQ   cpu_to_le16(0x100)
+#define SE_SACL_AUTO_INHERIT_REQ   cpu_to_le16(0x200)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 typedef le16 ntfschar;
 
@@ -331,10 +341,17 @@ typedef enum {
 	OWNER_SECURITY_INFORMATION = 1, // The owner identifier of the object is being referenced.
 } SECURITY_INFORMATION;
 
+<<<<<<< HEAD
 #define STANDARD_RIGHTS_READ	  const_cpu_to_le32(0x20000)
 #define STANDARD_RIGHTS_WRITE	  const_cpu_to_le32(0x20000)
 #define STANDARD_RIGHTS_EXECUTE   const_cpu_to_le32(0x20000)
 #define STANDARD_RIGHTS_REQUIRED  const_cpu_to_le32(0xf0000)
+=======
+#define STANDARD_RIGHTS_READ	  cpu_to_le32(0x20000)
+#define STANDARD_RIGHTS_WRITE	  cpu_to_le32(0x20000)
+#define STANDARD_RIGHTS_EXECUTE   cpu_to_le32(0x20000)
+#define STANDARD_RIGHTS_REQUIRED  cpu_to_le32(0xf0000)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 #endif
 
@@ -457,6 +474,7 @@ enum {
 
 #ifndef WIN32
 
+<<<<<<< HEAD
 #define DELETE				 const_cpu_to_le32(0x00010000L)
 #define READ_CONTROL			 const_cpu_to_le32(0x00020000L)
 #define WRITE_DAC			 const_cpu_to_le32(0x00040000L)
@@ -490,6 +508,41 @@ enum {
 
 #define FILE_ALL_ACCESS (STANDARD_RIGHTS_REQUIRED | SYNCHRONIZE | \
 				 const_cpu_to_le32(0x1FF))
+=======
+#define DELETE				 cpu_to_le32(0x00010000L)
+#define READ_CONTROL			 cpu_to_le32(0x00020000L)
+#define WRITE_DAC			 cpu_to_le32(0x00040000L)
+#define WRITE_OWNER			 cpu_to_le32(0x00080000L)
+#define SYNCHRONIZE			 cpu_to_le32(0x00100000L)
+
+
+#define FILE_READ_DATA		  cpu_to_le32( 0x0001 )    // file & pipe
+#define FILE_LIST_DIRECTORY	  cpu_to_le32( 0x0001 )    // directory
+
+#define FILE_WRITE_DATA 	  cpu_to_le32( 0x0002 )    // file & pipe
+#define FILE_ADD_FILE		  cpu_to_le32( 0x0002 )    // directory
+
+#define FILE_APPEND_DATA	  cpu_to_le32( 0x0004 )    // file
+#define FILE_ADD_SUBDIRECTORY	  cpu_to_le32( 0x0004 )    // directory
+#define FILE_CREATE_PIPE_INSTANCE cpu_to_le32( 0x0004 )    // named pipe
+
+
+#define FILE_READ_EA		  cpu_to_le32( 0x0008 )    // file & directory
+
+#define FILE_WRITE_EA		  cpu_to_le32( 0x0010 )    // file & directory
+
+#define FILE_EXECUTE		  cpu_to_le32( 0x0020 )    // file
+#define FILE_TRAVERSE		  cpu_to_le32( 0x0020 )    // directory
+
+#define FILE_DELETE_CHILD	  cpu_to_le32( 0x0040 )    // directory
+
+#define FILE_READ_ATTRIBUTES	  cpu_to_le32( 0x0080 )    // all
+
+#define FILE_WRITE_ATTRIBUTES	  cpu_to_le32( 0x0100 )    // all
+
+#define FILE_ALL_ACCESS (STANDARD_RIGHTS_REQUIRED | SYNCHRONIZE | \
+				 cpu_to_le32(0x1FF))
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 #define FILE_GENERIC_READ	  (STANDARD_RIGHTS_READ     |\
 				   FILE_READ_DATA	    |\
@@ -511,10 +564,17 @@ enum {
 				   FILE_EXECUTE 	    |\
 				   SYNCHRONIZE)
 
+<<<<<<< HEAD
 #define GENERIC_READ			 const_cpu_to_le32(0x80000000L)
 #define GENERIC_WRITE			 const_cpu_to_le32(0x40000000L)
 #define GENERIC_EXECUTE 		 const_cpu_to_le32(0x20000000L)
 #define GENERIC_ALL	 		 const_cpu_to_le32(0x10000000L)
+=======
+#define GENERIC_READ			 cpu_to_le32(0x80000000L)
+#define GENERIC_WRITE			 cpu_to_le32(0x40000000L)
+#define GENERIC_EXECUTE 		 cpu_to_le32(0x20000000L)
+#define GENERIC_ALL	 		 cpu_to_le32(0x10000000L)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 
 #define OBJECT_INHERIT_ACE		  (0x1)
@@ -566,6 +626,7 @@ enum {
           /* flags tested for meaning exec, write or read */
 	  /* tests for write allow for interpretation of a sticky bit */
 
+<<<<<<< HEAD
 #define FILE_GREAD (FILE_READ_DATA | GENERIC_READ | GENERIC_ALL)
 #define FILE_GWRITE (FILE_WRITE_DATA | FILE_APPEND_DATA | GENERIC_WRITE \
 			| GENERIC_ALL)
@@ -574,6 +635,14 @@ enum {
 #define DIR_GWRITE (FILE_ADD_FILE | FILE_ADD_SUBDIRECTORY | GENERIC_WRITE \
 			| GENERIC_ALL)
 #define DIR_GEXEC (FILE_TRAVERSE | GENERIC_EXECUTE | GENERIC_ALL)
+=======
+#define FILE_GREAD (FILE_READ_DATA | GENERIC_READ)
+#define FILE_GWRITE (FILE_WRITE_DATA | FILE_APPEND_DATA | GENERIC_WRITE)
+#define FILE_GEXEC (FILE_EXECUTE | GENERIC_EXECUTE)
+#define DIR_GREAD (FILE_LIST_DIRECTORY | GENERIC_READ)
+#define DIR_GWRITE (FILE_ADD_FILE | FILE_ADD_SUBDIRECTORY | GENERIC_WRITE)
+#define DIR_GEXEC (FILE_TRAVERSE | GENERIC_EXECUTE)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	/* standard owner (and administrator) rights */
 

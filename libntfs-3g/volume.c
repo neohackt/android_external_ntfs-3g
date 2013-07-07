@@ -910,7 +910,10 @@ ntfs_volume *ntfs_device_mount(struct ntfs_device *dev, ntfs_mount_flags flags)
 	ATTR_RECORD *a;
 	VOLUME_INFORMATION *vinf;
 	ntfschar *vname;
+<<<<<<< HEAD
 	u32 record_size;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	int i, j, eo;
 	unsigned int k;
 	u32 u;
@@ -964,13 +967,21 @@ ntfs_volume *ntfs_device_mount(struct ntfs_device *dev, ntfs_mount_flags flags)
 
 		mrec = (MFT_RECORD*)(m + i * vol->mft_record_size);
 		if (mrec->flags & MFT_RECORD_IN_USE) {
+<<<<<<< HEAD
 			if (ntfs_is_baad_record(mrec->magic)) {
+=======
+			if (ntfs_is_baad_recordp(mrec)) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				ntfs_log_error("$MFT error: Incomplete multi "
 					       "sector transfer detected in "
 					       "'%s'.\n", s);
 				goto io_error_exit;
 			}
+<<<<<<< HEAD
 			if (!ntfs_is_mft_record(mrec->magic)) {
+=======
+			if (!ntfs_is_mft_recordp(mrec)) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				ntfs_log_error("$MFT error: Invalid mft "
 						"record for '%s'.\n", s);
 				goto io_error_exit;
@@ -978,22 +989,34 @@ ntfs_volume *ntfs_device_mount(struct ntfs_device *dev, ntfs_mount_flags flags)
 		}
 		mrec2 = (MFT_RECORD*)(m2 + i * vol->mft_record_size);
 		if (mrec2->flags & MFT_RECORD_IN_USE) {
+<<<<<<< HEAD
 			if (ntfs_is_baad_record(mrec2->magic)) {
+=======
+			if (ntfs_is_baad_recordp(mrec2)) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				ntfs_log_error("$MFTMirr error: Incomplete "
 						"multi sector transfer "
 						"detected in '%s'.\n", s);
 				goto io_error_exit;
 			}
+<<<<<<< HEAD
 			if (!ntfs_is_mft_record(mrec2->magic)) {
+=======
+			if (!ntfs_is_mft_recordp(mrec2)) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				ntfs_log_error("$MFTMirr error: Invalid mft "
 						"record for '%s'.\n", s);
 				goto io_error_exit;
 			}
 		}
+<<<<<<< HEAD
 		record_size = ntfs_mft_record_get_data_size(mrec);
 		if ((record_size <= sizeof(MFT_RECORD))
 		    || (record_size > vol->mft_record_size)
 		    || memcmp(mrec, mrec2, record_size)) {
+=======
+		if (memcmp(mrec, mrec2, ntfs_mft_record_get_data_size(mrec))) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			ntfs_log_error("$MFTMirr does not match $MFT (record "
 				       "%d).\n", i);
 			goto io_error_exit;
@@ -1437,8 +1460,12 @@ static int ntfs_mntent_check(const char *file, unsigned long *mnt_flags)
 		err = errno;
 		goto exit;
 	}
+<<<<<<< HEAD
 	f = setmntent("/proc/mounts", "r");
 	if (!f && !(f = setmntent(MOUNTED, "r"))) {
+=======
+	if (!(f = setmntent(MOUNTED, "r"))) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		err = errno;
 		goto exit;
 	}

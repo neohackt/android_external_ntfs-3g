@@ -5,7 +5,11 @@
  * Copyright (c) 2002-2005 Anton Altaparmakov
  * Copyright (c) 2002-2003 Richard Russon
  * Copyright (c) 2007      Yura Pakhuchiy
+<<<<<<< HEAD
  * Copyright (c) 2011-2016 Jean-Pierre Andre
+=======
+ * Copyright (c) 2011      Jean-Pierre Andre
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *
  * This utility will resize an NTFS volume without data loss.
  *
@@ -145,7 +149,10 @@ static struct {
 	int info;
 	int infombonly;
 	int expand;
+<<<<<<< HEAD
 	int reliable_size;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	int show_progress;
 	int badsectors;
 	int check;
@@ -214,7 +221,10 @@ typedef struct {
 	int shrink;		     /* shrink = 1, enlarge = 0 */
 	s64 badclusters;	     /* num of physically dead clusters */
 	VCN mft_highest_vcn;	     /* used for relocating the $MFT */
+<<<<<<< HEAD
 	runlist_element *new_mft_start; /* new first run for $MFT:$DATA */
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	struct DELAYED *delayed_runlists; /* runlists to process later */
 	struct progress_bar progress;
 	struct bitmap lcn_bitmap;
@@ -333,7 +343,11 @@ static void perr_exit(const char *fmt, ...)
  * Return:  none
  */
 __attribute__((noreturn))
+<<<<<<< HEAD
 static void usage(int ret)
+=======
+static void usage(void)
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 {
 
 	printf("\nUsage: %s [OPTIONS] DEVICE\n"
@@ -364,7 +378,11 @@ static void usage(int ret)
 		"\n", EXEC_NAME);
 	printf("%s%s", ntfs_bugs, ntfs_home);
 	printf("Ntfsresize FAQ: http://linux-ntfs.sourceforge.net/info/ntfsresize.html\n");
+<<<<<<< HEAD
 	exit(ret);
+=======
+	exit(1);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -404,7 +422,11 @@ static void version(void)
 	printf("Copyright (c) 2002-2005  Anton Altaparmakov\n");
 	printf("Copyright (c) 2002-2003  Richard Russon\n");
 	printf("Copyright (c) 2007       Yura Pakhuchiy\n");
+<<<<<<< HEAD
 	printf("Copyright (c) 2011-2016  Jean-Pierre Andre\n");
+=======
+	printf("Copyright (c) 2011       Jean-Pierre Andre\n");
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	printf("\n%s\n%s%s", ntfs_gpl, ntfs_bugs, ntfs_home);
 }
 
@@ -425,15 +447,24 @@ static s64 get_new_volume_size(char *s)
 	if (size <= 0 || errno == ERANGE)
 		err_exit("Illegal new volume size\n");
 
+<<<<<<< HEAD
 	if (!*suffix) {
 		opt.reliable_size = 1;
 		return size;
 	}
+=======
+	if (!*suffix)
+		return size;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (strlen(suffix) == 2 && suffix[1] == 'i')
 		prefix_kind = 1024;
 	else if (strlen(suffix) > 1)
+<<<<<<< HEAD
 		usage(1);
+=======
+		usage();
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	/* We follow the SI prefixes:
 	   http://physics.nist.gov/cuu/Units/prefixes.html
@@ -457,7 +488,11 @@ static s64 get_new_volume_size(char *s)
 		size *= prefix_kind;
 		break;
 	default:
+<<<<<<< HEAD
 		usage(1);
+=======
+		usage();
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 
 	return size;
@@ -523,6 +558,10 @@ static int parse_options(int argc, char **argv)
 			opt.force++;
 			break;
 		case 'h':
+<<<<<<< HEAD
+=======
+		case '?':
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			help++;
 			break;
 		case 'i':
@@ -553,7 +592,10 @@ static int parse_options(int argc, char **argv)
 		case 'x':
 			opt.expand++;
 			break;
+<<<<<<< HEAD
 		case '?':
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		default:
 			if (optopt == 's') {
 				printf("Option '%s' requires an argument.\n", argv[optind-1]);
@@ -578,12 +620,20 @@ static int parse_options(int argc, char **argv)
 		    && (opt.expand || opt.info || opt.infombonly)) {
 			printf(NERR_PREFIX "Options --info(-mb-only) and --expand "
 					"cannot be used with --size.\n");
+<<<<<<< HEAD
 			usage(1);
+=======
+			usage();
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		}
 		if (opt.expand && opt.infombonly) {
 			printf(NERR_PREFIX "Options --info-mb-only "
 					"cannot be used with --expand.\n");
+<<<<<<< HEAD
 			usage(1);
+=======
+			usage();
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		}
 	}
 
@@ -604,10 +654,16 @@ static int parse_options(int argc, char **argv)
 	if (ver)
 		version();
 	if (help || err)
+<<<<<<< HEAD
 		usage(err > 0);
 
 		/* tri-state 0 : done, 1 : error, -1 : proceed */
 	return (err ? 1 : (help || ver ? 0 : -1));
+=======
+		usage();
+
+	return (!err && !help && !ver);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 static void print_advise(ntfs_volume *vol, s64 supp_lcn)
@@ -729,6 +785,17 @@ static void collect_resize_constraints(ntfs_resize_t *resize, runlist *rl)
 
 		supported = 1;
 
+<<<<<<< HEAD
+=======
+	} else if (inode == FILE_MFT) {
+		llcn = &resize->last_mft;
+		/*
+		 *  First run of $MFT AT_DATA isn't supported yet.
+		 */
+		if (atype != AT_DATA || rl->vcn)
+			supported = 1;
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	} else if (NInoAttrList(resize->ni)) {
 		llcn = &resize->last_multi_mft;
 
@@ -1327,6 +1394,7 @@ static void expand_attribute_runlist(ntfs_volume *vol, struct DELAYED *delayed)
 #endif
 	type = delayed->type;
 	rl = delayed->rl;
+<<<<<<< HEAD
 
 	/* The MFT inode is permanently open, do not reopen or close */
 	if (mref == FILE_MFT)
@@ -1344,6 +1412,13 @@ static void expand_attribute_runlist(ntfs_volume *vol, struct DELAYED *delayed)
 			 * The runlist is first updated in memory, and
 			 * the updated one is used for updating on device
 			 */
+=======
+	ni = ntfs_inode_open(vol,mref);
+	if (ni) {
+		na = ntfs_attr_open(ni, type,
+					delayed->attr_name, delayed->name_len);
+		if (na) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			if (!ntfs_attr_map_whole_runlist(na)) {
 				if (replace_runlist(na,rl,delayed->lowest_vcn)
 				    || ntfs_attr_update_mapping_pairs(na,0))
@@ -1353,13 +1428,21 @@ static void expand_attribute_runlist(ntfs_volume *vol, struct DELAYED *delayed)
 			} else
 				perr_exit("Could not map attribute 0x%lx in inode %lld",
 					(long)le32_to_cpu(type),(long long)mref);
+<<<<<<< HEAD
 			if (mref != FILE_MFT)
 				ntfs_attr_close(na);
+=======
+			ntfs_attr_close(na);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		} else
 			perr_exit("Could not open attribute 0x%lx in inode %lld",
 				(long)le32_to_cpu(type),(long long)mref);
 		ntfs_inode_mark_dirty(ni);
+<<<<<<< HEAD
 		if ((mref != FILE_MFT) && ntfs_inode_close(ni))
+=======
+		if (ntfs_inode_close(ni))
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			perr_exit("Failed to close inode %lld through the library",
 				(long long)mref);
 	} else
@@ -1368,6 +1451,7 @@ static void expand_attribute_runlist(ntfs_volume *vol, struct DELAYED *delayed)
 }
 
 /*
+<<<<<<< HEAD
  *		Reload the MFT before merging delayed updates of runlist
  *
  *	The delayed updates of runlists are those which imply updating
@@ -1453,6 +1537,8 @@ static int record_mft_in_bitmap(ntfs_resize_t *resize)
 }
 
 /*
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
  *		Process delayed runlist updates
  */
 
@@ -1460,6 +1546,7 @@ static void delayed_updates(ntfs_resize_t *resize)
 {
 	struct DELAYED *delayed;
 
+<<<<<<< HEAD
 	if (ntfs_volume_get_free_space(resize->vol))
 		err_exit("Failed to determine free space\n");
 
@@ -1483,6 +1570,11 @@ static void delayed_updates(ntfs_resize_t *resize)
 		expand_attribute_runlist(resize->vol, delayed);
 		if ((delayed->mref == FILE_MFT) && (delayed->type == AT_BITMAP))
 			record_mft_in_bitmap(resize);
+=======
+	while (resize->delayed_runlists) {
+		delayed = resize->delayed_runlists;
+		expand_attribute_runlist(resize->vol, delayed);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		resize->delayed_runlists = resize->delayed_runlists->next;
 		if (delayed->attr_name)
 			free(delayed->attr_name);
@@ -1500,7 +1592,10 @@ static void delayed_updates(ntfs_resize_t *resize)
 static void replace_later(ntfs_resize_t *resize, runlist *rl, runlist *head_rl)
 {
 	struct DELAYED *delayed;
+<<<<<<< HEAD
 	struct DELAYED *previous;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	ATTR_RECORD *a;
 	MFT_REF mref;
 	leMFT_REF lemref;
@@ -1528,6 +1623,7 @@ static void replace_later(ntfs_resize_t *resize, runlist *rl, runlist *head_rl)
 		delayed->type = a->type;
 		delayed->attr_name = attr_name;
 		delayed->name_len = name_len;
+<<<<<<< HEAD
 		delayed->lowest_vcn = sle64_to_cpu(a->lowest_vcn);
 		delayed->rl = rl;
 		delayed->head_rl = head_rl;
@@ -1546,6 +1642,13 @@ static void replace_later(ntfs_resize_t *resize, runlist *rl, runlist *head_rl)
 			delayed->next = previous->next;
 			previous->next = delayed;
 		}
+=======
+		delayed->lowest_vcn = le64_to_cpu(a->lowest_vcn);
+		delayed->rl = rl;
+		delayed->head_rl = head_rl;
+		delayed->next = resize->delayed_runlists;
+		resize->delayed_runlists = delayed;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	} else
 		perr_exit("Could not store delayed update data");
 }
@@ -1977,6 +2080,7 @@ static void relocate_run(ntfs_resize_t *resize, runlist **rl, int run)
 	}
 
 	hint = (resize->mref == FILE_MFTMirr) ? 1 : 0;
+<<<<<<< HEAD
 	if ((resize->mref == FILE_MFT)
 	    && (resize->ctx->attr->type == AT_DATA)
 	    && !run
@@ -1988,6 +2092,13 @@ static void relocate_run(ntfs_resize_t *resize, runlist **rl, int run)
 			perr_exit("Cluster allocation failed for %llu:%lld",
 				  (unsigned long long)resize->mref,
 				  (long long)lcn_length);
+=======
+	if (!(relocate_rl = alloc_cluster(&resize->lcn_bitmap, lcn_length,
+					  new_vol_size, hint)))
+		perr_exit("Cluster allocation failed for %llu:%lld",
+			  (unsigned long long)resize->mref,
+			  (long long)lcn_length);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	/* FIXME: check $MFTMirr DATA isn't multi-run (or support it) */
 	ntfs_log_verbose("Relocate record %7llu:0x%x:%08lld:0x%08llx:0x%08llx "
@@ -2003,6 +2114,7 @@ static void relocate_run(ntfs_resize_t *resize, runlist **rl, int run)
 
 	/* We don't release old clusters in the bitmap, that area isn't
 	   used by the allocator and will be truncated later on */
+<<<<<<< HEAD
 
 		/* Do not free the relocated MFT start */
 	if ((resize->mref != FILE_MFT)
@@ -2010,6 +2122,9 @@ static void relocate_run(ntfs_resize_t *resize, runlist **rl, int run)
 	    || run
 	    || !resize->new_mft_start)
 		free(relocate_rl);
+=======
+	free(relocate_rl);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	resize->dirty_inode = DIRTY_ATTRIB;
 }
@@ -2056,12 +2171,15 @@ static void relocate_attribute(ntfs_resize_t *resize)
 
 static int is_mftdata(ntfs_resize_t *resize)
 {
+<<<<<<< HEAD
 	/*
 	 * We must update the MFT own DATA record at the end of the second
 	 * step, because the old MFT must be kept available for processing
 	 * the other files.
 	 */
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (resize->ctx->attr->type != AT_DATA)
 		return 0;
 
@@ -2112,17 +2230,23 @@ static int handle_mftdata(ntfs_resize_t *resize, int do_mftdata)
 static void relocate_attributes(ntfs_resize_t *resize, int do_mftdata)
 {
 	int ret;
+<<<<<<< HEAD
 	leMFT_REF lemref;
 	MFT_REF base_mref;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (!(resize->ctx = attr_get_search_ctx(NULL, resize->mrec)))
 		exit(1);
 
+<<<<<<< HEAD
 	lemref = resize->mrec->base_mft_record;
 	if (lemref)
 		base_mref = MREF(le64_to_cpu(lemref));
 	else
 		base_mref = resize->mref;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	while (!ntfs_attrs_walk(resize->ctx)) {
 		if (resize->ctx->attr->type == AT_END)
 			break;
@@ -2140,11 +2264,14 @@ static void relocate_attributes(ntfs_resize_t *resize, int do_mftdata)
 		    resize->ctx->attr->type == AT_DATA)
 			continue;
 
+<<<<<<< HEAD
 		/* Do not relocate bad clusters */
 		if ((base_mref == FILE_BadClus)
 		    && (resize->ctx->attr->type == AT_DATA))
 			continue;
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		relocate_attribute(resize);
 	}
 
@@ -2153,9 +2280,13 @@ static void relocate_attributes(ntfs_resize_t *resize, int do_mftdata)
 
 static void relocate_inode(ntfs_resize_t *resize, MFT_REF mref, int do_mftdata)
 {
+<<<<<<< HEAD
 	ntfs_volume *vol = resize->vol;
 
 	if (ntfs_file_record_read(vol, mref, &resize->mrec, NULL)) {
+=======
+	if (ntfs_file_record_read(resize->vol, mref, &resize->mrec, NULL)) {
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 		/* FIXME: continue only if it make sense, e.g.
 		   MFT record not in use based on $MFT bitmap */
 		if (errno == EIO || errno == ENOENT)
@@ -2171,6 +2302,7 @@ static void relocate_inode(ntfs_resize_t *resize, MFT_REF mref, int do_mftdata)
 
 	relocate_attributes(resize, do_mftdata);
 
+<<<<<<< HEAD
 //		if (vol->dev->d_ops->sync(vol->dev) == -1)
 //			perr_exit("Failed to sync device");
 		/* relocate MFT during second step, even if not dirty */
@@ -2191,6 +2323,14 @@ static void relocate_inode(ntfs_resize_t *resize, MFT_REF mref, int do_mftdata)
 			perr_exit("Couldn't update record %llu",
 						(unsigned long long)mref);
 		}
+=======
+	if (resize->dirty_inode == DIRTY_INODE) {
+//		if (vol->dev->d_ops->sync(vol->dev) == -1)
+//			perr_exit("Failed to sync device");
+		if (write_mft_record(resize->vol, mref, resize->mrec))
+			perr_exit("Couldn't update record %llu",
+					(unsigned long long)mref);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	}
 }
 
@@ -2199,7 +2339,10 @@ static void relocate_inodes(ntfs_resize_t *resize)
 	s64 nr_mft_records;
 	MFT_REF mref;
 	VCN highest_vcn;
+<<<<<<< HEAD
 	s64 length;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	printf("Relocating needed data ...\n");
 
@@ -2213,6 +2356,7 @@ static void relocate_inodes(ntfs_resize_t *resize)
 	nr_mft_records = resize->vol->mft_na->initialized_size >>
 			resize->vol->mft_record_size_bits;
 
+<<<<<<< HEAD
 		/*
 		 * If we need to relocate the first run of the MFT DATA,
 		 * do it now, to have a better chance of getting at least
@@ -2264,6 +2408,8 @@ static void relocate_inodes(ntfs_resize_t *resize)
 		}
 	}
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	for (mref = 0; mref < (MFT_REF)nr_mft_records; mref++)
 		relocate_inode(resize, mref, 0);
 
@@ -2322,6 +2468,63 @@ static void advise_on_resize(ntfs_resize_t *resize)
 	print_advise(vol, resize->last_unsupp);
 }
 
+<<<<<<< HEAD
+=======
+static void rl_expand(runlist **rl, const VCN last_vcn)
+{
+	int len;
+	runlist *p = *rl;
+
+	len = rl_items(p) - 1;
+	if (len <= 0)
+		err_exit("rl_expand: bad runlist length: %d\n", len);
+
+	if (p[len].vcn > last_vcn)
+		err_exit("rl_expand: length is already more than requested "
+			 "(%lld > %lld)\n",
+			 (long long)p[len].vcn, (long long)last_vcn);
+
+	if (p[len - 1].lcn == LCN_HOLE) {
+
+		p[len - 1].length += last_vcn - p[len].vcn;
+		p[len].vcn = last_vcn;
+
+	} else if (p[len - 1].lcn >= 0) {
+
+		p = realloc(*rl, (++len + 1) * sizeof(runlist_element));
+		if (!p)
+			perr_exit("rl_expand: realloc");
+
+		p[len - 1].lcn = LCN_HOLE;
+		p[len - 1].length = last_vcn - p[len - 1].vcn;
+		rl_set(p + len, last_vcn, LCN_ENOENT, 0LL);
+		*rl = p;
+
+	} else
+		err_exit("rl_expand: bad LCN: %lld\n",
+				(long long)p[len - 1].lcn);
+}
+
+static void rl_truncate(runlist **rl, const VCN last_vcn)
+{
+	int len;
+	VCN vcn;
+
+	len = rl_items(*rl) - 1;
+	if (len <= 0)
+		err_exit("rl_truncate: bad runlist length: %d\n", len);
+
+	vcn = (*rl)[len].vcn;
+
+	if (vcn < last_vcn)
+		rl_expand(rl, last_vcn);
+
+	else if (vcn > last_vcn)
+		if (ntfs_rl_truncate(rl, last_vcn) == -1)
+			perr_exit("ntfs_rl_truncate");
+}
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /**
  * bitmap_file_data_fixup
  *
@@ -2334,6 +2537,7 @@ static void bitmap_file_data_fixup(s64 cluster, struct bitmap *bm)
 		ntfs_bit_set(bm->bm, (u64)cluster, 1);
 }
 
+<<<<<<< HEAD
 /*
  *		Open the attribute $BadClust:$Bad and get its runlist
  */
@@ -2365,6 +2569,8 @@ static ntfs_attr *open_badclust_bad_attr(ntfs_attr_search_ctx *ctx)
 	return (na);
 }
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 /**
  * truncate_badclust_bad_attr
  *
@@ -2375,6 +2581,7 @@ static ntfs_attr *open_badclust_bad_attr(ntfs_attr_search_ctx *ctx)
  */
 static void truncate_badclust_bad_attr(ntfs_resize_t *resize)
 {
+<<<<<<< HEAD
 	ntfs_inode *base_ni;
 	ntfs_attr *na;
 	s64 nr_clusters = resize->new_volume_size;
@@ -2395,6 +2602,29 @@ static void truncate_badclust_bad_attr(ntfs_resize_t *resize)
 
 	ntfs_attr_close(na);
 	ntfs_inode_mark_dirty(base_ni);
+=======
+	ATTR_RECORD *a;
+	runlist *rl_bad;
+	s64 nr_clusters = resize->new_volume_size;
+	ntfs_volume *vol = resize->vol;
+
+	a = resize->ctx->attr;
+	if (!a->non_resident)
+		/* FIXME: handle resident attribute value */
+		err_exit("Resident attribute in $BadClust isn't supported!\n");
+
+	if (!(rl_bad = ntfs_mapping_pairs_decompress(vol, a, NULL)))
+		perr_exit("ntfs_mapping_pairs_decompress");
+
+	rl_truncate(&rl_bad, nr_clusters);
+
+	a->highest_vcn = cpu_to_sle64(nr_clusters - 1LL);
+	a->allocated_size = cpu_to_sle64(nr_clusters * vol->cluster_size);
+	a->data_size = cpu_to_sle64(nr_clusters * vol->cluster_size);
+
+	if (!replace_attribute_runlist(resize, rl_bad))
+		free(rl_bad);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -2445,7 +2675,10 @@ static void truncate_bitmap_data_attr(ntfs_resize_t *resize)
 {
 	ATTR_RECORD *a;
 	runlist *rl;
+<<<<<<< HEAD
 	ntfs_attr *lcnbmp_na;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	s64 bm_bsize, size;
 	s64 nr_bm_clusters;
 	int truncated;
@@ -2466,6 +2699,7 @@ static void truncate_bitmap_data_attr(ntfs_resize_t *resize)
 		realloc_lcn_bitmap(resize, bm_bsize);
 		realloc_bitmap_data_attr(resize, &rl, nr_bm_clusters);
 	}
+<<<<<<< HEAD
 		/*
 		 * Delayed relocations may require cluster allocations
 		 * through the library, to hold added attribute lists,
@@ -2477,6 +2711,9 @@ static void truncate_bitmap_data_attr(ntfs_resize_t *resize)
 	lcnbmp_na->allocated_size = nr_bm_clusters << vol->cluster_size_bits;
 	vol->lcnbmp_ni->data_size = bm_bsize;
 	vol->lcnbmp_ni->allocated_size = lcnbmp_na->allocated_size;
+=======
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	a->highest_vcn = cpu_to_sle64(nr_bm_clusters - 1LL);
 	a->allocated_size = cpu_to_sle64(nr_bm_clusters * vol->cluster_size);
 	a->data_size = cpu_to_sle64(bm_bsize);
@@ -2497,11 +2734,16 @@ static void truncate_bitmap_data_attr(ntfs_resize_t *resize)
 				(long long)size, (long long)bm_bsize);
 	}
 
+<<<<<<< HEAD
 	if (truncated) {
 			/* switch to the new bitmap runlist */
 		free(lcnbmp_na->rl);
 		lcnbmp_na->rl = rl;
 	}
+=======
+	if (truncated)
+		free(rl);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -2537,6 +2779,11 @@ static void lookup_data_attr(ntfs_volume *vol,
 	ntfs_ucsfree(ustr);
 }
 
+<<<<<<< HEAD
+=======
+#if CLEAN_EXIT
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 static void close_inode_and_context(ntfs_attr_search_ctx *ctx)
 {
 	ntfs_inode *ni;
@@ -2549,10 +2796,19 @@ static void close_inode_and_context(ntfs_attr_search_ctx *ctx)
 		ntfs_inode_close(ni);
 }
 
+<<<<<<< HEAD
 static int check_bad_sectors(ntfs_volume *vol)
 {
 	ntfs_attr_search_ctx *ctx;
 	ntfs_attr *na;
+=======
+#endif /* CLEAN_EXIT */
+
+static int check_bad_sectors(ntfs_volume *vol)
+{
+	ntfs_attr_search_ctx *ctx;
+	ntfs_inode *base_ni;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	runlist *rl;
 	s64 i, badclusters = 0;
 
@@ -2560,12 +2816,36 @@ static int check_bad_sectors(ntfs_volume *vol)
 
 	lookup_data_attr(vol, FILE_BadClus, "$Bad", &ctx);
 
+<<<<<<< HEAD
 	na = open_badclust_bad_attr(ctx);
 	if (!na) {
 		err_printf("Could not access the bad sector list\n");
 		exit(1);
 	}
 	rl = na->rl;
+=======
+	base_ni = ctx->base_ntfs_ino;
+	if (!base_ni)
+		base_ni = ctx->ntfs_ino;
+
+	if (NInoAttrList(base_ni)) {
+		err_printf("Too many bad sectors have been detected!\n");
+		printf("%s", many_bad_sectors_msg);
+		exit(1);
+	}
+
+	if (!ctx->attr->non_resident)
+		err_exit("Resident attribute in $BadClust! Please report to "
+			 "%s\n", NTFS_DEV_LIST);
+	/*
+	 * FIXME: The below would be partial for non-base records in the
+	 * not yet supported multi-record case. Alternatively use audited
+	 * ntfs_attr_truncate after an umount & mount.
+	 */
+	if (!(rl = ntfs_mapping_pairs_decompress(vol, ctx->attr, NULL)))
+		perr_exit("Decompressing $BadClust:$Bad mapping pairs failed");
+
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	for (i = 0; rl[i].length; i++) {
 		/* CHECKME: LCN_RL_NOT_MAPPED check isn't needed */
 		if (rl[i].lcn == LCN_HOLE || rl[i].lcn == LCN_RL_NOT_MAPPED)
@@ -2591,7 +2871,11 @@ static int check_bad_sectors(ntfs_volume *vol)
 			       "problems and massive data loss!!!\n");
 	}
 
+<<<<<<< HEAD
 	ntfs_attr_close(na);
+=======
+	free(rl);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 #if CLEAN_EXIT
 	close_inode_and_context(ctx);
 #else
@@ -2612,10 +2896,24 @@ static void truncate_badclust_file(ntfs_resize_t *resize)
 
 	lookup_data_attr(resize->vol, FILE_BadClus, "$Bad", &resize->ctx);
 	/* FIXME: sanity_check_attr(ctx->attr); */
+<<<<<<< HEAD
 	resize->mref = FILE_BadClus;
 	truncate_badclust_bad_attr(resize);
 
 	close_inode_and_context(resize->ctx);
+=======
+	truncate_badclust_bad_attr(resize);
+
+	if (write_mft_record(resize->vol, resize->ctx->ntfs_ino->mft_no,
+			     resize->ctx->mrec))
+		perr_exit("Couldn't update $BadClust");
+
+#if CLEAN_EXIT
+	close_inode_and_context(resize->ctx);
+#else
+	ntfs_attr_put_search_ctx(resize->ctx);
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -2625,6 +2923,7 @@ static void truncate_badclust_file(ntfs_resize_t *resize)
  */
 static void truncate_bitmap_file(ntfs_resize_t *resize)
 {
+<<<<<<< HEAD
 	ntfs_volume *vol = resize->vol;
 
 	printf("Updating $Bitmap file ...\n");
@@ -2654,6 +2953,16 @@ static void truncate_bitmap_file(ntfs_resize_t *resize)
 	ntfs_inode_mark_dirty(vol->lcnbmp_ni);
 	NInoFileNameSetDirty(vol->lcnbmp_ni);
 	ntfs_inode_sync(vol->lcnbmp_ni);
+=======
+	printf("Updating $Bitmap file ...\n");
+
+	lookup_data_attr(resize->vol, FILE_Bitmap, NULL, &resize->ctx);
+	truncate_bitmap_data_attr(resize);
+
+	if (write_mft_record(resize->vol, resize->ctx->ntfs_ino->mft_no,
+			     resize->ctx->mrec))
+		perr_exit("Couldn't update $Bitmap");
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 #if CLEAN_EXIT
 	close_inode_and_context(resize->ctx);
@@ -2689,6 +2998,7 @@ static int setup_lcn_bitmap(struct bitmap *bm, s64 nr_clusters)
  */
 static void update_bootsector(ntfs_resize_t *r)
 {
+<<<<<<< HEAD
 	NTFS_BOOT_SECTOR *bs;
 	ntfs_volume *vol = r->vol;
 	s64  bs_size = vol->sector_size;
@@ -2727,11 +3037,36 @@ static void update_bootsector(ntfs_resize_t *r)
 		free(r->new_mft_start);
 		r->new_mft_start = (runlist_element*)NULL;
 	}
+=======
+	NTFS_BOOT_SECTOR bs;
+	s64  bs_size = sizeof(NTFS_BOOT_SECTOR);
+	ntfs_volume *vol = r->vol;
+
+	printf("Updating Boot record ...\n");
+
+	if (vol->dev->d_ops->seek(vol->dev, 0, SEEK_SET) == (off_t)-1)
+		perr_exit("lseek");
+
+	if (vol->dev->d_ops->read(vol->dev, &bs, bs_size) == -1)
+		perr_exit("read() error");
+
+	bs.number_of_sectors = cpu_to_sle64(r->new_volume_size *
+			bs.bpb.sectors_per_cluster);
+
+	if (r->mftmir_old) {
+		r->progress.flags |= NTFS_PROGBAR_SUPPRESS;
+		copy_clusters(r, r->mftmir_rl.lcn, r->mftmir_old,
+			      r->mftmir_rl.length);
+		bs.mftmirr_lcn = cpu_to_sle64(r->mftmir_rl.lcn);
+		r->progress.flags &= ~NTFS_PROGBAR_SUPPRESS;
+	}
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (vol->dev->d_ops->seek(vol->dev, 0, SEEK_SET) == (off_t)-1)
 		perr_exit("lseek");
 
 	if (!opt.ro_flag)
+<<<<<<< HEAD
 		if (vol->dev->d_ops->write(vol->dev, bs, bs_size) == -1)
 			perr_exit("write() error");
 		/*
@@ -2751,6 +3086,10 @@ static void update_bootsector(ntfs_resize_t *r)
 			perr_exit("write() error");
 	}
 	free(bs);
+=======
+		if (vol->dev->d_ops->write(vol->dev, &bs, bs_size) == -1)
+			perr_exit("write() error");
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 }
 
 /**
@@ -2878,9 +3217,12 @@ static ntfs_volume *mount_volume(void)
 		err_exit("Cluster size %u is too large!\n",
 			(unsigned int)vol->cluster_size);
 
+<<<<<<< HEAD
 	if (ntfs_volume_get_free_space(vol))
 		err_exit("Failed to update the free space\n");
 
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (!opt.infombonly) {
 		printf("Device name        : %s\n", opt.volume);
 		printf("NTFS volume version: %d.%d\n",
@@ -3156,7 +3498,11 @@ static s64 get_data_size(expand_t *expand, s64 inum)
 			/* get the size of unnamed $DATA */
 	a = get_unnamed_attr(expand, AT_DATA, inum);
 	if (a && a->non_resident)
+<<<<<<< HEAD
 		size = sle64_to_cpu(a->allocated_size);
+=======
+		size = le64_to_cpu(a->allocated_size);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (!size) {
 		err_printf("Bad record %lld, could not get its size\n",
 					(long long)inum);
@@ -3184,7 +3530,11 @@ static u8 *get_mft_bitmap(expand_t *expand)
 			/* get the runlist of unnamed bitmap */
 	a = get_unnamed_attr(expand, AT_BITMAP, FILE_MFT);
 	ok = TRUE;
+<<<<<<< HEAD
 	bitmap_size = sle64_to_cpu(a->allocated_size);
+=======
+	bitmap_size = le64_to_cpu(a->allocated_size);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (a
 	    && a->non_resident
 	    && ((bitmap_size << (vol->mft_record_size_bits + 3))
@@ -3197,8 +3547,12 @@ static u8 *get_mft_bitmap(expand_t *expand)
 			for (prl=rl; prl->length && ok; prl++) {
 				lseek_to_cluster(vol,
 					prl->lcn + expand->cluster_increment);
+<<<<<<< HEAD
 				ok = !read_all(vol->dev, expand->mft_bitmap
 					+ (prl->vcn << vol->cluster_size_bits),
+=======
+				ok = !read_all(vol->dev, expand->mft_bitmap,
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 					prl->length << vol->cluster_size_bits);
 			}
 			if (!ok) {
@@ -3707,10 +4061,17 @@ static int copy_boot(expand_t *expand)
 	if (buf) {
 			/* set the new volume parameters in the bootsector */
 		bs = (NTFS_BOOT_SECTOR*)expand->bootsector;
+<<<<<<< HEAD
 		bs->number_of_sectors = cpu_to_sle64(expand->new_sectors);
 		bs->mft_lcn = cpu_to_sle64(expand->mft_lcn);
 		mftmirr_lcn = vol->mftmirr_lcn + expand->cluster_increment;
 		bs->mftmirr_lcn = cpu_to_sle64(mftmirr_lcn);
+=======
+		bs->number_of_sectors = cpu_to_le64(expand->new_sectors);
+		bs->mft_lcn = cpu_to_le64(expand->mft_lcn);
+		mftmirr_lcn = vol->mftmirr_lcn + expand->cluster_increment;
+		bs->mftmirr_lcn = cpu_to_le64(mftmirr_lcn);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 			/* the hidden sectors are needed to boot into windows */
 		memcpy(&hidden_sectors_le,&bs->bpb.hidden_sectors,4);
 				/* alignment messed up on the Sparc */
@@ -4076,11 +4437,19 @@ static runlist_element *rebase_runlists_meta(expand_t *expand, s64 inum)
 					rl[1].length = 0;
 					if (set_bitmap(expand,rl))
 						res = -1;
+<<<<<<< HEAD
 					a->data_size = cpu_to_sle64(data_size);
 					a->initialized_size = a->data_size;
 					a->allocated_size
 						= cpu_to_sle64(allocated_size);
 					a->highest_vcn = cpu_to_sle64(lth - 1);
+=======
+					a->data_size = cpu_to_le64(data_size);
+					a->initialized_size = a->data_size;
+					a->allocated_size
+						= cpu_to_le64(allocated_size);
+					a->highest_vcn = cpu_to_le64(lth - 1);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				}
 				/* expand the named data for $BadClus */
 				if ((a->type == AT_DATA)
@@ -4096,11 +4465,19 @@ static runlist_element *rebase_runlists_meta(expand_t *expand, s64 inum)
 						prl[1].vcn = lth;
 					} else
 						prl->vcn = lth;
+<<<<<<< HEAD
 					a->data_size = cpu_to_sle64(data_size);
 					/* do not change the initialized size */
 					a->allocated_size
 						= cpu_to_sle64(allocated_size);
 					a->highest_vcn = cpu_to_sle64(lth - 1);
+=======
+					a->data_size = cpu_to_le64(data_size);
+					/* do not change the initialized size */
+					a->allocated_size
+						= cpu_to_le64(allocated_size);
+					a->highest_vcn = cpu_to_le64(lth - 1);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				}
 				if (!res && update_runlist(expand,inum,a,rl))
 					res = -1;
@@ -4304,7 +4681,11 @@ static ntfs_volume *get_volume_data(expand_t *expand, struct ntfs_device *dev,
 			    && ntfs_boot_sector_is_ntfs(bs)
 			    && !ntfs_boot_sector_parse(vol, bs)) {
 				expand->original_sectors
+<<<<<<< HEAD
 				    = sle64_to_cpu(bs->number_of_sectors);
+=======
+				    = le64_to_cpu(bs->number_of_sectors);
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 				expand->mrec = (MFT_RECORD*)
 					ntfs_malloc(vol->mft_record_size);
 				if (expand->mrec
@@ -4464,15 +4845,23 @@ int main(int argc, char **argv)
 	s64 new_size = 0;	/* in clusters; 0 = --info w/o --size */
 	s64 device_size;        /* in bytes */
 	ntfs_volume *vol = NULL;
+<<<<<<< HEAD
 	int res;
+=======
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	ntfs_log_set_handler(ntfs_log_handler_outerr);
 
 	printf("%s v%s (libntfs-3g)\n", EXEC_NAME, VERSION);
 
+<<<<<<< HEAD
 	res = parse_options(argc, argv);
 	if (res >= 0)
 		return (res);
+=======
+	if (!parse_options(argc, argv))
+		return 1;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	utils_set_locale();
 
@@ -4518,6 +4907,7 @@ int main(int argc, char **argv)
 			 "size!\nCorrupt partition table or incorrect device "
 			 "partitioning?\n");
 
+<<<<<<< HEAD
 	if (!opt.bytes && !opt.info && !opt.infombonly) {
 		opt.bytes = device_size;
 		opt.reliable_size = 1;
@@ -4529,6 +4919,18 @@ int main(int argc, char **argv)
 		new_size = (opt.bytes - vol->sector_size) / vol->cluster_size;
 	else
 		new_size = 0;
+=======
+	if (!opt.bytes && !opt.info && !opt.infombonly)
+		opt.bytes = device_size;
+
+	/* Take the integer part: don't make the volume bigger than requested */
+	new_size = opt.bytes / vol->cluster_size;
+
+	/* Backup boot sector at the end of device isn't counted in NTFS
+	   volume size thus we have to reserve space for it. */
+	if (new_size)
+		--new_size;
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 
 	if (!opt.info && !opt.infombonly) {
 		print_vol_size("New volume size    ", vol_size(vol, new_size));
@@ -4609,9 +5011,17 @@ int main(int argc, char **argv)
 	printf("Successfully resized NTFS on device '%s'.\n", vol->dev->d_name);
 	if (resize.shrink)
 		printf("%s", resize_important_msg);
+<<<<<<< HEAD
+=======
+#if CLEAN_EXIT
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	if (resize.lcn_bitmap.bm)
 		free(resize.lcn_bitmap.bm);
 	if (vol)
 		ntfs_umount(vol,0);
+<<<<<<< HEAD
+=======
+#endif
+>>>>>>> 2111ad7... Initial import of ntfs-3g_ntfsprogs-2013.1.13
 	return 0;
 }
